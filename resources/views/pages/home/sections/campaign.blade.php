@@ -52,6 +52,11 @@
                     />
                 @endforeach
             </div>
+            <div class="pt-5 text-center font-semibold">
+            <button class="inline-block px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition">
+                Lihat Semua Campaign
+            </button>
+        </div>
         </div>
     </section>
 </main>

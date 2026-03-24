@@ -32,12 +32,12 @@
                 </div>
 
                 <div id="nav-menu" class="hidden md:flex items-center justify-center flex-1 md:space-x-4 lg:space-x-8 text-white transition-colors duration-300">
-                    <a href="#" class="text-base font-semibold hover:opacity-70 transition-opacity">Beranda</a>
-                    <a href="#" class="text-base font-semibold hover:opacity-70 transition-opacity">Donasi</a>
-                    <a href="#" class="text-base font-semibold hover:opacity-70 transition-opacity whitespace-nowrap">Galang Donasi</a>
+                    <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Beranda</a>
+                    <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Donasi</a>
+                    <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Galang Donasi</a>
 
                     <div class="relative group">
-                        <button id="btn-dokumentasi" class="text-base font-semibold hover:opacity-70 transition-opacity flex items-center gap-1 py-4">
+                        <button id="btn-dokumentasi" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300 flex items-center gap-1 py-4">
                             Dokumentasi
                         </button>
                         <div id="dropdown-dokumentasi" class="opacity-0 invisible translate-y-2 absolute left-0 mt-0 w-48 bg-white border border-slate-100 rounded-xl shadow-xl text-slate-700 transition-all duration-300 ease-out">
@@ -49,7 +49,7 @@
                     </div>
 
                     <div class="relative group">
-                        <button id="btn-tentang" class="text-base font-semibold hover:opacity-70 transition-opacity flex items-center gap-1 py-4">
+                        <button id="btn-tentang" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300 flex items-center gap-1 py-4">
                             Tentang
                         </button>
                         <div id="dropdown-tentang" class="opacity-0 invisible translate-y-2 absolute left-0 mt-0 w-56 bg-white border border-slate-100 rounded-xl shadow-xl text-slate-700 transition-all duration-300 ease-out">
