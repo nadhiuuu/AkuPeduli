@@ -35,18 +35,7 @@
                     <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Beranda</a>
                     <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Donasi</a>
                     <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Galang Donasi</a>
-
-                    <div class="relative group">
-                        <button id="btn-dokumentasi" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300 flex items-center gap-1 py-4">
-                            Dokumentasi
-                        </button>
-                        <div id="dropdown-dokumentasi" class="opacity-0 invisible translate-y-2 absolute left-0 mt-0 w-48 bg-white border border-slate-100 rounded-xl shadow-xl text-slate-700 transition-all duration-300 ease-out">
-                            <div class="p-2">
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:bg-slate-50 transition-colors">Galeri</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:bg-slate-50 transition-colors">Laporan</a>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Dokumentasi</a>
 
                     <div class="relative group">
                         <button id="btn-tentang" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300 flex items-center gap-1 py-4">
@@ -107,19 +96,9 @@
                 <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Beranda</a>
                 <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Donasi</a>
                 <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Galang Donasi</a>
+                <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Dokumentasi</a>
                 
                 <div class="border-b border-slate-50 my-1"></div>
-
-                <div>
-                    <button id="btn-dokumentasi-mobile" class="w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50 flex justify-between items-center transition-colors">
-                        Dokumentasi
-                        <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div id="drop-dokumentasi-mobile" class="mobile-dropdown-closed space-y-1 ml-4 border-l-2 border-slate-100">
-                        <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Galeri</a>
-                        <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Laporan</a>
-                    </div>
-                </div>
 
                 <div>
                     <button id="btn-tentang-mobile" class="w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50 flex justify-between items-center transition-colors">
@@ -164,15 +143,12 @@
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
         const drops = {
-            dok: { btn: 'btn-dokumentasi', menu: 'dropdown-dokumentasi' },
             tentang: { btn: 'btn-tentang', menu: 'dropdown-tentang' },
-            dokMob: { btn: 'btn-dokumentasi-mobile', menu: 'drop-dokumentasi-mobile' },
             tentangMob: { btn: 'btn-tentang-mobile', menu: 'drop-tentang-mobile' }
         };
 
         window.addEventListener('scroll', () => {
             const isScrolled = window.scrollY > 50;
-            
             if (isScrolled) {
                 nav.classList.replace('absolute', 'fixed');
                 nav.classList.add('bg-white', 'shadow-lg', 'border-b', 'border-slate-100');
@@ -186,33 +162,23 @@
             }
         });
 
-        function toggleDesktopDropdown(menuId, otherId) {
+        function toggleDesktopDropdown(menuId) {
             const menu = document.getElementById(menuId);
-            const other = document.getElementById(otherId);
-            
-            other.classList.add('opacity-0', 'invisible', 'translate-y-2');
             menu.classList.toggle('opacity-0');
             menu.classList.toggle('invisible');
             menu.classList.toggle('translate-y-2');
             menu.classList.toggle('translate-y-0');
         }
 
-        document.getElementById(drops.dok.btn).addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleDesktopDropdown(drops.dok.menu, drops.tentang.menu);
-        });
-
         document.getElementById(drops.tentang.btn).addEventListener('click', (e) => {
             e.stopPropagation();
-            toggleDesktopDropdown(drops.tentang.menu, drops.dok.menu);
+            toggleDesktopDropdown(drops.tentang.menu);
         });
 
         document.addEventListener('click', () => {
-            [drops.dok.menu, drops.tentang.menu].forEach(id => {
-                const el = document.getElementById(id);
-                el.classList.add('opacity-0', 'invisible', 'translate-y-2');
-                el.classList.remove('translate-y-0');
-            });
+            const el = document.getElementById(drops.tentang.menu);
+            el.classList.add('opacity-0', 'invisible', 'translate-y-2');
+            el.classList.remove('translate-y-0');
         });
 
         mobileIconBtn.addEventListener('click', () => {
@@ -230,14 +196,6 @@
 
             btn.addEventListener('click', () => {
                 const isOpen = menu.classList.contains('mobile-dropdown-open');
-                
-                document.querySelectorAll('.mobile-dropdown-open').forEach(openMenu => {
-                    if(openMenu !== menu) {
-                        openMenu.classList.replace('mobile-dropdown-open', 'mobile-dropdown-closed');
-                        openMenu.previousElementSibling.querySelector('svg').classList.remove('rotate-180');
-                    }
-                });
-
                 if (isOpen) {
                     menu.classList.replace('mobile-dropdown-open', 'mobile-dropdown-closed');
                     svg.classList.remove('rotate-180');
@@ -248,9 +206,7 @@
             });
         }
 
-        setupMobileAccordion(drops.dokMob.btn, drops.dokMob.menu);
         setupMobileAccordion(drops.tentangMob.btn, drops.tentangMob.menu);
-
         window.dispatchEvent(new Event('scroll'));
     </script>
 </body>
