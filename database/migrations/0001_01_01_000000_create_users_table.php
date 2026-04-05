@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name'); // Filament sangat butuh kolom 'name'
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('google_id')->unique()->nullable();
             $table->string('password');
-            $table->string('avatar')->nullable();
-            $table->longText('bio')->nullable();
+            $table->string('foto_profil')->nullable();
+            $table->enum('role', ['admin', 'user'])->default('user');
+            $table->string('verify_key')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
