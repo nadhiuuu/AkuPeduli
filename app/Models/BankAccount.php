@@ -33,6 +33,7 @@ class BankAccount extends Model
      * Rekening ini dimiliki oleh satu User.
      */
     public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 }
