@@ -24,8 +24,14 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('admin')
-            ->path('admin')
+        ->default()
+        ->id('admin')
+        ->path('admin')
+        ->login()
+        ->registration()
+        ->passwordReset()
+        ->emailVerification()
+        ->profile()
             ->colors([
                 'primary' => Color::Amber,
             ])

@@ -1,29 +1,42 @@
 <?php
 
-namespace App\Filament\Resources\Users\Tables;
+namespace App\Filament\Admin\Resources\Campaigns\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class UsersTable
+class CampaignsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label('Nama Lengkap')
+                TextColumn::make('user_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('category_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('title')
                     ->searchable(),
-                TextColumn::make('email')
-                    ->label('Alamat Email')
-                    ->badge()
-                    ->color('success')
+                TextColumn::make('slug')
                     ->searchable(),
+                ImageColumn::make('image'),
+                TextColumn::make('target_amount')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('current_amount')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('end_date')
+                    ->date()
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -37,9 +50,7 @@ class UsersTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
