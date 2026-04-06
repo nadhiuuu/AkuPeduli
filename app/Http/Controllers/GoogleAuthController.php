@@ -20,7 +20,7 @@ class GoogleAuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
             
-            // Cek apakah user sudah ada, jika belum buat baru
+            // Cari user berdasarkan email, jika tidak ada maka buat baru
             $user = User::updateOrCreate(
                 ['email' => $googleUser->email],
                 [
@@ -34,10 +34,12 @@ class GoogleAuthController extends Controller
 
             Auth::login($user);
 
-            return redirect('/admin'); 
+            return redirect()->intended(filament()->getUrl()); 
 
         } catch (\Exception $e) {
-            return redirect('/admin/login')->withErrors(['error' => 'Gagal login menggunakan Google.']);
+            return redirect(filament()->getLoginUrl())->withErrors([
+                'email' => 'Gagal login menggunakan Google. Silakan coba lagi.',
+            ]);
         }
     }
 }

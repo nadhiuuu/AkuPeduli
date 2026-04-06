@@ -23,8 +23,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
+        'google_id',
+        'avatar',
         'password',
-        'foto_profil',
         'role',
         'verify_key',
     ];
