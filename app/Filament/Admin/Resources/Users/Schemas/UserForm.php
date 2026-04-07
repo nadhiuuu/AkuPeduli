@@ -7,6 +7,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
+use Filament\Resources\Pages\CreateRecord;
 
 class UserForm
 {
@@ -15,32 +19,52 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
+                    ->label('Nama Lengkap')
+                    ->required()
+                    ->maxLength(255),
+                    
                 TextInput::make('email')
                     ->label('Email address')
                     ->email()
-                    ->required(),
-                DateTimePicker::make('email_verified_at'),
-                TextInput::make('google_id')
-                    ->default(null),
-                TextInput::make('password')
-                    ->password()
-                    ->required(),
-                Textarea::make('two_factor_secret')
-                    ->default(null)
-                    ->columnSpanFull(),
-                Textarea::make('two_factor_recovery_codes')
-                    ->default(null)
-                    ->columnSpanFull(),
-                DateTimePicker::make('two_factor_confirmed_at'),
-                TextInput::make('foto_profil')
-                    ->default(null),
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255),
+                    
                 Select::make('role')
+                    ->label('Hak Akses')
                     ->options(['admin' => 'Admin', 'user' => 'User'])
                     ->default('user')
                     ->required(),
-                TextInput::make('verify_key')
-                    ->default(null),
+                    
+                FileUpload::make('avatar')
+                    ->label('Foto Profil')
+                    ->image()
+                    ->directory('avatars')
+                    ->maxSize(5120),
+                    
+                TextInput::make('password')
+                    ->label('Password')
+                    ->password()
+                    ->rules([
+                        Password::min(8)
+                            ->letters()
+                            ->mixedCase()
+                            ->numbers(),
+                    ])
+                    ->revealable()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn ($livewire) => $livewire instanceof CreateRecord)
+                    ->maxLength(255)
+                    ->same('passwordConfirmation'),
+                
+                TextInput::make('passwordConfirmation')
+                    ->label('Konfirmasi Password')
+                    ->password()
+                    ->revealable()
+                    ->dehydrated(false)
+                    ->requiredWith('password')
+                    ->maxLength(255),
             ]);
     }
 }

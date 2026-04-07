@@ -15,12 +15,6 @@ class CampaignsTable
     {
         return $table
             ->columns([
-                TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('category_id')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('title')
                     ->searchable(),
                 TextColumn::make('slug')
