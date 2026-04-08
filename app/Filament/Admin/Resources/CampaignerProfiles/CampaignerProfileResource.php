@@ -18,7 +18,7 @@ class CampaignerProfileResource extends Resource
 {
     protected static ?string $model = CampaignerProfile::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
 
     public static function canViewAny(): bool
     {

@@ -18,7 +18,7 @@ class DisasterCategoryResource extends Resource
 {
     protected static ?string $model = DisasterCategory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-list-bullet';
 
     public static function canViewAny(): bool
     {

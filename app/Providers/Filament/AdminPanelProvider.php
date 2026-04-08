@@ -18,32 +18,31 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
+use Caresome\FilamentAuthDesigner\Data\AuthPageConfig;
+use Caresome\FilamentAuthDesigner\Enums\MediaPosition;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-        ->default()
-        ->id('admin')
-        ->path('admin')
-        ->login()
-        ->registration()
-        ->passwordReset()
-        ->emailVerification()
-        ->profile()
+            ->default()
+            ->id('admin')
+            ->path('admin')
+            ->favicon('favicon.ico')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->pages([
-                Dashboard::class,
+                // Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                // FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -58,6 +57,24 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->plugin(
+                AuthDesignerPlugin::make()
+                    ->defaults(
+                        fn($config) => $config
+                            ->media(asset('https://media.tenor.com/MwVSjFu_g-MAAAAM/jerry-laughing.gif'))
+                            ->mediaPosition(MediaPosition::Left)
+                            ->blur(8)
+                    )
+                    ->login()
+                    ->registration()
+                    ->passwordReset(
+                        fn($config) => $config
+                            ->mediaPosition(MediaPosition::Left)
+                            ->mediaSize('45%')
+                    )
+                    ->emailVerification()
+                    ->themeToggle()
+            );
     }
 }
