@@ -25,7 +25,7 @@ class DisasterCategoryResource extends Resource
         return auth()->user()->role === 'admin';
     }
 
-    protected static ?string $recordTitleAttribute = 'DisasterCategory';
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {

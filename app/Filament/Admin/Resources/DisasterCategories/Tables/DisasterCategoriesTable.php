@@ -15,23 +15,27 @@ class DisasterCategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('slug')
-                    ->searchable(),
+                    ->label('Nama Kategori')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold'),
+
                 TextColumn::make('icon')
+                    ->label('Icon')
+                    ->size('text-2xl') // Membuat ukuran emojinya lebih besar
+                    ->alignCenter(),
+
+                TextColumn::make('slug')
+                    ->label('Slug')
+                    ->color('gray')
                     ->searchable(),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Dibuat Pada')
+                    ->dateTime('d M Y')
+                    ->sortable(),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->recordActions([
                 EditAction::make(),
             ])
