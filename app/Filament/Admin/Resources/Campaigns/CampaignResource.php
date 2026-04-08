@@ -25,7 +25,7 @@ class CampaignResource extends Resource
         return true; 
     }
 
-    protected static ?string $recordTitleAttribute = 'Campaign';
+    protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema
     {

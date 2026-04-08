@@ -2,12 +2,13 @@
 
 namespace App\Filament\Admin\Resources\Campaigns\Schemas;
 
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\DatePicker;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class CampaignForm
 {
@@ -15,34 +16,79 @@ class CampaignForm
     {
         return $schema
             ->components([
-                TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('category_id')
-                    ->required()
-                    ->numeric(),
                 TextInput::make('title')
-                    ->required(),
+                    ->label('Judul Galang Dana')
+                    ->required()
+                    ->minLength(10) // Minimal 10 huruf
+                    ->maxLength(255)
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', Str::slug($state))),
+
                 TextInput::make('slug')
-                    ->required(),
-                Textarea::make('description')
+                    ->label('Slug URL')
                     ->required()
-                    ->columnSpanFull(),
-                FileUpload::make('image')
-                    ->image()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255)
+                    ->disabled()
+                    ->dehydrated(),
+
+                Select::make('category_id')
+                    ->label('Kategori Bencana')
+                    ->relationship('category', 'name') 
+                    ->searchable()
+                    ->preload()
                     ->required(),
+
+                Select::make('user_id')
+                    ->label('Dibuat Oleh (User/Admin)')
+                    ->relationship('user', 'name') // Mengambil relasi user()
+                    ->searchable()
+                    ->preload()
+                    ->default(fn () => auth()->id()) // Otomatis memilih admin yang sedang login
+                    ->required(),
+
                 TextInput::make('target_amount')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('current_amount')
-                    ->required()
+                    ->label('Target Donasi')
                     ->numeric()
-                    ->default(0.0),
-                DatePicker::make('end_date')
+                    ->prefix('Rp')
+                    ->minValue(100000) // Minimal target adalah 100 ribu
+                    ->helperText('Minimal target donasi adalah Rp 100.000')
                     ->required(),
+
+                TextInput::make('current_amount')
+                    ->label('Terkumpul Saat Ini')
+                    ->numeric()
+                    ->prefix('Rp')
+                    ->default(0) // Default 0 saat pertama kali dibuat
+                    ->disabled() // Tidak bisa diubah manual agar aman
+                    ->dehydrated() // Tetap disimpan ke database
+                    ->helperText('Otomatis bertambah saat ada donasi berhasil.'),
+
+                DatePicker::make('end_date')
+                    ->label('Batas Waktu')
+                    ->minDate(now()) // Cegah pemilihan tanggal di masa lalu
+                    ->required(),
+
                 Select::make('status')
-                    ->options(['aktif' => 'Aktif', 'nonaktif' => 'Nonaktif'])
-                    ->default('nonaktif')
+                    ->label('Status Galang Dana')
+                    ->options([
+                        'aktif' => 'Aktif (Berjalan)',
+                        'nonaktif' => 'Nonaktif (Menunggu/Ditutup)',
+                        'selesai' => 'Selesai (Target Tercapai)',
+                    ])
+                    ->default('aktif')
+                    ->required(),
+
+                FileUpload::make('image')
+                    ->label('Banner Galang Dana')
+                    ->image()
+                    ->directory('campaigns')
+                    ->columnSpanFull()
+                    ->maxSize(5120),
+
+                RichEditor::make('description')
+                    ->label('Cerita / Deskripsi Bencana')
+                    ->columnSpanFull()
                     ->required(),
             ]);
     }
