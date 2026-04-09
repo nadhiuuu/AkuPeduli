@@ -32,10 +32,10 @@
                 </div>
 
                 <div id="nav-menu" class="hidden md:flex items-center justify-center flex-1 md:space-x-4 lg:space-x-8 text-white transition-colors duration-300">
-                    <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Beranda</a>
-                    <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Donasi</a>
-                    <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Galang Donasi</a>
-                    <a href="#" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300">Dokumentasi</a>
+                    <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Beranda</a>
+                    <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Donasi</a>
+                    <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Galang Donasi</a>
+                    <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Dokumentasi</a>
 
                     <div class="relative group">
                         <button id="btn-tentang" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300 flex items-center gap-1 py-4">
@@ -43,12 +43,11 @@
                         </button>
                         <div id="dropdown-tentang" class="opacity-0 invisible translate-y-2 absolute left-0 mt-0 w-56 bg-white border border-slate-100 rounded-xl shadow-xl text-slate-700 transition-all duration-300 ease-out">
                             <div class="p-2">
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:bg-slate-50">Download App</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:bg-slate-50">Tentang Kami</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:bg-slate-50">FAQ</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:bg-slate-50">Syarat & Ketentuan</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:bg-slate-50">Kebijakan Privasi</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:bg-slate-50">Hubungi Kami</a>
+                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">Tentang Kami</a>
+                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">FAQ</a>
+                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">Syarat & Ketentuan</a>
+                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">Kebijakan Privasi</a>
+                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">Hubungi Kami</a>
                             </div>
                         </div>
                     </div>
@@ -75,7 +74,7 @@
                         @else
                             <a href="{{ route('login') }}" class="text-base font-semibold hover:opacity-30 transition-opacity">Masuk</a>
                             @if (Route::has('register'))
-                                <a id="btn-daftar" href="{{ route('register') }}" class="px-6 py-2.5 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-md transition-all active:scale-95 whitespace-nowrap">
+                                <a id="btn-daftar" href="{{ route('register') }}" class="px-6 py-2.5 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition-all active:scale-95 whitespace-nowrap">
                                     Daftar
                                 </a>
                             @endif
@@ -106,7 +105,6 @@
                         <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div id="drop-tentang-mobile" class="mobile-dropdown-closed space-y-1 ml-4 border-l-2 border-slate-100">
-                        <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Download App</a>
                         <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Tentang Kami</a>
                         <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">FAQ</a>
                         <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Syarat dan Ketentuan</a>
