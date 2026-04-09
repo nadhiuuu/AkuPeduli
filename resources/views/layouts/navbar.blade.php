@@ -72,12 +72,10 @@
                                 </div>
                             </div>
                         @else
-                            <a href="{{ route('login') }}" class="text-base font-semibold hover:opacity-30 transition-opacity">Masuk</a>
-                            @if (Route::has('register'))
-                                <a id="btn-daftar" href="{{ route('register') }}" class="px-6 py-2.5 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition-all active:scale-95 whitespace-nowrap">
+                            <a href="{{ filament()->getLoginUrl() }}" class="text-base font-semibold hover:opacity-30 transition-opacity">Masuk</a>
+                                <a id="btn-daftar" href="{{ filament()->getRegistrationUrl() }}" class="px-6 py-2.5 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-md transition-all active:scale-95 whitespace-nowrap">
                                     Daftar
-                                </a>
-                            @endif
+                            </a>
                         @endauth
                     </div>
 

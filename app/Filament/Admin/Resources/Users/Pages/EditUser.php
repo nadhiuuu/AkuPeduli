@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Users\Pages;
+namespace App\Filament\Admin\Resources\Users\Pages;
 
-use App\Filament\Resources\Users\UserResource;
+use App\Filament\Admin\Resources\Users\UserResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,5 +15,10 @@ class EditUser extends EditRecord
         return [
             DeleteAction::make(),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

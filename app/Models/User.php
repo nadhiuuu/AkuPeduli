@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -22,8 +23,10 @@ class User extends Authenticatable implements FilamentUser
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
+        'google_id',
+        'avatar',
         'password',
-        'foto_profil',
         'role',
         'verify_key',
     ];
@@ -55,11 +58,6 @@ class User extends Authenticatable implements FilamentUser
     {
         // Panel Admin hanya bisa diakses oleh role 'admin'
         if ($panel->getId() === 'admin') {
-            return $this->role === 'admin';
-        }
-
-        // Panel User bisa diakses oleh role 'user' maupun 'admin'
-        if ($panel->getId() === 'user') {
             return in_array($this->role, ['admin', 'user']);
         }
 

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('target_amount', 15, 2);
             $table->decimal('current_amount', 15, 2)->default(0);
             $table->date('end_date');
-            $table->enum('status', ['aktif', 'nonaktif'])->default('nonaktif');
+            $table->enum('status', ['aktif', 'nonaktif', 'selesai'])->default('aktif');
             $table->timestamps();
         });
     }
