@@ -32,8 +32,8 @@
                 </div>
 
                 <div id="nav-menu" class="hidden md:flex items-center justify-center flex-1 md:space-x-4 lg:space-x-8 text-white transition-colors duration-300">
-                    <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Beranda</a>
-                    <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Donasi</a>
+                    <a href="{{ route('landing') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Beranda</a>
+                    <a href="{{ route('donasi') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Donasi</a>
                     <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Galang Donasi</a>
                     <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Dokumentasi</a>
 
@@ -73,7 +73,7 @@
                             </div>
                         @else
                             <a href="{{ filament()->getLoginUrl() }}" class="text-base font-semibold hover:opacity-30 transition-opacity">Masuk</a>
-                                <a id="btn-daftar" href="{{ filament()->getRegistrationUrl() }}" class="px-6 py-2.5 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-md transition-all active:scale-95 whitespace-nowrap">
+                                <a id="btn-daftar" href="{{ filament()->getRegistrationUrl() }}" class="px-6 py-2.5 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition-all active:scale-95 whitespace-nowrap">
                                     Daftar
                             </a>
                         @endauth
@@ -90,8 +90,8 @@
 
         <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white shadow-xl max-h-[85vh] overflow-y-auto">
             <div class="px-5 pt-4 pb-8 space-y-2">
-                <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Beranda</a>
-                <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Donasi</a>
+                <a href="{{ route('landing') }}" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Beranda</a>
+                <a href="{{ route('donasi') }}" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Donasi</a>
                 <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Galang Donasi</a>
                 <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Dokumentasi</a>
                 
@@ -138,25 +138,37 @@
         const mobileIconBtn = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
-        const drops = {
-            tentang: { btn: 'btn-tentang', menu: 'dropdown-tentang' },
-            tentangMob: { btn: 'btn-tentang-mobile', menu: 'drop-tentang-mobile' }
-        };
+        
+        const isHomePage = window.location.pathname === '/' || window.location.pathname === '/landing';
 
-        window.addEventListener('scroll', () => {
-            const isScrolled = window.scrollY > 50;
+        function handleScroll() {
+            const isScrolled = window.scrollY > 50 || !isHomePage;
+
             if (isScrolled) {
                 nav.classList.replace('absolute', 'fixed');
                 nav.classList.add('bg-white', 'shadow-lg', 'border-b', 'border-slate-100');
                 navLogo.classList.remove('brightness-0', 'invert');
-                [navMenu, navAuth, mobileIconBtn].forEach(el => el.classList.replace('text-white', 'text-slate-700'));
+                [navMenu, navAuth, mobileIconBtn].forEach(el => {
+                    if(el) el.classList.replace('text-white', 'text-slate-700');
+                });
             } else {
                 nav.classList.replace('fixed', 'absolute');
                 nav.classList.remove('bg-white', 'shadow-lg', 'border-b', 'border-slate-100');
                 navLogo.classList.add('brightness-0', 'invert');
-                [navMenu, navAuth, mobileIconBtn].forEach(el => el.classList.replace('text-slate-700', 'text-white'));
+                [navMenu, navAuth, mobileIconBtn].forEach(el => {
+                    if(el) el.classList.replace('text-slate-700', 'text-white');
+                });
             }
-        });
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        
+        handleScroll();
+        
+        const drops = {
+            tentang: { btn: 'btn-tentang', menu: 'dropdown-tentang' },
+            tentangMob: { btn: 'btn-tentang-mobile', menu: 'drop-tentang-mobile' }
+        };
 
         function toggleDesktopDropdown(menuId) {
             const menu = document.getElementById(menuId);
@@ -189,7 +201,6 @@
             const btn = document.getElementById(btnId);
             const menu = document.getElementById(menuId);
             const svg = btn.querySelector('svg');
-
             btn.addEventListener('click', () => {
                 const isOpen = menu.classList.contains('mobile-dropdown-open');
                 if (isOpen) {
@@ -201,9 +212,7 @@
                 }
             });
         }
-
         setupMobileAccordion(drops.tentangMob.btn, drops.tentangMob.menu);
-        window.dispatchEvent(new Event('scroll'));
     </script>
 </body>
 </html>

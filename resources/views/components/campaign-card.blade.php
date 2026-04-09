@@ -1,22 +1,17 @@
 <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full">
-
-    <a href="{{ $url ?? '#' }}" class="relative block overflow-hidden">
+    <a href="{{ route('donasi.detail-campaign') }}" class="relative block overflow-hidden">
         <img src="{{ $image ?? 'https://via.placeholder.com/400x200' }}" 
              class="w-full h-48 object-cover hover:scale-105 transition duration-500">
     </a>
-
     <div class="p-4 flex flex-col flex-grow space-y-3">
-
         <h3 class="font-semibold text-base line-clamp-2 leading-snug">
-            <a href="{{ $url ?? '#' }}" class="hover:text-blue-600 transition-colors">
+            <a href="{{ route('donasi.detail-campaign') }}" class="hover:text-blue-600 transition-colors">
                 {{ $title ?? 'Judul Campaign Donasi' }}
             </a>
         </h3>
-
         <p class="text-sm text-gray-500 line-clamp-2">
             {{ $description ?? 'Deskripsi singkat campaign untuk menarik perhatian donatur.' }}
         </p>
-
         <div class="mt-auto">
             <div class="w-full bg-gray-200 rounded-full h-1.5 mb-2">
                 <div class="bg-blue-600 h-1.5 rounded-full transition-all duration-500"
@@ -24,7 +19,6 @@
                 </div>
             </div>
         </div>
-
         <div class="flex justify-between text-xs md:text-sm">
             <div class="flex flex-col">
                 <span class="text-gray-400 text-[12px] uppercase font-bold tracking-wider">Terkumpul</span>
@@ -39,7 +33,6 @@
                 </span>
             </div>
         </div>
-
         <div class="flex justify-between items-center pt-2 border-t border-gray-50 text-[14px] text-gray-400">
             <span class="flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
