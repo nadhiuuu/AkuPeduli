@@ -20,3 +20,15 @@ Route::get('/donasi/detail', function () {
 Route::get('/donasi/berdonasi', function () {
     return view('pages.donasi.form-donasi');
 })->name('donasi.berdonasi');
+
+Route::get('/galang-donasi', function () {
+    return view('pages.galang-donasi.index'); 
+})->name('galang-donasi');
+
+Route::get('/dokumentasi', function () {
+    return view('pages.dokumentasi.index'); 
+})->name('dokumentasi');
+
+Route::get('/dokumentasi/detail-dokumentasi', function () {
+    return view('pages.dokumentasi.detail-dokumentasi');
+})->name('dokumentasi.detail-dokumentasi');

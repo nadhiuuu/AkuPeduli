@@ -27,24 +27,16 @@
         const nominalInput = document.getElementById('input-nominal');
         const nominalButtons = document.querySelectorAll('.btn-nominal');
 
-        // Logic Klik Tombol Nominal
         nominalButtons.forEach(btn => {
             btn.addEventListener('click', function() {
-                // Reset state tombol lain
                 nominalButtons.forEach(b => b.classList.remove('border-blue-600', 'bg-blue-50', 'text-blue-600'));
-                
-                // Aktifkan tombol yang diklik
                 this.classList.add('border-blue-600', 'bg-blue-50', 'text-blue-600');
-                
-                // Set value input dengan format ribuan
                 const rawValue = this.getAttribute('data-nominal');
                 nominalInput.value = formatRupiah(rawValue);
             });
         });
 
-        // Logic Input Manual (Hanya Angka & Auto Format)
         nominalInput.addEventListener('input', function(e) {
-            // Hapus highlight tombol saat user mengetik manual
             nominalButtons.forEach(b => b.classList.remove('border-blue-600', 'bg-blue-50', 'text-blue-600'));
             
             let value = this.value.replace(/\D/g, '');

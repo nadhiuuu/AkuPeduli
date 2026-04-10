@@ -34,8 +34,8 @@
                 <div id="nav-menu" class="hidden md:flex items-center justify-center flex-1 md:space-x-4 lg:space-x-8 text-white transition-colors duration-300">
                     <a href="{{ route('landing') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Beranda</a>
                     <a href="{{ route('donasi') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Donasi</a>
-                    <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Galang Donasi</a>
-                    <a href="#" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Dokumentasi</a>
+                    <a href="{{ route('galang-donasi') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Galang Donasi</a>
+                    <a href="{{ route('dokumentasi') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Dokumentasi</a>
 
                     <div class="relative group">
                         <button id="btn-tentang" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300 flex items-center gap-1 py-4">
