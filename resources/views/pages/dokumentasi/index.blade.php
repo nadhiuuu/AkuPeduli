@@ -21,7 +21,7 @@
     <section>
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-14">
-                <h2 class="text-3xl md:text-4xl font-bold mb-3">
+                <h2 class="text-3xl md:text-3xl font-bold mb-3">
                     Dokumentasi Penyerahan Donasi
                 </h2>
                 <p class="text-gray-500 max-w-2xl mx-auto">

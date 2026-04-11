@@ -9,6 +9,7 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
+// donasi
 Route::get('/donasi', function () {
     return view('pages.donasi.index'); 
 })->name('donasi');
@@ -21,10 +22,24 @@ Route::get('/donasi/berdonasi', function () {
     return view('pages.donasi.form-donasi');
 })->name('donasi.berdonasi');
 
+// galang donasi
 Route::get('/galang-donasi', function () {
     return view('pages.galang-donasi.index'); 
 })->name('galang-donasi');
 
+Route::get('/galang-donasi/persetujuan', function () {
+    return view('pages.components.persetujuan-modal'); 
+})->name('galang-donasi.persetujuan');
+
+Route::get('/galang-donasi/form-galang-donasi', function () {
+    return view('pages.galang-donasi.form-galang-donasi');
+})->name('galang-donasi.form-galang-donasi');
+
+Route::get('/galang-donasi/form-verifikasi', function () {
+    return view('pages.galang-donasi.form-verifikasi');
+})->name('galang-donasi.form-verifikasi');
+
+// dokumentasi
 Route::get('/dokumentasi', function () {
     return view('pages.dokumentasi.index'); 
 })->name('dokumentasi');

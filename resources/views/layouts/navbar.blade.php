@@ -9,118 +9,116 @@
     <style>
         .mobile-dropdown-closed {
             max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, opacity 0.2s;
             opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
         }
         .mobile-dropdown-open {
             max-height: 500px;
             opacity: 1;
-            transition: max-height 0.5s ease-in, opacity 0.3s;
+            transition: all 0.5s ease-in-out;
+        }
+        .nav-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
 <body class="antialiased bg-slate-50 text-slate-900">
-
-    <nav id="main-nav" class="absolute top-0 left-0 w-full z-[100] transition-all duration-500">
+    <nav id="main-nav" class="fixed top-0 left-0 w-full z-[100] nav-transition border-b border-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center flex-shrink-0">
                     <a href="{{ url('/') }}" class="flex items-center">
-                        <img id="nav-logo" src="{{ asset('assets/AkuPeduli color.png') }}" alt="AkuPeduli Logo" class="h-23 md:h-25 lg:h-26 w-auto object-contain transition-all duration-300 brightness-0 invert">
+                        <img id="nav-logo" src="{{ asset('assets/AkuPeduli color.png') }}" alt="Logo" 
+                             class="h-25 md:h-25 w-auto object-contain nav-transition brightness-0 invert">
                     </a>
                 </div>
 
-                <div id="nav-menu" class="hidden md:flex items-center justify-center flex-1 md:space-x-4 lg:space-x-8 text-white transition-colors duration-300">
-                    <a href="{{ route('landing') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Beranda</a>
-                    <a href="{{ route('donasi') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Donasi</a>
-                    <a href="{{ route('galang-donasi') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Galang Donasi</a>
-                    <a href="{{ route('dokumentasi') }}" class="text-lg font-semibold hover:text-blue-600 transition-colors duration-300">Dokumentasi</a>
+                <div id="nav-menu" class="hidden lg:flex items-center justify-center space-x-6 xl:space-x-8 text-white">
+                    <a href="{{ route('landing') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('landing') ? 'text-blue-500' : 'hover:text-blue-400' }}">Beranda</a>
+                    <a href="{{ route('donasi') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('donasi') ? 'text-blue-500' : 'hover:text-blue-400' }}">Donasi</a>
+                    <a href="{{ route('galang-donasi') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('galang-donasi') ? 'text-blue-500' : 'hover:text-blue-400' }}">Galang Donasi</a>
+                    <a href="{{ route('dokumentasi') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('dokumentasi') ? 'text-blue-500' : 'hover:text-blue-400' }}">Dokumentasi</a>
 
                     <div class="relative group">
-                        <button id="btn-tentang" class="text-lg font-semibold hover:text-blue-200 transition-colors duration-300 flex items-center gap-1 py-4">
+                        <button id="btn-tentang" class="text-base font-semibold hover:text-blue-400 transition-colors flex items-center gap-1 py-4">
                             Tentang
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
-                        <div id="dropdown-tentang" class="opacity-0 invisible translate-y-2 absolute left-0 mt-0 w-56 bg-white border border-slate-100 rounded-xl shadow-xl text-slate-700 transition-all duration-300 ease-out">
+                        <div id="dropdown-tentang" class="opacity-0 invisible translate-y-2 absolute left-0 w-56 bg-white border border-slate-100 rounded-xl shadow-xl text-slate-700 nav-transition">
                             <div class="p-2">
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">Tentang Kami</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">FAQ</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">Syarat & Ketentuan</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">Kebijakan Privasi</a>
-                                <a href="#" class="block px-4 py-2.5 rounded-lg text-base hover:text-blue-600">Hubungi Kami</a>
+                                <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Tentang Kami</a>
+                                <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">FAQ</a>
+                                <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Syarat & Ketentuan</a>
+                                <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Kebijakan Privasi</a>
+                                <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Hubungi Kami</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-end gap-3 flex-shrink-0">
-                    <div id="nav-auth" class="hidden md:flex items-center gap-3 text-white transition-colors duration-300">
+                <div class="flex items-center gap-4">
+                    <div id="nav-auth" class="hidden md:flex items-center gap-4 text-white">
                         @auth
                             <div class="relative group">
-                                <button class="flex items-center focus:outline-none">
-                                    <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center overflow-hidden hover:bg-white/30 transition-all">
-                                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                    </div>
+                                <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center overflow-hidden hover:bg-white/40 transition-all">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-width="2" /></svg>
                                 </button>
-                                <div class="absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                                <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 nav-transition">
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="w-full text-left px-5 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 rounded-xl">Logout</button>
+                                        <button type="submit" class="w-full text-left px-5 py-3 text-slate-700 hover:bg-red-50 hover:text-red-600 rounded-xl font-medium">Logout</button>
                                     </form>
                                 </div>
                             </div>
                         @else
-                            <a href="{{ filament()->getLoginUrl() }}" class="text-base font-semibold hover:opacity-30 transition-opacity">Masuk</a>
-                                <a id="btn-daftar" href="{{ filament()->getRegistrationUrl() }}" class="px-6 py-2.5 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md transition-all active:scale-95 whitespace-nowrap">
-                                    Daftar
-                            </a>
+                            <a href="{{ filament()->getLoginUrl() }}" class="text-sm font-bold hover:opacity-75 transition-opacity">Masuk</a>
+                            <a href="{{ filament()->getRegistrationUrl() }}" class="px-5 py-2.5 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md active:scale-95 transition-all whitespace-nowrap">Daftar</a>
                         @endauth
                     </div>
 
-                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-white transition-colors duration-300">
-                        <svg id="menu-icon" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg text-white nav-transition focus:outline-none">
+                        <svg id="menu-icon" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path id="path-1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" />
+                            <path id="path-2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" />
+                            <path id="path-3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" />
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white shadow-xl max-h-[85vh] overflow-y-auto">
-            <div class="px-5 pt-4 pb-8 space-y-2">
-                <a href="{{ route('landing') }}" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Beranda</a>
-                <a href="{{ route('donasi') }}" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Donasi</a>
-                <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Galang Donasi</a>
-                <a href="#" class="block px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50">Dokumentasi</a>
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 shadow-2xl overflow-hidden nav-transition">
+            <div class="px-4 pt-4 pb-8 space-y-2">
+                <a href="{{ route('landing') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('landing') ? 'bg-blue-50 text-blue-600' : '' }}">Beranda</a>
+                <a href="{{ route('donasi') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('donasi') ? 'bg-blue-50 text-blue-600' : '' }}">Donasi</a>
+                <a href="{{ route('galang-donasi') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('galang-donasi') ? 'bg-blue-50 text-blue-600' : '' }}">Galang Donasi</a>
+                <a href="{{ route('dokumentasi') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('dokumentasi') ? 'bg-blue-50 text-blue-600' : '' }}">Dokumentasi</a>
                 
-                <div class="border-b border-slate-50 my-1"></div>
+                <div class="border-t border-slate-50 my-2"></div>
 
-                <div>
-                    <button id="btn-tentang-mobile" class="w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-blue-50 flex justify-between items-center transition-colors">
-                        Tentang
-                        <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div id="drop-tentang-mobile" class="mobile-dropdown-closed space-y-1 ml-4 border-l-2 border-slate-100">
-                        <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Tentang Kami</a>
-                        <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">FAQ</a>
-                        <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Syarat dan Ketentuan</a>
-                        <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Kebijakan Privasi</a>
-                        <a href="#" class="block px-6 py-2 text-slate-600 font-medium hover:text-blue-600">Hubungi Kami</a>
-                    </div>
+                <button id="btn-tentang-mobile" class="w-full flex justify-between items-center px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50">
+                    Tentang
+                    <svg class="w-5 h-5 nav-transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round"/></svg>
+                </button>
+                <div id="drop-tentang-mobile" class="mobile-dropdown-closed pl-4 space-y-1">
+                    <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Tentang Kami</a>
+                    <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">FAQ</a>
+                    <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Syarat & Ketentuan</a>
+                    <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Kebijakan Privasi</a>
+                    <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Hubungi Kami</a>
                 </div>
 
-                <div class="pt-4 space-y-3">
-                    @auth
+                <div class="pt-6 space-y-3">
+                    @guest
+                        <a href="{{ filament()->getLoginUrl() }}" class="block w-full py-3 text-center font-bold text-slate-700 border border-slate-200 rounded-xl">Masuk</a>
+                        <a href="{{ filament()->getRegistrationUrl() }}" class="block w-full py-3 text-center font-bold text-white bg-blue-600 rounded-xl shadow-lg">Daftar Sekarang</a>
+                    @else
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full px-4 py-3 rounded-xl bg-red-50 text-red-600 font-bold text-center">Logout</button>
+                            <button type="submit" class="w-full py-3 text-center font-bold text-red-600 bg-red-50 rounded-xl">Logout</button>
                         </form>
-                    @else
-                        <a href="{{ route('login') }}" class="block px-4 py-3 text-center text-slate-700 font-semibold border border-slate-200 rounded-xl">Masuk</a>
-                        <a href="{{ route('register') }}" class="block px-4 py-3 rounded-xl text-center bg-blue-600 text-white font-semibold shadow-md">Daftar Sekarang</a>
-                    @endauth
+                    @endguest
                 </div>
             </div>
         </div>
@@ -137,82 +135,71 @@
         const navAuth = document.getElementById('nav-auth');
         const mobileIconBtn = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
         
         const isHomePage = window.location.pathname === '/' || window.location.pathname === '/landing';
 
         function handleScroll() {
-            const isScrolled = window.scrollY > 50 || !isHomePage;
+            const isScrolled = window.scrollY > 20 || !isHomePage;
 
             if (isScrolled) {
-                nav.classList.replace('absolute', 'fixed');
-                nav.classList.add('bg-white', 'shadow-lg', 'border-b', 'border-slate-100');
+                nav.classList.add('bg-white', 'shadow-md', 'border-slate-100');
+                nav.classList.remove('border-transparent');
                 navLogo.classList.remove('brightness-0', 'invert');
                 [navMenu, navAuth, mobileIconBtn].forEach(el => {
-                    if(el) el.classList.replace('text-white', 'text-slate-700');
+                    if(el) { el.classList.remove('text-white'); el.classList.add('text-slate-700'); }
                 });
             } else {
-                nav.classList.replace('fixed', 'absolute');
-                nav.classList.remove('bg-white', 'shadow-lg', 'border-b', 'border-slate-100');
+                nav.classList.remove('bg-white', 'shadow-md', 'border-slate-100');
+                nav.classList.add('border-transparent');
                 navLogo.classList.add('brightness-0', 'invert');
                 [navMenu, navAuth, mobileIconBtn].forEach(el => {
-                    if(el) el.classList.replace('text-slate-700', 'text-white');
+                    if(el) { el.classList.remove('text-slate-700'); el.classList.add('text-white'); }
                 });
             }
         }
 
-        window.addEventListener('scroll', handleScroll);
-        
-        handleScroll();
-        
-        const drops = {
-            tentang: { btn: 'btn-tentang', menu: 'dropdown-tentang' },
-            tentangMob: { btn: 'btn-tentang-mobile', menu: 'drop-tentang-mobile' }
-        };
+        mobileIconBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const p1 = document.getElementById('path-1');
+            const p2 = document.getElementById('path-2');
+            const p3 = document.getElementById('path-3');
+            
+            if (!mobileMenu.classList.contains('hidden')) {
+                p1.setAttribute('d', 'M6 18L18 6'); p2.style.opacity = '0'; p3.setAttribute('d', 'M6 6l12 12');
+            } else {
+                p1.setAttribute('d', 'M4 6h16'); p2.style.opacity = '1'; p3.setAttribute('d', 'M4 18h16');
+            }
+        });
 
-        function toggleDesktopDropdown(menuId) {
-            const menu = document.getElementById(menuId);
-            menu.classList.toggle('opacity-0');
-            menu.classList.toggle('invisible');
-            menu.classList.toggle('translate-y-2');
-            menu.classList.toggle('translate-y-0');
-        }
+        const btnTentangMob = document.getElementById('btn-tentang-mobile');
+        const dropTentangMob = document.getElementById('drop-tentang-mobile');
+        btnTentangMob.addEventListener('click', () => {
+            const isOpen = dropTentangMob.classList.contains('mobile-dropdown-open');
+            dropTentangMob.classList.toggle('mobile-dropdown-open', !isOpen);
+            dropTentangMob.classList.toggle('mobile-dropdown-closed', isOpen);
+            btnTentangMob.querySelector('svg').classList.toggle('rotate-180', !isOpen);
+        });
 
-        document.getElementById(drops.tentang.btn).addEventListener('click', (e) => {
+        const btnTentang = document.getElementById('btn-tentang');
+        const dropTentang = document.getElementById('dropdown-tentang');
+        btnTentang.addEventListener('click', (e) => {
             e.stopPropagation();
-            toggleDesktopDropdown(drops.tentang.menu);
+            dropTentang.classList.toggle('opacity-0');
+            dropTentang.classList.toggle('invisible');
+            dropTentang.classList.toggle('translate-y-2');
         });
 
         document.addEventListener('click', () => {
-            const el = document.getElementById(drops.tentang.menu);
-            el.classList.add('opacity-0', 'invisible', 'translate-y-2');
-            el.classList.remove('translate-y-0');
+            dropTentang.classList.add('opacity-0', 'invisible', 'translate-y-2');
         });
 
-        mobileIconBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            const isOpen = !mobileMenu.classList.contains('hidden');
-            menuIcon.innerHTML = isOpen 
-                ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />'
-                : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
-        });
-
-        function setupMobileAccordion(btnId, menuId) {
-            const btn = document.getElementById(btnId);
-            const menu = document.getElementById(menuId);
-            const svg = btn.querySelector('svg');
-            btn.addEventListener('click', () => {
-                const isOpen = menu.classList.contains('mobile-dropdown-open');
-                if (isOpen) {
-                    menu.classList.replace('mobile-dropdown-open', 'mobile-dropdown-closed');
-                    svg.classList.remove('rotate-180');
-                } else {
-                    menu.classList.replace('mobile-dropdown-closed', 'mobile-dropdown-open');
-                    svg.classList.add('rotate-180');
-                }
-            });
-        }
-        setupMobileAccordion(drops.tentangMob.btn, drops.tentangMob.menu);
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('load', handleScroll);
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
     </script>
 </body>
 </html>
