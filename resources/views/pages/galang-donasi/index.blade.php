@@ -3,7 +3,7 @@
 
 @section('content')
     @php
-        $hasCampaign = false;
+        $hasCampaign = true;
         $isVerified = true;
 
         $campaigns = [
@@ -55,7 +55,7 @@
                         <p class="text-slate-400 text-sm mb-10 max-w-xs">Kamu belum memiliki campaign yang sedang berjalan saat
                             ini.</p>
                         <button
-                            @click="isVerified ? window.location.href='{{ route('galang-donasi.form-galang-donasi') }}' : showModal = true"
+                            @click="isVerified ? window.location.href='{{ route('galang-donasi.buat-galang-donasi') }}' : showModal = true"
                             class="w-full md:w-auto px-10 py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all duration-300">
                             Galang Dana Sekarang
                         </button>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="mt-12 flex justify-center">
                         <button
-                            @click="isVerified ? window.location.href='{{ route('galang-donasi.form-galang-donasi') }}' : showModal = true"
+                            @click="isVerified ? window.location.href='{{ route('galang-donasi.buat-galang-donasi') }}' : showModal = true"
                             class="flex items-center gap-2 px-8 py-3 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 font-bold hover:border-blue-400 hover:text-blue-600 transition-all duration-300">
                             <i data-lucide="plus" class="w-5 h-5"></i>
                             Buat Campaign Baru

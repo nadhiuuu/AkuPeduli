@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('title', 'Campaign Saya - AkuPeduli!')
+@section('title', 'Buat Campaign - AkuPeduli!')
 
 @section('content')
 
@@ -15,7 +15,7 @@
             <div class="mb-5 flex flex-col items-center text-center gap-4">
                 <div>
                     <h1 class="text-2xl md:text-2xl font-bold text-slate-800">Buat Campaign Baru</h1>
-                    <p class="text-sm md:text-base text-slate-500 mt-1">
+                    <p class="text-base text-slate-500">
                         Lengkapi detail donasi dengan jujur dan transparan untuk memudahkan proses verifikasi admin.
                     </p>
                 </div>

@@ -40,7 +40,7 @@
                 <a href="{{ route('donasi.detail-campaign') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                     Lihat Campaign
                 </a>
-                <a href="#" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                <a href="{{ route('dokumentasi.buat-dokumentasi') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                     Update Berita
                 </a>
                 <a href="#" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
