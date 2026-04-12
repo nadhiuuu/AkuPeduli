@@ -61,7 +61,7 @@
             </div>
 
             <div class="pt-6 text-center">
-                <a href="{{ route('donasi') }}" class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+                <a href="{{ route('donation.index') }}" class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
                     Lihat Semua Campaign
                 </a>
             </div>

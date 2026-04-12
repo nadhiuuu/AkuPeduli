@@ -1,6 +1,6 @@
 <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full border border-slate-200/50">
     <div class="relative block overflow-hidden">
-        <a href="{{ route('donasi.detail-campaign') }}">
+        <a href="{{ route('donation.detail') }}">
             <img src="{{ $image ?? 'https://via.placeholder.com/400x200' }}" 
                  class="w-full h-48 object-cover hover:scale-105 transition duration-500">
         </a>
@@ -37,10 +37,10 @@
                  x-transition:enter-start="transform opacity-0 scale-95"
                  x-transition:enter-end="transform opacity-100 scale-100"
                  class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2">
-                <a href="{{ route('donasi.detail-campaign') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                <a href="{{ route('donation.detail') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                     Lihat Campaign
                 </a>
-                <a href="{{ route('dokumentasi.buat-dokumentasi') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                <a href="{{ route('documentation.create') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                     Update Berita
                 </a>
                 <a href="#" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
@@ -52,7 +52,7 @@
 
     <div class="p-4 flex flex-col flex-grow space-y-3">
         <h3 class="font-semibold text-base line-clamp-2 leading-snug">
-            <a href="{{ route('donasi.detail-campaign') }}" class="hover:text-blue-600 transition-colors">
+            <a href="{{ route('donation.detail') }}" class="hover:text-blue-600 transition-colors">
                 {{ $title ?? 'Judul Campaign Donasi' }}
             </a>
         </h3>

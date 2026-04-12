@@ -24,7 +24,7 @@
     <div class="bg-blue-600 p-6 rounded-xl text-white shadow-xl shadow-blue-100">
         <h4 class="font-bold mb-2">Mau ikut membantu?</h4>
         <p class="text-sm text-blue-100 mb-3">Masih banyak saudara kita yang membutuhkan bantuan Anda.</p>
-        <a href="{{ route('donasi') }}" class="block w-full py-2 bg-white text-blue-600 text-center rounded-xl font-bold hover:bg-blue-50 transition">
+        <a href="{{ route('donation.index') }}" class="block w-full py-2 bg-white text-blue-600 text-center rounded-xl font-bold hover:bg-blue-50 transition">
             Donasi Sekarang
         </a>
     </div>

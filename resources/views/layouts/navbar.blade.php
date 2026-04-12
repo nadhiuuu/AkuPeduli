@@ -35,10 +35,10 @@
                 </div>
 
                 <div id="nav-menu" class="hidden lg:flex items-center justify-center space-x-6 xl:space-x-8 text-white">
-                    <a href="{{ route('landing') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('landing') ? 'text-blue-500' : 'hover:text-blue-400' }}">Beranda</a>
-                    <a href="{{ route('donasi') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('donasi') ? 'text-blue-500' : 'hover:text-blue-400' }}">Donasi</a>
-                    <a href="{{ route('galang-donasi') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('galang-donasi') ? 'text-blue-500' : 'hover:text-blue-400' }}">Galang Donasi</a>
-                    <a href="{{ route('dokumentasi') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('dokumentasi') ? 'text-blue-500' : 'hover:text-blue-400' }}">Dokumentasi</a>
+                    <a href="{{ route('home') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('home') ? 'text-blue-500' : 'hover:text-blue-400' }}">Beranda</a>
+                    <a href="{{ route('donation.index') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('donations.index') ? 'text-blue-500' : 'hover:text-blue-400' }}">Donasi</a>
+                    <a href="{{ route('fundraising.index') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('fundraising.index') ? 'text-blue-500' : 'hover:text-blue-400' }}">Galang Donasi</a>
+                    <a href="{{ route('documentation.index') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('documentation.index') ? 'text-blue-500' : 'hover:text-blue-400' }}">Dokumentasi</a>
 
                     <div class="relative group">
                         <button id="btn-tentang" class="text-base font-semibold hover:text-blue-400 transition-colors flex items-center gap-1 py-4">
@@ -47,7 +47,7 @@
                         </button>
                         <div id="dropdown-tentang" class="opacity-0 invisible translate-y-2 absolute left-0 w-56 bg-white border border-slate-100 rounded-xl shadow-xl text-slate-700 nav-transition">
                             <div class="p-2">
-                                <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Tentang Kami</a>
+                                <a href="{{ route('about') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Tentang Kami</a>
                                 <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">FAQ</a>
                                 <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Syarat & Ketentuan</a>
                                 <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Kebijakan Privasi</a>
@@ -90,11 +90,11 @@
 
         <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 shadow-2xl overflow-hidden nav-transition">
             <div class="px-4 pt-4 pb-8 space-y-2">
-                <a href="{{ route('landing') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('landing') ? 'bg-blue-50 text-blue-600' : '' }}">Beranda</a>
-                <a href="{{ route('donasi') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('donasi') ? 'bg-blue-50 text-blue-600' : '' }}">Donasi</a>
-                <a href="{{ route('galang-donasi') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('galang-donasi') ? 'bg-blue-50 text-blue-600' : '' }}">Galang Donasi</a>
-                <a href="{{ route('dokumentasi') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('dokumentasi') ? 'bg-blue-50 text-blue-600' : '' }}">Dokumentasi</a>
-                
+                <a href="{{ route('home') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('home') ? 'bg-blue-50 text-blue-600' : '' }}">Beranda</a>
+                <a href="{{ route('donation.index') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('donations.index') ? 'bg-blue-50 text-blue-600' : '' }}">Donasi</a>
+                <a href="{{ route('fundraising.index') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('fundraising.index') ? 'bg-blue-50 text-blue-600' : '' }}">Galang Donasi</a>
+                <a href="{{ route('documentation.index') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('documentation.index') ? 'bg-blue-50 text-blue-600' : '' }}">Dokumentasi</a>
+
                 <div class="border-t border-slate-50 my-2"></div>
 
                 <button id="btn-tentang-mobile" class="w-full flex justify-between items-center px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50">
@@ -102,7 +102,7 @@
                     <svg class="w-5 h-5 nav-transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round"/></svg>
                 </button>
                 <div id="drop-tentang-mobile" class="mobile-dropdown-closed pl-4 space-y-1">
-                    <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Tentang Kami</a>
+                    <a href="{{ route('about') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Tentang Kami</a>
                     <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">FAQ</a>
                     <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Syarat & Ketentuan</a>
                     <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Kebijakan Privasi</a>

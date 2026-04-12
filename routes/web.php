@@ -4,50 +4,62 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\GoogleAuthController;
 
-Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/', [LandingController::class, 'index'])->name('home');
 
-Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.login');
+// auth
+Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
-// donasi
-Route::get('/donasi', function () {
-    return view('pages.donasi.index');
-})->name('donasi');
+// donation (donasi)
+Route::prefix('donation')->group(function () {
+    Route::get('/', function () {
+        return view('pages.donasi.index');
+    })->name('donation.index');
 
-Route::get('/donasi/detail', function () {
-    return view('pages.donasi.detail-campaign');
-})->name('donasi.detail-campaign');
+    Route::get('/detail', function () {
+        return view('pages.donasi.detail-campaign');
+    })->name('donation.detail');
 
-Route::get('/donasi/berdonasi', function () {
-    return view('pages.donasi.form-donasi');
-})->name('donasi.berdonasi');
+    Route::get('/donate', function () {
+        return view('pages.donasi.form-donasi');
+    })->name('donation.donate');
+});
 
-// galang donasi
-Route::get('/galang-donasi', function () {
-    return view('pages.galang-donasi.index');
-})->name('galang-donasi');
+// fundraising (galang donasi)
+Route::prefix('fundraising')->group(function () {
+    Route::get('/', function () {
+        return view('pages.galang-donasi.index');
+    })->name('fundraising.index');
 
-Route::get('/galang-donasi/persetujuan', function () {
-    return view('pages.components.persetujuan-modal');
-})->name('galang-donasi.persetujuan');
+    Route::get('/agreement', function () {
+        return view('pages.components.persetujuan-modal');
+    })->name('fundraising.agreement');
 
-Route::get('/galang-donasi/buat-galang-donasi', function () {
-    return view('pages.galang-donasi.form-galang-donasi');
-})->name('galang-donasi.buat-galang-donasi');
+    Route::get('/create', function () {
+        return view('pages.galang-donasi.form-galang-donasi');
+    })->name('fundraising.create');
 
-Route::get('/galang-donasi/form-verifikasi', function () {
-    return view('pages.galang-donasi.form-verifikasi');
-})->name('galang-donasi.form-verifikasi');
+    Route::get('/verification', function () {
+        return view('pages.galang-donasi.form-verifikasi');
+    })->name('fundraising.verification');
+});
 
-// dokumentasi
-Route::get('/dokumentasi', function () {
-    return view('pages.dokumentasi.index');
-})->name('dokumentasi');
+// documentation (dokumentasi)
+Route::prefix('documentation')->group(function () {
+    Route::get('/', function () {
+        return view('pages.dokumentasi.index');
+    })->name('documentation.index');
 
-Route::get('/dokumentasi/detail-dokumentasi', function () {
-    return view('pages.dokumentasi.detail-dokumentasi');
-})->name('dokumentasi.detail-dokumentasi');
+    Route::get('/detail', function () {
+        return view('pages.dokumentasi.detail-dokumentasi');
+    })->name('documentation.detail');
 
-Route::get('/dokumentasi/buat-dokumentasi', function () {
-    return view('pages.dokumentasi.form-dokumentasi');
-})->name('dokumentasi.buat-dokumentasi');
+    Route::get('/create', function () {
+        return view('pages.dokumentasi.form-dokumentasi');
+    })->name('documentation.create');
+});
+
+// about
+Route::get('/about', function () {
+    return view('pages.tentang.tentang-kami');
+})->name('about');

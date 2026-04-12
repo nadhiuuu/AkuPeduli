@@ -5,7 +5,7 @@
 <main class="bg-white pt-28 pb-20">
     <div class="max-w-5xl mx-auto px-4">
         <nav class="flex mb-8 text-sm text-slate-400">
-            <a href="{{ route('dokumentasi') }}" class="hover:text-blue-600 transition">Dokumentasi</a>
+            <a href="{{ route('documentation.index') }}" class="hover:text-blue-600 transition">Dokumentasi</a>
             <span class="mx-2">/</span>
             <span class="text-slate-600 truncate">Bantuan Sembako Lansia Jember</span>
         </nav>

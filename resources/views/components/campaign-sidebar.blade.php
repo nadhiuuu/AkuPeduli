@@ -17,7 +17,7 @@
             <p class="text-slate-900 font-bold text-lg">12</p>
         </div>
     </div>
-    <a href="{{ route('donasi.berdonasi') }}" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-100 transition-all active:scale-95 mb-4 inline-block text-center">
+    <a href="{{ route('donation.donate') }}" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-100 transition-all active:scale-95 mb-4 inline-block text-center">
         Donasi Sekarang
     </a>
     <button class="w-full py-3 border-2 border-slate-100 hover:bg-slate-50 text-slate-700 font-bold rounded-2xl transition-all flex items-center justify-center gap-2">

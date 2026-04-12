@@ -43,7 +43,7 @@
             >
                 Tutup
             </button>
-            <a href="{{ route('galang-donasi.form-verifikasi') }}" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md shadow-blue-100">
+            <a href="{{ route('fundraising.verification') }}" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md shadow-blue-100">
                 Verifikasi Sekarang
             </a>
         </div>
