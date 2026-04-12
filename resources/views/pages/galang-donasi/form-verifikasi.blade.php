@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('title', 'Verifikasi Identitas - AkuPeduli!')
+@section('title', 'Verifikasi Identitas - AkuPeduli')
 
 @section('content')
 <main x-data="{ 

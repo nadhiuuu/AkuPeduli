@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('title', 'Buat Campaign - AkuPeduli!')
+@section('title', 'Buat Campaign - AkuPeduli')
 
 @section('content')
 
@@ -101,6 +101,42 @@
                     </div>
 
                     <div class="space-y-2 relative">
+                        <label class="block text-sm font-bold text-slate-700 mb-2 ml-1 mt-5">Kategori</label>
+                        <div x-data="{ 
+                                targetOpen: false, 
+                                targetSelected: '', 
+                                targets: ['Banjir', 'Tanah Longsor', 'Angin Kencang/Puting Beliung', 'Gempa Bumi'] 
+                            }" class="relative">
+
+                            <button type="button" @click="targetOpen = !targetOpen"
+                                class="w-full text-base flex items-center justify-between px-4 py-3 bg-slate-50 rounded-xl focus:ring-1 focus:ring-blue-500 outline-none transition-all text-left">
+                                <span :class="targetSelected ? 'text-slate-800' : 'text-slate-400'"
+                                    x-text="targetSelected ? targetSelected : 'Pilih Kategori Bencana'"></span>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform"
+                                    :class="targetOpen ? 'rotate-180' : ''"></i>
+                            </button>
+
+                            <input type="hidden" name="target_recipient" x-model="targetSelected">
+
+                            <div x-show="targetOpen" @click.away="targetOpen = false" x-cloak
+                                x-transition:enter="transition ease-out duration-100"
+                                x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                                class="absolute z-50 w-full mt-2 bg-white border border-slate-200 rounded-xl shadow-xl py-2 overflow-hidden">
+
+                                <div class="p-2">
+                                    <template x-for="item in targets" :key="item">
+                                        <div @click="targetSelected = item; targetOpen = false"
+                                            class="px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-blue-600 hover:text-white rounded-lg cursor-pointer transition-colors">
+                                            <span x-text="item"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="space-y-2 relative">
                         <label class="block text-sm font-bold text-slate-700 mb-2 ml-1 mt-5">Untuk Siapa Galang Dana</label>
                         <div x-data="{ 
                                 targetOpen: false, 
@@ -134,6 +170,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="space-y-2">
                         <label class="block text-sm font-bold text-slate-700 mb-2 ml-1 mt-5">Deskripsi & Cerita</label>
                         <textarea rows="4" placeholder="Ceritakan detail kejadian dan kenapa mereka butuh bantuan..."

@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('title', 'Campaign Saya - AkuPeduli!')
+@section('title', 'Campaign Saya - AkuPeduli')
 
 @section('content')
 @php

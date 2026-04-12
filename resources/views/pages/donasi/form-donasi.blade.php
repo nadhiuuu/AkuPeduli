@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('title', 'Berdonasi - AkuPeduli!')
+@section('title', 'Berdonasi - AkuPeduli')
 
 @section('content')
 <main class="pt-32 pb-10 bg-slate-50 min-h-screen">

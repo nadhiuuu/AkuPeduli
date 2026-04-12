@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('title', 'Detail Campaign - AkuPeduli!')
+@section('title', 'Detail Campaign - AkuPeduli')
 
 @section('content')
 <main class="pt-32 pb-20 bg-slate-50">

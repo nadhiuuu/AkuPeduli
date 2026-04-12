@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('title', 'AkuPeduli! - Wujudkan Kepedulian Melalui Donasi')
+@section('title', 'AkuPeduli - Wujudkan Kepedulian Melalui Donasi')
 @section('content')
 
 @include('pages.home.sections.hero')
