@@ -105,7 +105,7 @@
                         <div x-data="{ 
                                 targetOpen: false, 
                                 targetSelected: '', 
-                                targets: ['Banjir', 'Tanah Longsor', 'Angin Kencang/Puting Beliung', 'Gempa Bumi'] 
+                                targets: ['Banjir', 'Tanah Longsor', 'Angin Kencang/Puting Beliung', 'Gempa Bumi', 'Tsunami', 'Gunung Meletus'] 
                             }" class="relative">
 
                             <button type="button" @click="targetOpen = !targetOpen"

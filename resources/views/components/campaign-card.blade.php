@@ -1,8 +1,15 @@
-<div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full">
+<div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full group">
     <a href="{{ route('donation.detail') }}" class="relative block overflow-hidden">
+        <div class="absolute top-3 left-3 z-10">
+            <span class="bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm">
+                {{ $category ?? 'Bencana Alam' }}
+            </span>
+        </div>
+        
         <img src="{{ $image ?? 'https://via.placeholder.com/400x200' }}" 
-             class="w-full h-48 object-cover hover:scale-105 transition duration-500">
+             class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
     </a>
+
     <div class="p-4 flex flex-col flex-grow space-y-3">
         <h3 class="font-semibold text-base line-clamp-2 leading-snug">
             <a href="{{ route('donation.detail') }}" class="hover:text-blue-600 transition-colors">
@@ -44,6 +51,5 @@
                 {{ rand(1,30) }} hari lagi
             </span>
         </div>
-
     </div>
 </div>

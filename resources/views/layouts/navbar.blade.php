@@ -24,6 +24,11 @@
     </style>
 </head>
 <body class="antialiased bg-slate-50 text-slate-900">
+    @php 
+        $isLoggedIn = Auth::check(); 
+        $isVerified = true; 
+    @endphp
+
     <nav id="main-nav" class="fixed top-0 left-0 w-full z-[100] nav-transition border-b border-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -36,6 +41,17 @@
 
                 <div id="nav-menu" class="hidden lg:flex items-center justify-center space-x-6 xl:space-x-8 text-white">
                     <a href="{{ route('home') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('home') ? 'text-blue-500' : 'hover:text-blue-400' }}">Beranda</a>
+                    
+                    @if($isLoggedIn && $isVerified)
+                    <a href="{{ route('filament.admin.pages.dashboard') }}" class="text-base font-semibold text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                        Dashboard
+                    </a>
+                    @endif
+
                     <a href="{{ route('donation.index') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('donations.index') ? 'text-blue-500' : 'hover:text-blue-400' }}">Donasi</a>
                     <a href="{{ route('fundraising.index') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('fundraising.index') ? 'text-blue-500' : 'hover:text-blue-400' }}">Galang Donasi</a>
                     <a href="{{ route('documentation.index') }}" class="text-base font-semibold transition-colors {{ request()->routeIs('documentation.index') ? 'text-blue-500' : 'hover:text-blue-400' }}">Dokumentasi</a>
@@ -90,6 +106,10 @@
 
         <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 shadow-2xl overflow-hidden nav-transition">
             <div class="px-4 pt-4 pb-8 space-y-2">
+                @if($isLoggedIn && $isVerified)
+                <a href="{{ route('filament.admin.pages.dashboard') }}" class="block px-4 py-3 text-base font-bold text-blue-600 bg-blue-50 rounded-xl mb-4 border border-blue-100">Dashboard Saya</a>
+                @endif
+
                 <a href="{{ route('home') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('home') ? 'bg-blue-50 text-blue-600' : '' }}">Beranda</a>
                 <a href="{{ route('donation.index') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('donations.index') ? 'bg-blue-50 text-blue-600' : '' }}">Donasi</a>
                 <a href="{{ route('fundraising.index') }}" class="block px-4 py-3 text-base font-semibold text-slate-700 rounded-xl hover:bg-blue-50 {{ request()->routeIs('fundraising.index') ? 'bg-blue-50 text-blue-600' : '' }}">Galang Donasi</a>
@@ -190,7 +210,7 @@
         });
 
         document.addEventListener('click', () => {
-            dropTentang.classList.add('opacity-0', 'invisible', 'translate-y-2');
+            if(dropTentang) dropTentang.classList.add('opacity-0', 'invisible', 'translate-y-2');
         });
 
         window.addEventListener('scroll', handleScroll);
