@@ -7,7 +7,7 @@ use App\Http\Controllers\GoogleAuthController;
 Route::get('/', [LandingController::class, 'index'])->name('home');
 
 // auth
-Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google');
+Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 // donation (donasi)

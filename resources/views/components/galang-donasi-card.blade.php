@@ -20,34 +20,6 @@
                 </span>
             @endif
         </div>
-
-        <div x-data="{ open: false }" class="absolute top-3 right-3 z-50">
-            <button @click.stop="open = !open" 
-                    @click.outside="open = false"
-                    type="button"
-                    class="p-2 rounded-full bg-black/40 hover:bg-black/60 text-white transition shadow-md flex items-center justify-center focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                </svg>
-            </button>
-
-            <div x-show="open" 
-                 x-cloak
-                 x-transition:enter="transition ease-out duration-100"
-                 x-transition:enter-start="transform opacity-0 scale-95"
-                 x-transition:enter-end="transform opacity-100 scale-100"
-                 class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2">
-                <a href="{{ route('donation.detail') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
-                    Lihat Campaign
-                </a>
-                <a href="{{ route('documentation.create') }}" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
-                    Update Berita
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
-                    Pencairan Dana
-                </a>
-            </div>
-        </div>
     </div>
 
     <div class="p-4 flex flex-col flex-grow space-y-3">
