@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream
-<div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full group">
-=======
-@props(['title', 'description', 'raised', 'goal', 'percentage', 'image', 'donors', 'daysLeft'])
+@props(['category', 'title', 'description', 'raised', 'goal', 'percentage', 'image', 'donors', 'daysLeft'])
 
-<div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full">
->>>>>>> Stashed changes
+<div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full group">
     <a href="{{ route('donation.detail') }}" class="relative block overflow-hidden">
         <div class="absolute top-3 left-3 z-10">
             <span class="bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm">
