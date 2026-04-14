@@ -60,6 +60,12 @@ Route::prefix('documentation')->group(function () {
 });
 
 // about
-Route::get('/about', function () {
-    return view('pages.tentang.tentang-kami');
-})->name('about');
+Route::prefix('about')->group(function () {
+    Route::get('/', function () {
+        return view('pages.tentang.tentang-kami');
+    })->name('about.index');
+
+    Route::get('/faq', function () {
+        return view('pages.tentang.faq');
+    })->name('about.faq');
+});

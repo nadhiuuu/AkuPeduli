@@ -9,10 +9,9 @@
         </div>
 
         <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
-            <h1 class="text-4xl sm:text-5xl md:text-5xl font-bold leading-tight mb-2">
+            <h1 class="text-4xl sm:text-2xl md:text-5xl font-bold leading-tight mb-2">
                 Mengenal Lebih Dekat <span class="text-blue-600">AkuPeduli</span>
             </h1>
-            <div class="w-24 h-2 bg-yellow-400 mx-auto mb-5 mt-5 rounded-full"></div>
             <p class="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto text-center">
                 AkuPeduli adalah wadah kepedulian khusus wilayah Jember yang hadir untuk memastikan bantuan tepat sasaran hingga ke pelosok desa. Kami lahir dari keinginan sederhana: memastikan tak ada satu pun kesulitan yang dihadapi sendirian.
             </p>
