@@ -9,6 +9,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\DatePicker;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class CampaignForm
 {
@@ -41,10 +42,10 @@ class CampaignForm
 
                 Select::make('user_id')
                     ->label('Dibuat Oleh (User/Admin)')
-                    ->relationship('user', 'name') // Mengambil relasi user()
+                    ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
-                    ->default(fn () => auth()->id()) // Otomatis memilih admin yang sedang login
+                    ->default(fn () => Auth::id())
                     ->required(),
 
                 TextInput::make('target_amount')
@@ -82,7 +83,9 @@ class CampaignForm
                 FileUpload::make('image')
                     ->label('Banner Galang Dana')
                     ->image()
+                    ->disk('public')
                     ->directory('campaigns')
+                    ->preserveFilenames()
                     ->columnSpanFull()
                     ->maxSize(5120),
 

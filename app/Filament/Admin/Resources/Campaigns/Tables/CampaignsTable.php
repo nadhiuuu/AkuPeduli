@@ -19,6 +19,7 @@ class CampaignsTable
             ->columns([
                 ImageColumn::make('image')
                     ->label('Banner')
+                    ->disk('public')
                     ->square(),
 
                 TextColumn::make('title')
@@ -79,7 +80,7 @@ class CampaignsTable
                 Action::make('Lihat Web')
                     ->icon('heroicon-o-globe-alt')
                     ->color('info')
-                    ->url(fn ($record): string => url('/campaign/' . $record->slug)) // Sesuaikan URL frontend kamu nanti
+                    ->url(fn ($record): string => url('/campaign/' . $record->slug))
                     ->openUrlInNewTab(), // Buka di tab baru
 
                 EditAction::make(),

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Campaign extends Model
 {
@@ -19,8 +20,17 @@ class Campaign extends Model
         'status'
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function ($campaign) {
+            if ($campaign->image) {
+                Storage::disk('public')->delete($campaign->image);
+            }
+        });
+    }
+
     public function user() {
-         return $this->belongsTo(User::class); 
+        return $this->belongsTo(User::class); 
     }
 
     public function category() {
@@ -35,6 +45,6 @@ class Campaign extends Model
     }
 
     public function documentations() {
-        return $this->hasMany(HandoverDocumentation::class); 
+        return $this->hasMany(Documentation::class); 
     }
 }

@@ -1,4 +1,10 @@
+<<<<<<< Updated upstream
 <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full group">
+=======
+@props(['title', 'description', 'raised', 'goal', 'percentage', 'image', 'donors', 'daysLeft'])
+
+<div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full">
+>>>>>>> Stashed changes
     <a href="{{ route('donation.detail') }}" class="relative block overflow-hidden">
         <div class="absolute top-3 left-3 z-10">
             <span class="bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm">
@@ -45,10 +51,10 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                {{ rand(10,200) }} Donatur
+                {{ $donors ?? 0 }} Donatur
             </span>
             <span class="bg-gray-100 px-2 py-0.5 rounded text-gray-500 italic">
-                {{ rand(1,30) }} hari lagi
+                {{ $daysLeft ?? 0 }} hari lagi
             </span>
         </div>
     </div>

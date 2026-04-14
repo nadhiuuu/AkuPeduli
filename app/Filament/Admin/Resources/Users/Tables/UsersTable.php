@@ -20,6 +20,7 @@ public static function configure(Table $table): Table
                 ImageColumn::make('avatar')
                     ->label('Foto')
                     ->circular()
+                    ->disk('public')
                     ->defaultImageUrl(url('https://ui-avatars.com/api/?name=User&color=7F9CF5&background=EBF4FF')),
                     
                 TextColumn::make('name')
