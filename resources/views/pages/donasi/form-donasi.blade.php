@@ -4,9 +4,14 @@
 @section('content')
 <main class="pt-32 pb-10 bg-slate-50 min-h-screen">
     <div class="max-w-xl mx-auto px-4">
-        <x-donasi-ringkasan />
+        <x-donasi-ringkasan
+            :campaign="$campaign"
+            :percentage="$percentage"
+            :daysLeft="$daysLeft"
+        />
         <form action="#" method="POST" class="mt-2" id="donationForm">
             @csrf
+            <input type="hidden" name="campaign_id" value="{{ $campaign->id }}">
             <x-donasi-form />
             <div class="mt-5">
                 <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg rounded-xl shadow-xl shadow-blue-100 transition-all active:scale-[0.97] flex items-center justify-center gap-3">

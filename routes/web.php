@@ -20,9 +20,7 @@ Route::prefix('donasi')->name('donation.')->group(function () {
 
     Route::get('/{campaign:slug}', [DonationController::class, 'show'])->name('detail');
 
-    Route::get('/donate', function () {
-        return view('pages.donasi.form-donasi');
-    })->name('donate');
+    Route::get('/{campaign:slug}/bayar', [DonationController::class, 'donate'])->name('donate');
 });
 
 

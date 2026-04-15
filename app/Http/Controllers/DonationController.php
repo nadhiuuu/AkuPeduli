@@ -49,20 +49,34 @@ class DonationController extends Controller
 
     public function show(Campaign $campaign)
     {
-    $campaign->load(['impact', 'category', 'user']);
+        $campaign->load(['impact', 'category', 'user']);
 
-    $donorsCount = $campaign->donations()->where('status', 'success')->count();
+        $donorsCount = $campaign->donations()->where('status', 'success')->count();
 
-    $daysLeft = max(0, Carbon::now()->startOfDay()->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false));
+        $daysLeft = max(0, Carbon::now()->startOfDay()->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false));
 
-    $target = $campaign->target_amount > 0 ? $campaign->target_amount : 1;
-    $percentage = min(100, ($campaign->current_amount / $target) * 100);
+        $target = $campaign->target_amount > 0 ? $campaign->target_amount : 1;
+        $percentage = min(100, ($campaign->current_amount / $target) * 100);
 
-    return view('pages.donasi.detail-campaign', [
-        'campaign' => $campaign,
-        'donorsCount' => $donorsCount,
-        'daysLeft' => $daysLeft,
-        'percentage' => $percentage,
-    ]);
-}
+        return view('pages.donasi.detail-campaign', [
+            'campaign' => $campaign,
+            'donorsCount' => $donorsCount,
+            'daysLeft' => $daysLeft,
+            'percentage' => $percentage,
+        ]);
+    }
+
+    public function donate(Campaign $campaign)
+    {
+        // Hitung sisa hari dan persentase untuk ringkasan di atas form
+        $daysLeft = max(0, Carbon::now()->startOfDay()->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false));
+        $target = $campaign->target_amount > 0 ? $campaign->target_amount : 1;
+        $percentage = min(100, ($campaign->current_amount / $target) * 100);
+
+        return view('pages.donasi.form-donasi', [
+            'campaign' => $campaign,
+            'daysLeft' => $daysLeft,
+            'percentage' => $percentage
+        ]);
+    }
 }

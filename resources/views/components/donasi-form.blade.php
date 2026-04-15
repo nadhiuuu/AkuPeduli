@@ -11,7 +11,7 @@
             @endforeach
         </div>
         
-        <p class="text-[11px] text-slate-400 mb-3 ml-1 italic">Atau masukkan nominal lainnya (Min. Rp 1.000)</p>
+        <p class="text-[11px] text-slate-400 mb-3 ml-1 italic">Atau masukkan nominal lainnya (Min. Rp 10.000)</p>
         <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                 <span class="text-slate-400 font-bold text-lg">Rp</span>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="bg-white p-5 md:p-8 rounded-xl border border-slate-100 shadow-sm space-y-5">
-        <h4 class="text-base font-bold text-slate-700">Lengkapi Data Diri</h4>
+        <h4 class="text-base font-bold text-slate-700">Data Diri Anda</h4>
         <div class="space-y-4">
             <input type="text" placeholder="Nama Lengkap" 
                 class="w-full px-6 py-4 bg-white border border-slate-200/50 rounded-xl outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-500 text-sm font-medium text-slate-700 placeholder-slate-300 transition-all shadow-sm shadow-slate-100/50">

@@ -18,6 +18,7 @@
 
             <div class="lg:w-1/3">
                 <x-campaign-sidebar
+                    :slug="$campaign->slug"
                     :raised="$campaign->current_amount" 
                     :goal="$campaign->target_amount"
                     :percentage="$percentage"

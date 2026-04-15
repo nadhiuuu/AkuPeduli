@@ -1,4 +1,4 @@
-@props(['raised', 'goal', 'percentage', 'donors', 'daysLeft', 'author'])
+@props(['raised', 'goal', 'percentage', 'donors', 'daysLeft', 'author', 'slug'])
 
 <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 sticky top-28">
     <h3 class="text-lg font-bold text-slate-900 mb-4">Donasi Terkumpul</h3>
@@ -19,7 +19,7 @@
             <p class="text-slate-900 font-bold text-lg">{{ $daysLeft }}</p>
         </div>
     </div>
-    <a href="{{ route('donation.donate') }}" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-100 transition-all active:scale-95 mb-4 inline-block text-center">
+    <a href="{{ route('donation.donate', $slug) }}" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-100 transition-all active:scale-95 mb-4 inline-block text-center">
         Donasi Sekarang
     </a>
     <button class="w-full py-3 border-2 border-slate-100 hover:bg-slate-50 text-slate-700 font-bold rounded-2xl transition-all flex items-center justify-center gap-2">
