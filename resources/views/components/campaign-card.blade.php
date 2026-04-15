@@ -7,8 +7,8 @@
                 {{ $category ?? 'Bencana Alam' }}
             </span>
         </div>
-        
-        <img src="{{ $image ?? 'https://via.placeholder.com/400x200' }}" 
+
+        <img src="{{ $image ?? 'https://via.placeholder.com/400x200' }}"
              class="w-full h-48 object-cover group-hover:scale-105 transition duration-500">
     </a>
 

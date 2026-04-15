@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'Super Admin AkuPeduli',
-            'email' => 'nadhifatusae@gmail.com',
+            'email' => 'amight239@gmail.com',
             'password' => Hash::make('password123'),
             'role' => 'admin',
             'email_verified_at' => now(),
