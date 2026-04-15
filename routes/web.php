@@ -18,9 +18,7 @@ Route::prefix('auth/google')->group(function () {
 Route::prefix('donasi')->name('donation.')->group(function () {
     Route::get('/', [DonationController::class, 'index'])->name('index');
 
-    Route::get('/detail', function () {
-        return view('pages.donasi.detail-campaign');
-    })->name('detail');
+    Route::get('/{campaign:slug}', [DonationController::class, 'show'])->name('detail');
 
     Route::get('/donate', function () {
         return view('pages.donasi.form-donasi');

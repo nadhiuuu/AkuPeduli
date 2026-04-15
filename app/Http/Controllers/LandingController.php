@@ -32,6 +32,7 @@ class LandingController extends Controller
                 $daysLeft = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false);
 
                 return [
+                    'slug' => $campaign->slug,
                     'category' => $campaign->category->name ?? 'Umum',
                     'title' => $campaign->title,
                     'description' => Str::limit(strip_tags($campaign->description), 100), 

@@ -24,7 +24,8 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($campaigns as $item)
                     <x-campaign-card
-                        :category="$item['category']"  :title="$item['title']" 
+                        :slug="$item['slug']"
+                        :category="$item['category']"
                         :title="$item['title']"
                         :description="$item['description']"
                         :raised="$item['raised']"

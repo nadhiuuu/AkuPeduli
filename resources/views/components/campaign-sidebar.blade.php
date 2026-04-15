@@ -1,20 +1,22 @@
+@props(['raised', 'goal', 'percentage', 'donors', 'daysLeft', 'author'])
+
 <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 sticky top-28">
     <h3 class="text-lg font-bold text-slate-900 mb-4">Donasi Terkumpul</h3>
     <div class="flex items-end gap-2 mb-1">
-        <span class="text-2xl font-bold text-blue-600">Rp 4.500.000</span>
-        <span class="text-slate-400 text-sm mb-1">dari Rp 10.000.000</span>
+        <span class="text-2xl font-bold text-blue-600">Rp {{ number_format($raised, 0, ',', '.') }}</span>
+        <span class="text-slate-400 text-sm mb-1">dari Rp {{ number_format($goal, 0, ',', '.') }}</span>
     </div>
     <div class="w-full bg-slate-100 h-3 rounded-full mb-6 overflow-hidden">
-        <div class="bg-blue-600 h-full rounded-full" style="width: 45%"></div>
+        <div class="bg-blue-600 h-full rounded-full" style="width: {{ $percentage }}%"></div>
     </div>
     <div class="grid grid-cols-2 gap-4 mb-8">
         <div class="text-center p-3 bg-slate-50 rounded-2xl">
             <p class="text-slate-500 text-xs uppercase font-bold tracking-wider">Donatur</p>
-            <p class="text-slate-900 font-bold text-lg">124</p>
+            <p class="text-slate-900 font-bold text-lg">{{ $donors }}</p>
         </div>
         <div class="text-center p-3 bg-slate-50 rounded-2xl">
             <p class="text-slate-500 text-xs uppercase font-bold tracking-wider">Hari Lagi</p>
-            <p class="text-slate-900 font-bold text-lg">12</p>
+            <p class="text-slate-900 font-bold text-lg">{{ $daysLeft }}</p>
         </div>
     </div>
     <a href="{{ route('donation.donate') }}" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-100 transition-all active:scale-95 mb-4 inline-block text-center">
@@ -31,7 +33,7 @@
         <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600">AP</div>
         <div>
             <p class="text-xs text-slate-500 font-medium">Penyelenggara</p>
-            <p class="text-sm font-bold text-slate-900">Admin AkuPeduli!</p>
+            <p class="text-sm font-bold text-slate-900">{{ $author }}</p>
         </div>
     </div>
 </div>

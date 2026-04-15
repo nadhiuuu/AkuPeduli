@@ -52,7 +52,8 @@
                         x-transition:enter-end="opacity-100 transform scale-100" 
                         class="h-full">
                         
-                        <x-campaign-card 
+                        <x-campaign-card
+                            :slug="$item['slug']" 
                             :title="$item['title']" 
                             :description="$item['description']" 
                             :category="$item['category']"
