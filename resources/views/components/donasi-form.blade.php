@@ -11,7 +11,7 @@
             @endforeach
         </div>
         
-        <p class="text-[11px] text-slate-400 mb-3 ml-1 italic">Atau masukkan nominal lainnya (Min. Rp 10.000)</p>
+        <p class="text-sm text-slate-400 mb-3 ml-1 italic">Atau masukkan nominal lainnya</p>
         <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                 <span class="text-slate-400 font-bold text-lg">Rp</span>
@@ -36,12 +36,5 @@
                     class="w-full px-6 py-4 bg-white border border-slate-200/50 rounded-xl outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-500 text-sm font-medium text-slate-700 placeholder-slate-300 transition-all shadow-sm shadow-slate-100/50">
             </div>
         </div>
-    </div>
-
-    <div class="bg-white px-8 py-5 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between group cursor-pointer hover:bg-slate-50 transition-all">
-        <div class="flex items-center gap-3">
-            <span class="text-base font-bold text-slate-700">Pilih Metode Pembayaran</span>
-        </div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" class="h-5 group-hover:opacity-100 transition-all">
     </div>
 </div>
