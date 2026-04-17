@@ -81,4 +81,8 @@ Route::prefix('tentang')->name('tentang.')->group(function () {
     Route::get('/kebijakan-privasi', function () {
         return view('pages.tentang.kebijakan-privasi');
     })->name('kebijakan-privasi');
+
+    Route::get('/hubungi-kami', function () {
+        return view('pages.tentang.hubungi-kami');
+    })->name('hubungi-kami');
 });

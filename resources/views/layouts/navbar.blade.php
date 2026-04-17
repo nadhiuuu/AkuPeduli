@@ -67,7 +67,7 @@
                                 <a href="{{ route('tentang.faq') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">FAQ</a>
                                 <a href="{{ route('tentang.syarat-ketentuan') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Syarat & Ketentuan</a>
                                 <a href="{{ route('tentang.kebijakan-privasi') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Kebijakan Privasi</a>
-                                <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Hubungi Kami</a>
+                                <a href="{{ route('tentang.hubungi-kami') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Hubungi Kami</a>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                     <a href="{{ route('tentang.faq') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">FAQ</a>
                     <a href="{{ route('tentang.syarat-ketentuan') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Syarat & Ketentuan</a>
                     <a href="{{ route('tentang.kebijakan-privasi') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Kebijakan Privasi</a>
-                    <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Hubungi Kami</a>
+                    <a href="{{ route('tentang.hubungi-kami') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Hubungi Kami</a>
                 </div>
 
                 <div class="pt-6 space-y-3">
