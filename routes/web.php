@@ -73,4 +73,8 @@ Route::prefix('tentang')->name('about.')->group(function () {
     Route::get('/faq', function () {
         return view('pages.tentang.faq');
     })->name('faq');
+
+    Route::get('/syarat-ketentuan', function () {
+        return view('pages.tentang.syarat-ketentuan');
+    })->name('syarat-ketentuan');
 });
