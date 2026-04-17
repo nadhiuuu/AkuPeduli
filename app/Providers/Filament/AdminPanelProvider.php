@@ -31,6 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->favicon('favicon.ico')
+            ->brandLogo(fn () => asset('assets/AkuPeduli color.png'))
+            ->brandLogoHeight('6rem')
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -62,15 +64,15 @@ class AdminPanelProvider extends PanelProvider
                 AuthDesignerPlugin::make()
                     ->defaults(
                         fn($config) => $config
-                            ->media(asset('https://media.tenor.com/MwVSjFu_g-MAAAAM/jerry-laughing.gif'))
-                            ->mediaPosition(MediaPosition::Left)
-                            ->blur(8)
+                            ->media(asset('assets/Background.jpg'))
+                            ->mediaPosition(MediaPosition::Right)
+                            ->blur(0)
                     )
                     ->login()
                     ->registration()
                     ->passwordReset(
                         fn($config) => $config
-                            ->mediaPosition(MediaPosition::Left)
+                            ->mediaPosition(MediaPosition::Right)
                             ->mediaSize('45%')
                     )
                     ->emailVerification()
