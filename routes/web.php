@@ -65,7 +65,7 @@ Route::prefix('dokumentasi')->name('documentation.')->group(function () {
 
 
 /*Tentang Kami (About)*/
-Route::prefix('tentang')->name('about.')->group(function () {
+Route::prefix('tentang')->name('tentang.')->group(function () {
     Route::get('/', function () {
         return view('pages.tentang.tentang-kami');
     })->name('index');
@@ -77,4 +77,8 @@ Route::prefix('tentang')->name('about.')->group(function () {
     Route::get('/syarat-ketentuan', function () {
         return view('pages.tentang.syarat-ketentuan');
     })->name('syarat-ketentuan');
+
+    Route::get('/kebijakan-privasi', function () {
+        return view('pages.tentang.kebijakan-privasi');
+    })->name('kebijakan-privasi');
 });

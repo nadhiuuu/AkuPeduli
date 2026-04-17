@@ -63,10 +63,10 @@
                         </button>
                         <div id="dropdown-tentang" class="opacity-0 invisible translate-y-2 absolute left-0 w-56 bg-white border border-slate-100 rounded-xl shadow-xl text-slate-700 nav-transition">
                             <div class="p-2">
-                                <a href="{{ route('about.index') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Tentang Kami</a>
-                                <a href="{{ route('about.faq') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">FAQ</a>
-                                <a href="{{ route('about.syarat-ketentuan') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Syarat & Ketentuan</a>
-                                <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Kebijakan Privasi</a>
+                                <a href="{{ route('tentang.index') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Tentang Kami</a>
+                                <a href="{{ route('tentang.faq') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">FAQ</a>
+                                <a href="{{ route('tentang.syarat-ketentuan') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Syarat & Ketentuan</a>
+                                <a href="{{ route('tentang.kebijakan-privasi') }}" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Kebijakan Privasi</a>
                                 <a href="#" class="block px-4 py-2.5 hover:bg-slate-50 hover:text-blue-600 rounded-lg">Hubungi Kami</a>
                             </div>
                         </div>
@@ -122,10 +122,10 @@
                     <svg class="w-5 h-5 nav-transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round"/></svg>
                 </button>
                 <div id="drop-tentang-mobile" class="mobile-dropdown-closed pl-4 space-y-1">
-                    <a href="{{ route('about.index') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Tentang Kami</a>
-                    <a href="{{ route('about.faq') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">FAQ</a>
-                    <a href="{{ route('about.syarat-ketentuan') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Syarat & Ketentuan</a>
-                    <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Kebijakan Privasi</a>
+                    <a href="{{ route('tentang.index') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Tentang Kami</a>
+                    <a href="{{ route('tentang.faq') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">FAQ</a>
+                    <a href="{{ route('tentang.syarat-ketentuan') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Syarat & Ketentuan</a>
+                    <a href="{{ route('tentang.kebijakan-privasi') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Kebijakan Privasi</a>
                     <a href="#" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Hubungi Kami</a>
                 </div>
 

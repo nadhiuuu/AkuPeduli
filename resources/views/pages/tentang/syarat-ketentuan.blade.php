@@ -10,13 +10,13 @@
                     Syarat & Ketentuan Penggalangan Dana
                 </h1>
             </div>
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="p-6 md:p-6 space-y-10 text-slate-700 leading-relaxed">  
                     <div class="mb-2 pb-2 border-b border-gray-100 text-justify">
-                        <p class="mb-4">
+                        <p class="mb-2">
                             Selamat datang di <strong>Platform AkuPeduli</strong>. Silakan membaca seluruh ketentuan pada Syarat dan Ketentuan ini dengan seksama sebelum menggunakan Platform AkuPeduli, karena berdampak kepada hak dan kewajiban Anda selaku Pengguna Platform ini.
                         </p>
-                        <p class="mb-4">
+                        <p class="mb-2">
                             Apabila Pengguna melakukan aktivitas seperti mengunjungi, mendaftar, dan/atau menggunakan Platform AkuPeduli ini, maka Pengguna menyatakan telah membaca, mengerti, memahami, dan menyetujui semua ketentuan, termasuk segala perubahan dan/atau penambahan ketentuan dari waktu ke waktu. Apabila Pengguna tidak menyetujui salah satu, sebagian, atau seluruh ketentuan ini, maka Pengguna tidak diperkenankan menggunakan layanan pada Platform AkuPeduli.
                         </p>
                     </div>
