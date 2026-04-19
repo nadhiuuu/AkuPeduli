@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use App\Models\DisasterCategory;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class DonationController extends Controller
 {
@@ -68,7 +69,6 @@ class DonationController extends Controller
 
     public function donate(Campaign $campaign)
     {
-        // Hitung sisa hari dan persentase untuk ringkasan di atas form
         $daysLeft = max(0, Carbon::now()->startOfDay()->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false));
         $target = $campaign->target_amount > 0 ? $campaign->target_amount : 1;
         $percentage = min(100, ($campaign->current_amount / $target) * 100);
@@ -77,6 +77,29 @@ class DonationController extends Controller
             'campaign' => $campaign,
             'daysLeft' => $daysLeft,
             'percentage' => $percentage
+        ]);
+    }
+
+    public function process(Request $request, Campaign $campaign)
+    {
+        $request->validate([
+            'amount' => 'required|string'
+        ]);
+
+        $amount = (int) preg_replace('/\D/', '', $request->amount);
+
+        $user = $request->user();
+
+        $isAnonymous = $request->has('is_anonymous');
+
+        $donorName = $isAnonymous ? 'Hamba Allah (Anonim)' : $user->name;
+
+        return view('pages.donasi.detail-transaksi', [
+            'campaign' => $campaign,
+            'amount' => $amount,
+            'donorName' => $donorName,
+            'email' => $user->email,
+            'date' => now()->translatedFormat('d M Y'), 
         ]);
     }
 }

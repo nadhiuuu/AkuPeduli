@@ -9,14 +9,16 @@
             :percentage="$percentage"
             :daysLeft="$daysLeft"
         />
-        <form action="#" method="POST" class="mt-2" id="donationForm">
+        <form action="{{ route('donation.process', $campaign->slug) }}" method="POST" class="mt-2" id="donationForm">
             @csrf
             <input type="hidden" name="campaign_id" value="{{ $campaign->id }}">
             <x-donasi-form />
+            
             <div class="mt-5">
-                <a href="{{ route('donation.detail-transaksi') }}" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg rounded-xl shadow-xl shadow-blue-100 transition-all active:scale-[0.97] flex items-center justify-center gap-3">
+                <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg rounded-xl shadow-xl shadow-blue-100 transition-all active:scale-[0.97] flex items-center justify-center gap-3">
                     <span>Lanjutkan Pembayaran</span>
-                </a>
+                </button>
+                
                 <p class="text-center text-slate-400 text-xs mt-6 leading-relaxed">
                     Setiap donasi yang masuk akan disalurkan 100% kepada penerima manfaat.<br>
                     <span class="font-bold text-blue-600">#AkuPeduli Jember</span>

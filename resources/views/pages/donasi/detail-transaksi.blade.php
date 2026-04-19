@@ -18,32 +18,27 @@
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
                             <span class="text-gray-500 font-medium text-sm md:text-base">Tanggal</span>
-                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">17 Apr 2026</span>
+                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">{{ $date }}</span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
                             <span class="text-gray-500 font-medium text-sm md:text-base">Judul Campaign</span>
-                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">Banjir Bandang</span>
+                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">{{ $campaign->title }}</span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
                             <span class="text-gray-500 font-medium text-sm md:text-base">Nama Donatur</span>
-                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">nadhiy</span>
+                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">{{ $donorName }}</span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
                             <span class="text-gray-500 font-medium text-sm md:text-base">Email</span>
-                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base break-all">e41230618@student.polije.ac.id</span>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
-                            <span class="text-gray-500 font-medium text-sm md:text-base">No. WhatsApp</span>
-                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">083878979832</span>
+                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base break-all">{{ $email }}</span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
                             <span class="text-gray-500 font-medium text-sm md:text-base">Nominal</span>
-                            <span class="text-gray-900 font-bold text-left text-lg text-blue-600">Rp 1.000</span>
+                            <span class="text-gray-900 font-bold text-left text-lg text-blue-600">Rp {{ number_format($amount, 0, ',', '.') }}</span>
                         </div>
                     </div>
 
