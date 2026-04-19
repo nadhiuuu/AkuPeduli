@@ -52,16 +52,29 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     /**
      * Kontrol Akses Panel Filament.
-     * Fungsi ini menentukan siapa saja yang boleh masuk ke dashboard.
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        // Panel Admin hanya bisa diakses oleh role 'admin'
         if ($panel->getId() === 'admin') {
-            return in_array($this->role, ['admin', 'user']);
+            if ($this->role === 'admin') {
+                return true;
+            }
+            
+            if ($this->role === 'user' && $this->campaignerProfile && $this->campaignerProfile->isApproved()) {
+                return true;
+            }
         }
 
         return false;
+    }
+
+    /**
+     * Helper khusus untuk Navbar: Mengecek apakah user berhak melihat tombol Dashboard.
+     */
+    public function canAccessDashboard(): bool
+    {
+        if ($this->role === 'admin') return true;
+        return $this->role === 'user' && $this->campaignerProfile && $this->campaignerProfile->isApproved();
     }
 
     /**

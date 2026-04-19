@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +18,7 @@ class GoogleAuthController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->user();
-            
-            // Cari user berdasarkan email, jika tidak ada maka buat baru
+
             $user = User::updateOrCreate(
                 ['email' => $googleUser->email],
                 [
@@ -34,7 +32,7 @@ class GoogleAuthController extends Controller
 
             Auth::login($user);
 
-            return redirect()->intended(filament()->getUrl()); 
+            return redirect()->intended(route('home')); 
 
         } catch (\Exception $e) {
             return redirect(filament()->getLoginUrl())->withErrors([
