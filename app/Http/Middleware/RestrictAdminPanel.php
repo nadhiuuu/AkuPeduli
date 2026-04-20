@@ -17,9 +17,7 @@ class RestrictAdminPanel
     {
         $user = auth()->user();
 
-        // Jika user mencoba masuk ke halaman /admin tapi dia adalah donatur biasa
         if ($user && !$user->canAccessDashboard()) {
-            // Lempar/usir kembali ke halaman Home
             return redirect()->route('home');
         }
 
