@@ -7,6 +7,9 @@ use App\Models\DisasterCategory;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Donation;
+use Midtrans\Snap;
+use Midtrans\Config;
 
 class DonationController extends Controller
 {
@@ -80,26 +83,63 @@ class DonationController extends Controller
         ]);
     }
 
-    public function process(Request $request, Campaign $campaign)
+public function process(Request $request, Campaign $campaign)
     {
         $request->validate([
-            'amount' => 'required|string'
+            'amount' => 'required|string',
+            'message' => 'nullable|string'
         ]);
 
         $amount = (int) preg_replace('/\D/', '', $request->amount);
-
         $user = $request->user();
-
         $isAnonymous = $request->has('is_anonymous');
-
         $donorName = $isAnonymous ? 'Hamba Allah (Anonim)' : $user->name;
+
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.isProduction');
+        Config::$isSanitized = config('midtrans.isSanitized');
+        Config::$is3ds = config('midtrans.is3ds');
+
+        $donation = Donation::create([
+            'campaign_id' => $campaign->id,
+            'user_id' => $user->id,
+            'order_id' => 'DON-' . time() . '-' . mt_rand(100, 999),
+            'gross_amount' => $amount,
+            'donor_name' => $donorName,
+            'is_anonymous' => $isAnonymous,
+            'message' => $request->message,
+            'status' => 'pending',
+        ]);
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $donation->order_id,
+                'gross_amount' => $donation->gross_amount,
+            ],
+            'customer_details' => [
+                'first_name' => $donation->donor_name,
+                'email' => $user->email,
+            ],
+
+            'callbacks' => [
+                'finish' => route('donation.thanks'),
+            ],
+        ];
+
+        $snapToken = Snap::getSnapToken($params);
+        $donation->update(['snap_token' => $snapToken]);
 
         return view('pages.donasi.detail-transaksi', [
             'campaign' => $campaign,
-            'amount' => $amount,
-            'donorName' => $donorName,
-            'email' => $user->email,
+            'donation' => $donation,
+            'user' => $user,
             'date' => now()->translatedFormat('d M Y'), 
+            'snapToken' => $snapToken,
         ]);
+    }
+
+    public function thanks()
+    {
+        return view('pages.donasi.thanks');
     }
 }

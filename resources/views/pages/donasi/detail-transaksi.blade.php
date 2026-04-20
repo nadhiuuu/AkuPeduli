@@ -2,6 +2,8 @@
 @section('title', 'Berdonasi - AkuPeduli')
 
 @section('content')
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.clientKey') }}"></script>
+
 <main class="bg-gray-50 pt-28 pb-20 font-sans">
     <section>
         <div class="max-w-7xl mx-auto px-4">
@@ -28,29 +30,56 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
                             <span class="text-gray-500 font-medium text-sm md:text-base">Nama Donatur</span>
-                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">{{ $donorName }}</span>
+                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base">{{ $donation->donor_name }}</span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
                             <span class="text-gray-500 font-medium text-sm md:text-base">Email</span>
-                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base break-all">{{ $email }}</span>
+                            <span class="text-gray-900 font-semibold text-left text-sm md:text-base break-all">{{ $user->email }}</span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-1 border-b sm:border-0 pb-3 sm:pb-0">
                             <span class="text-gray-500 font-medium text-sm md:text-base">Nominal</span>
-                            <span class="text-gray-900 font-bold text-left text-lg text-blue-600">Rp {{ number_format($amount, 0, ',', '.') }}</span>
+                            <span class="text-gray-900 font-bold text-left text-lg text-blue-600">Rp {{ number_format($donation->gross_amount, 0, ',', '.') }}</span>
                         </div>
                     </div>
 
                     <div class="mt-8 md:mt-10">
-                        <a href="#" class="w-full py-3 bg-[#3b82f6] hover:bg-blue-600 text-white font-bold rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center text-lg">
+                        <button id="pay-button" class="w-full py-3 bg-[#3b82f6] hover:bg-blue-600 text-white font-bold rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center text-lg">
                             Bayar Sekarang
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </main>
+
+<script type="text/javascript">
+    document.getElementById('pay-button').onclick = function () {
+
+        snap.pay('{{ $snapToken }}', {
+
+            onSuccess: function(result){
+                window.location.href = "{{ route('donation.thanks') }}";
+            },
+
+            onPending: function(result){
+                alert("Menunggu pembayaran Anda diselesaikan!"); 
+                console.log(result);
+            },
+
+            onError: function(result){
+                alert("Pembayaran gagal!"); 
+                console.log(result);
+            },
+
+            onClose: function(){
+                alert('Anda menutup kotak pembayaran sebelum menyelesaikannya');
+            }
+        });
+    };
+</script>
+
 @include('layouts.footer')
 @endsection

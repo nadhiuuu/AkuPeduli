@@ -19,6 +19,8 @@ Route::prefix('donasi')->name('donation.')->group(function () {
 
     Route::get('/', [DonationController::class, 'index'])->name('index');
 
+    Route::get('/thanks', [DonationController::class, 'thanks'])->name('thanks');
+
     Route::get('/{campaign:slug}', [DonationController::class, 'show'])->name('detail');
 
     Route::get('/{campaign:slug}/bayar', [DonationController::class, 'donate'])->name('donate');
