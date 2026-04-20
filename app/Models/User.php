@@ -55,17 +55,17 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        if ($panel->getId() === 'admin') {
-            if ($this->role === 'admin') {
-                return true;
-            }
+        // if ($panel->getId() === 'admin') {
+        //     if ($this->role === 'admin') {
+        //         return true;
+        //     }
             
-            if ($this->role === 'user' && $this->campaignerProfile && $this->campaignerProfile->isApproved()) {
-                return true;
-            }
-        }
+        //     if ($this->role === 'user' && $this->campaignerProfile && $this->campaignerProfile->isApproved()) {
+        //         return true;
+        //     }
+        // }
 
-        return false;
+        return true;
     }
 
     /**
