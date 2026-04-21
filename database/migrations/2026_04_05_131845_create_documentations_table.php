@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_penerima');
             $table->text('deskripsi');
             $table->string('bukti_foto');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }
