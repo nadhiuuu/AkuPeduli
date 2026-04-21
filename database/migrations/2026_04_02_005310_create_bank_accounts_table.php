@@ -16,8 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('nama_bank'); 
             $table->string('nomor_rekening');
-            $table->string('nama_pemilik'); 
-            $table->boolean('is_utama')->default(false);             
+            $table->string('nama_pemilik');          
             $table->timestamps();
         });
     }

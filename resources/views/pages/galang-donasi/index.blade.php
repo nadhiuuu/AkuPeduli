@@ -3,8 +3,8 @@
 
 @section('content')
 @php
-    $hasCampaign = true;
-    $isVerified = true;
+    $hasCampaign = false;
+    $isVerified = false;
 
     $campaigns = [
         [

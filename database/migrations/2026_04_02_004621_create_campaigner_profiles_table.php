@@ -6,29 +6,35 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('campaigner_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();            
-            $table->string('nik')->unique();
-            $table->string('foto_ktp');
+            
+            // Data Kontak & OTP
+            $table->string('no_wa')->nullable();
+            $table->timestamp('wa_verified_at')->nullable();
+            $table->string('email_campaigner')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            
+            // Data Identitas Dokumen
+            $table->string('nik')->unique()->nullable();
+            $table->string('foto_ktp')->nullable();
+            $table->string('foto_selfie_ktp')->nullable();
+            
+            // Status Verifikasi Admin (Untuk KTP & Bank)
             $table->enum('status_verifikasi', [
                 'menunggu', 
                 'disetujui', 
                 'ditolak'
             ])->default('menunggu');
             $table->text('alasan_penolakan')->nullable();
+            
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('campaigner_profiles');

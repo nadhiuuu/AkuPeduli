@@ -10,30 +10,37 @@ class CampaignerProfile extends Model
 {
     use HasFactory;
 
-    /**
-     * Kolom yang dapat diisi secara massal.
-     */
     protected $fillable = [
         'user_id',
+        'no_wa',
+        'wa_verified_at',
+        'email_campaigner',
+        'email_verified_at',
         'nik',
         'foto_ktp',
+        'foto_selfie_ktp',
         'status_verifikasi',
         'alasan_penolakan',
     ];
 
-    /**
-     * Relasi balik ke User (Inverse Relationship).
-     * Profil ini dimiliki oleh satu User.
-     */
+    protected $casts = [
+        'wa_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Helper: Mengecek apakah profil sudah disetujui admin.
-     */
-    public function isApproved(): bool
+    // Helper: Cek apakah kedua OTP sudah beres
+    public function isContactVerified(): bool
+    {
+        return !is_null($this->wa_verified_at) && !is_null($this->email_verified_at);
+    }
+
+    // Helper: Cek apakah admin sudah menyetujui KTP & Bank
+    public function isApprovedByAdmin(): bool
     {
         return $this->status_verifikasi === 'disetujui';
     }
