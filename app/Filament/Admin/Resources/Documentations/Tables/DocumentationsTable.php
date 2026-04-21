@@ -9,7 +9,8 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
-
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\Action;
 class DocumentationsTable
 {
     public static function configure(Table $table): Table
@@ -29,24 +30,32 @@ class DocumentationsTable
                     ->sortable(),
 
                 ImageColumn::make('bukti_foto')
-                    ->label('Foto'),
+                    ->label('Bukti Foto'),
 
-                TextColumn::make('dibuat_pada')
-                    ->dateTime()
-                    ->sortable(),
+                TextColumn::make('created_at')
+                ->label('Dibuat Pada')
+                ->dateTime('d M Y H:i')
+                ->sortable(),
 
             ])
             ->filters([
-                //
+                SelectFilter::make('campaign_id')
+                    ->relationship('campaign', 'title')
+                    ->label('Filter Campaign'),
             ])
-            ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
-            ])
+
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->recordActions([
+                Action::make('Lihat Web')
+                    ->icon('heroicon-o-globe-alt')
+                    ->color('info')
+                    ->url(fn ($record): string => url('/campaign/' . $record->campaign->slug))
+                    ->openUrlInNewTab(),
+                EditAction::make(),
+        ]);
     }
 }

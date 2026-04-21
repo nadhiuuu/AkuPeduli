@@ -7,6 +7,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\RichEditor;
 
 class DocumentationForm
 {
@@ -15,24 +16,33 @@ class DocumentationForm
         return $schema
             ->components([
                 Select::make('campaign_id')
-                    ->relationship('campaign', 'title')
+                    ->relationship(
+                        name : 'campaign',
+                        titleAttribute: 'title',
+                        modifyQueryUsing: fn ($query) => $query->where('status', 'aktif')
+                    )
+                    
                     ->required()
+                    ->preload()
                     ->searchable(),
 
                 DatePicker::make('tgl_penyerahan')
-                    ->required(),
+                    ->required()
+                    ->minDate(now())
+                    ->native(false),
 
                 TextInput::make('nama_penerima')
                     ->required()
                     ->maxLength(255),
 
-                Textarea::make('deskripsi')
+                RichEditor::make('deskripsi')
                     ->required()
                     ->columnSpanFull(),
                 FileUpload::make('bukti_foto')
                     ->required()
                     ->image()
-                    ->directory('documentation'),
+                    ->directory('documentation')
+                    ->maxSize(5120),
             ]);
     }
 }

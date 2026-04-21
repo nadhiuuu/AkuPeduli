@@ -22,8 +22,11 @@ class DocumentationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Documentations';
-
+    public static function getRecordTitle(?\Illuminate\Database\Eloquent\Model $record): string
+    {
+        return $record->campaign->title ?? 'Documentation';
+    }
+    
     public static function form(Schema $schema): Schema
     {
         return DocumentationForm::configure($schema);

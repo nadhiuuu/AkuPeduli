@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Documentations\Schemas;
 use Filament\Schemas\Schema;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Tables\Filters\SelectFilter;
 
 class DocumentationInfolist
 {
@@ -28,8 +29,11 @@ class DocumentationInfolist
                 ->label('Bukti Foto'),
 
             TextEntry::make('created_at')
-                ->dateTime()
-                ->placeholder('-'),
+                ->label('Dibuat Pada')
+                ->getStateUsing(fn ($record) => $record->created_at)
+                ->formatStateUsing(fn ($state) => 
+                    $state ? \Carbon\Carbon::parse($state)->format('d M Y H:i') : '-'
+                ),
 
             TextEntry::make('updated_at')
                 ->dateTime()

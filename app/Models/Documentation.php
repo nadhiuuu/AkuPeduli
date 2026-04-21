@@ -18,4 +18,7 @@ class Documentation extends Model
     public function campaign() { 
         return $this->belongsTo(Campaign::class); 
     }
+    protected $casts = [
+    'tgl_penyerahan' => 'date',
+];
 }
