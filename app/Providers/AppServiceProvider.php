@@ -8,8 +8,9 @@ use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
-use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
-use App\Http\Responses\LoginResponse;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Event;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,10 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(
-            LoginResponseContract::class,
-            LoginResponse::class
-        );
+
     }
 
     /**
@@ -29,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Event::listen(function (Login $event) {
+            // Beri tanda rahasia di session bahwa dia baru saja login
+            session()->put('baru_login', true);
+        });
+        
         FilamentView::registerRenderHook(
             PanelsRenderHook::AUTH_REGISTER_FORM_AFTER,
             fn (): string => Blade::render('
