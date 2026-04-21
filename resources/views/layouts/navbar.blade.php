@@ -148,6 +148,8 @@
         @yield('content')
     </main>
 
+    <x-alert-modal />
+
     <script>
         const nav = document.getElementById('main-nav');
         const navLogo = document.getElementById('nav-logo');
@@ -220,6 +222,17 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         lucide.createIcons();
+    </script>
+
+    <script>
+        function requireLogin() {
+            showCustomAlert(
+                "Akses Terbatas", 
+                "Niat baikmu sangat berharga! Silakan masuk atau daftar terlebih dahulu agar donasimu dapat tercatat dan tersalurkan dengan transparan.", 
+                "{{ filament()->getLoginUrl() }}", 
+                "Masuk / Daftar"
+            );
+        }
     </script>
 </body>
 </html>
