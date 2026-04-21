@@ -142,4 +142,41 @@ public function process(Request $request, Campaign $campaign)
     {
         return view('pages.donasi.thanks');
     }
+
+    public function webhook(Request $request)
+    {
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.isProduction');
+
+        try {
+            $notif = new \Midtrans\Notification();
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Gagal verifikasi signature Midtrans'], 400);
+        }
+
+        $transactionStatus = $notif->transaction_status;
+        $orderId = $notif->order_id;
+
+        $donation = Donation::where('order_id', $orderId)->first();
+
+        if (!$donation) {
+            return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+        }
+
+        $oldStatus = $donation->status;
+
+        if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
+            $donation->update(['status' => 'success']);
+        } else if ($transactionStatus == 'cancel' || $transactionStatus == 'deny' || $transactionStatus == 'expire') {
+            $donation->update(['status' => 'failed']);
+        } else if ($transactionStatus == 'pending') {
+            $donation->update(['status' => 'pending']);
+        }
+
+        if ($donation->status == 'success' && $oldStatus != 'success') {
+            $donation->campaign->increment('current_amount', $donation->gross_amount);
+        }
+
+        return response()->json(['message' => 'Webhook berhasil diproses']);
+    }
 }
