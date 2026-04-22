@@ -21,6 +21,8 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
 // use Caresome\FilamentAuthDesigner\Data\AuthPageConfig;
 use Caresome\FilamentAuthDesigner\Enums\MediaPosition;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use Filament\Navigation\MenuItem;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -31,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->favicon('favicon.ico')
-            ->brandLogo(fn () => asset('assets/AkuPeduli color.png'))
+            ->brandLogo(fn() => asset('assets/AkuPeduli color.png'))
             ->brandLogoHeight('6rem')
             ->colors([
                 'primary' => Color::Blue,
@@ -61,7 +63,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 \App\Http\Middleware\RestrictAdminPanel::class,
             ])
-            ->plugin(
+            ->plugins([
                 AuthDesignerPlugin::make()
                     ->defaults(
                         fn($config) => $config
@@ -77,7 +79,30 @@ class AdminPanelProvider extends PanelProvider
                             ->mediaSize('45%')
                     )
                     ->emailVerification()
-                    ->themeToggle()
-            );
+                    ->themeToggle(),
+
+                FilamentEditProfilePlugin::make()
+                    ->slug('edit-profil')
+                    ->setTitle('Edit Profil')
+                    ->setNavigationLabel('Edit Profil')
+                    ->setNavigationGroup('Akun')
+                    ->setIcon('heroicon-o-user')
+                    ->setSort(10)
+                    ->shouldRegisterNavigation(false)
+                    ->shouldShowEmailForm()
+                    ->shouldShowDeleteAccountForm(false)
+                    ->shouldShowSanctumTokens()
+                    ->shouldShowBrowserSessionsForm()
+                    ->shouldShowAvatarForm()
+                // ->customProfileComponents([
+                //     \App\Livewire\CustomProfileComponent::class,
+            ])
+            ->userMenuItems([
+                'profile' => MenuItem::make()
+                    ->label('Edit Profil')
+                    ->url(fn(): string => route('filament.admin.pages.edit-profil'))
+                    ->icon('heroicon-o-user-circle'),
+            ]);
+
     }
 }
