@@ -26,7 +26,7 @@ class DocumentationInfolist
                 ->columnSpanFull(),
 
             ImageEntry::make('bukti_foto')
-                ->label('Bukti Foto'),
+                ->label('Bukti Foto')   ,
 
             TextEntry::make('created_at')
                 ->label('Dibuat Pada')

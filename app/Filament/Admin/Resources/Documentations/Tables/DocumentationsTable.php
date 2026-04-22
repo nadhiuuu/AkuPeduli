@@ -30,7 +30,8 @@ class DocumentationsTable
                     ->sortable(),
 
                 ImageColumn::make('bukti_foto')
-                    ->label('Bukti Foto'),
+                    ->label('Bukti Foto')
+                    ->disk('public'),
 
                 TextColumn::make('created_at')
                 ->label('Dibuat Pada')
@@ -53,8 +54,9 @@ class DocumentationsTable
                 Action::make('Lihat Web')
                     ->icon('heroicon-o-globe-alt')
                     ->color('info')
-                    ->url(fn ($record): string => url('/documentation/' . $record->slug))
-                    ->openUrlInNewTab(),
+                ->url(fn ($record): string => url(
+                    '/documentation/' . $record->slug))                    
+                ->openUrlInNewTab(),
                 EditAction::make(),
         ]);
     }

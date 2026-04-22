@@ -8,9 +8,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\RichEditor;
-
+use Illuminate\Support\Str;
 class DocumentationForm
 {
+    
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -21,19 +22,32 @@ class DocumentationForm
                         titleAttribute: 'title',
                         modifyQueryUsing: fn ($query) => $query->where('status', 'aktif')
                     )
-                    
                     ->required()
                     ->preload()
-                    ->searchable(),
+                    ->searchable()
+                    ->live()
+                    ->afterStateUpdated(function ($set, $state) {
+
+                        $campaign = \App\Models\Campaign::find($state);
+
+                        if ($campaign) {
+                            $set('slug', \Illuminate\Support\Str::slug($campaign->title));
+                        }
+                    }),
 
                 DatePicker::make('tgl_penyerahan')
                     ->required()
-                    ->minDate(now())
-                    ->native(false),
+                    ->minDate(now()),
 
                 TextInput::make('nama_penerima')
                     ->required()
                     ->maxLength(255),
+
+                TextInput::make('slug')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->hidden()
+                    ->dehydrated(),
 
                 RichEditor::make('deskripsi')
                     ->required()
@@ -41,8 +55,12 @@ class DocumentationForm
                 FileUpload::make('bukti_foto')
                     ->required()
                     ->image()
+                    ->disk('public')
                     ->directory('documentation')
-                    ->maxSize(5120),
+                    ->visibility('public') 
+                    ->maxSize(2048),
+
+                    
             ]);
     }
 }
