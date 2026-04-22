@@ -131,24 +131,44 @@ class CampaignerVerification extends Component
     }
 
     // --- Email OTP ---
-    public function sendEmailOtp()
+       public function sendEmailOtp()
     {
         $this->validate([
             'email_campaigner' => 'required|email'
         ]);
 
+        // Generate 6 digit OTP acak
         $this->expected_email_otp = rand(100000, 999999);
 
         try {
-            Mail::raw("Kode OTP Verifikasi Email AkuPeduli Anda adalah: {$this->expected_email_otp}", function($msg) {
-                $msg->to($this->email_campaigner)->subject('OTP Verifikasi AkuPeduli');
-            });
-        } catch (\Exception $e) {
-            Log::error("Email OTP Error: " . $e->getMessage());
-        }
+            // Kita bungkus formatnya menjadi email berdesain HTML sederhana
+            $htmlContent = "
+                <h3>Verifikasi Email AkuPeduli</h3>
+                <p>Halo,</p>
+                <p>Berikut adalah kode OTP rahasia Anda untuk melanjutkan proses verifikasi Campaigner:</p>
+                <h2 style='background: #f3f4f6; padding: 10px; text-align: center; letter-spacing: 5px; font-size: 24px; color: #1d4ed8; border-radius: 8px;'>
+                    {$this->expected_email_otp}
+                </h2>
+                <p><strong>Peringatan:</strong> Jangan berikan kode ini kepada siapapun dari pihak mana pun.</p>
+                <br>
+                <p>Salam hangat,<br>Tim AkuPeduli</p>
+            ";
 
-        $this->email_otp_sent = true;
+            Mail::html($htmlContent, function($msg) {
+                $msg->to($this->email_campaigner)
+                    ->subject('Kode OTP Verifikasi AkuPeduli');
+            });
+            
+            // Tandai bahwa form pengisian OTP boleh dimunculkan
+            $this->email_otp_sent = true;
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Email OTP Error: " . $e->getMessage());
+            // Berikan notifikasi flash message error jika gagal agar user tahu
+            session()->flash('error', 'Gagal mengirim email. Pastikan email valid atau coba lagi nanti.');
+        }
     }
+
 
     public function verifyEmailOtp()
     {

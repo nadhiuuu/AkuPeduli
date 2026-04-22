@@ -43,11 +43,12 @@ class CampaignForm
                 Select::make('user_id')
                     ->label('Dibuat Oleh (User/Admin)')
                     ->relationship('user', 'name')
-                    ->searchable()
-                    ->preload()
                     ->default(fn () => Auth::id())
+                    ->disabled()
+                    ->dehydrated()
                     ->required(),
 
+            
                 TextInput::make('target_amount')
                     ->label('Target Donasi')
                     ->numeric()

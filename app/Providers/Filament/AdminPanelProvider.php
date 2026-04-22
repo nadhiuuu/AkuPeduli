@@ -23,6 +23,7 @@ use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
 use Caresome\FilamentAuthDesigner\Enums\MediaPosition;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationItem;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -102,6 +103,17 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Edit Profil')
                     ->url(fn(): string => route('filament.admin.pages.edit-profil'))
                     ->icon('heroicon-o-user-circle'),
+                'home' => MenuItem::make()
+                    ->label('Kembali ke Web')
+                    ->url(fn(): string => route('home'))
+                    ->icon('heroicon-o-home'),
+            ])
+            ->navigationItems([
+                NavigationItem::make('Kembali ke Web')
+                    ->url(fn (): string => route('home'))
+                    ->icon('heroicon-o-arrow-left-on-rectangle')
+                    ->group('Lainnya')
+                    ->sort(100),
             ]);
 
     }

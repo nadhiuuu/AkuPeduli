@@ -49,7 +49,13 @@
         const confirmBtn = document.getElementById('custom-alert-confirm');
         confirmBtn.innerText = confirmText;
         confirmBtn.onclick = function() {
-            window.location.href = confirmUrl;
+            if (confirmUrl.startsWith('wire:')) {
+                let method = confirmUrl.replace('wire:', '');
+                window.Livewire.first().call(method);
+                closeCustomAlert();
+            } else {
+                window.location.href = confirmUrl;
+            }
         };
 
         modal.classList.remove('hidden');

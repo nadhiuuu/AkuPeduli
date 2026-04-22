@@ -29,7 +29,7 @@
                     <p class="text-red-900 text-sm font-semibold p-3 bg-red-100/70 border border-red-200 rounded-lg inline-block">Alasan penolakan: {{ $profile->alasan_penolakan }}</p>
                 </div>
                 <div class="mt-4">
-                    <button wire:click="resetVerification" wire:confirm="Data KTP sebelumnya akan dihapus, formulir akan direset. Anda yakin?" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition inline-flex items-center gap-2">
+                    <button type="button" onclick="showCustomAlert('Reset Formulir', 'Data KTP sebelumnya akan dihapus, formulir akan direset. Anda yakin?', 'wire:resetVerification', 'Ya, Reset')" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition inline-flex items-center gap-2">
                         <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Isi Ulang Form
                     </button>
                 </div>
@@ -135,6 +135,12 @@
                         </div>
                         <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 {{ $step === 'email' ? 'rotate-180 text-blue-500' : 'text-slate-300' }}"></i>
                     </button>
+
+                        @if (session()->has('error'))
+    <div class="p-3 mb-2 bg-red-100 text-red-600 rounded-lg text-xs font-semibold">
+        {{ session('error') }}
+    </div>
+@endif
 
                     @if($step === 'email' && !$email_verified)
                         <div class="pt-4 space-y-4 px-2">
@@ -319,7 +325,7 @@
         <div class="mt-8 text-center text-slate-400 text-xs">
             Tim kami akan meninjau data Anda dalam waktu maksimal <span class="font-bold text-slate-500">1x24 jam</span>.
         </div>
-    </div>
+    <x-alert-modal />
 </div>
 
 <style>
