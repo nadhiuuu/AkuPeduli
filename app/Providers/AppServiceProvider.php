@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Responses\FilamentEmailVerificationResponse;
+use App\Http\Responses\FilamentRegistrationResponse;
+use Filament\Auth\Http\Responses\Contracts\EmailVerificationResponse as EmailVerificationResponseContract;
+use Filament\Auth\Http\Responses\Contracts\RegistrationResponse as RegistrationResponseContract;
 use Illuminate\Support\ServiceProvider;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
@@ -19,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        $this->app->bind(RegistrationResponseContract::class, FilamentRegistrationResponse::class);
+        $this->app->bind(EmailVerificationResponseContract::class, FilamentEmailVerificationResponse::class);
     }
 
     /**
