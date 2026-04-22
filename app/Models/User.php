@@ -60,7 +60,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         //         return true;
         //     }
             
-        //     if ($this->role === 'user' && $this->campaignerProfile && $this->campaignerProfile->isApproved()) {
+        //     if ($this->role === 'user' && $this->campaignerProfile && $this->campaignerProfile->isApprovedByAdmin()) {
         //         return true;
         //     }
         // }
@@ -68,13 +68,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return true;
     }
 
-    /**
-     * Helper khusus untuk Navbar: Mengecek apakah user berhak melihat tombol Dashboard.
-     */
     public function canAccessDashboard(): bool
     {
         if ($this->role === 'admin') return true;
-        return $this->role === 'user' && $this->campaignerProfile && $this->campaignerProfile->isApproved();
+        return $this->role === 'user' && $this->campaignerProfile && $this->campaignerProfile->isApprovedByAdmin();
     }
 
     /**

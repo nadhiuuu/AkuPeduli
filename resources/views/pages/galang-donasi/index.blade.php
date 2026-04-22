@@ -3,10 +3,15 @@
 
 @section('content')
 @php
+    $isLoggedIn = Auth::check();
+    $user = $isLoggedIn ? Auth::user() : null;
+    $profile = $user ? \App\Models\CampaignerProfile::where('user_id', $user->id)->first() : null;
+    $isVerified = $profile && $profile->status_verifikasi === 'disetujui';
+    $statusVerifikasi = $profile ? $profile->status_verifikasi : null;
     $hasCampaign = false;
-    $isVerified = false;
 
     $campaigns = [
+
         [
             'title' => 'Peduli Korban Banjir Jember',
             'image' => 'https://picsum.photos/seed/flood/400/300',
@@ -54,11 +59,20 @@
                     </div>
                     <p class="text-slate-400 text-sm mb-10 max-w-xs">Kamu belum memiliki campaign yang sedang berjalan saat
                         ini.</p>
-                    <button
-                        @click="isVerified ? window.location.href='{{ route('fundraising.create') }}' : showModal = true"
-                        class="w-full md:w-auto px-10 py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all duration-300">
-                        Galang Dana Sekarang
-                    </button>
+                    <div class="flex flex-col sm:flex-row gap-4 items-center justify-center">
+                        <button
+                            @click="isVerified ? window.location.href='{{ route('fundraising.create') }}' : showModal = true"
+                            class="w-full sm:w-auto px-10 py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all duration-300">
+                            Galang Dana Sekarang
+                        </button>
+                        
+                        @if($statusVerifikasi == 'menunggu' || $statusVerifikasi == 'ditolak')
+                        <a href="{{ route('fundraising.verification') }}"
+                            class="w-full sm:w-auto px-10 py-4 bg-amber-100 text-amber-700 rounded-2xl font-bold shadow-lg shadow-amber-50 hover:bg-amber-200 hover:-translate-y-1 transition-all duration-300 text-center">
+                            Cek Status Verifikasi
+                        </a>
+                        @endif
+                    </div>
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">

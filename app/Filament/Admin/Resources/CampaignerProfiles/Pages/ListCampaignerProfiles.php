@@ -13,7 +13,7 @@ class ListCampaignerProfiles extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            // No Create Button
         ];
     }
 }

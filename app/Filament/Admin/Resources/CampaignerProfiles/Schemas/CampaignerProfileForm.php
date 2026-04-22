@@ -13,20 +13,38 @@ class CampaignerProfileForm
     {
         return $schema
             ->components([
-                Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                TextInput::make('nik')
-                    ->required(),
-                TextInput::make('foto_ktp')
-                    ->required(),
-                Select::make('status_verifikasi')
-                    ->options(['menunggu' => 'Menunggu', 'disetujui' => 'Disetujui', 'ditolak' => 'Ditolak'])
-                    ->default('menunggu')
-                    ->required(),
-                Textarea::make('alasan_penolakan')
-                    ->default(null)
-                    ->columnSpanFull(),
+                \Filament\Schemas\Components\Section::make('Informasi Pengguna')
+                    ->columns(2)
+                    ->schema([
+                        Select::make('user_id')
+                            ->relationship('user', 'name')
+                            ->disabled()
+                            ->required(),
+                        TextInput::make('no_wa')->disabled(),
+                        TextInput::make('email_campaigner')->disabled(),
+                    ]),
+                \Filament\Schemas\Components\Section::make('Dokumen Identitas')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('nik')->disabled()->required(),
+                        \Filament\Forms\Components\FileUpload::make('foto_ktp')
+                            ->image()
+                            ->disabled()
+                            ->directory('campaigner_docs'),
+                        \Filament\Forms\Components\FileUpload::make('foto_selfie_ktp')
+                            ->image()
+                            ->disabled()
+                            ->directory('campaigner_docs'),
+                    ]),
+                \Filament\Schemas\Components\Section::make('Status Verifikasi')
+                    ->schema([
+                        Select::make('status_verifikasi')
+                            ->options(['menunggu' => 'Menunggu', 'disetujui' => 'Disetujui', 'ditolak' => 'Ditolak'])
+                            ->required(),
+                        Textarea::make('alasan_penolakan')
+                            ->default(null)
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }

@@ -43,9 +43,7 @@ Route::prefix('galang-dana')->name('fundraising.')->group(function () {
         return view('pages.galang-donasi.form-galang-donasi');
     })->name('create');
 
-    Route::get('/verification', function () {
-        return view('pages.galang-donasi.form-verifikasi');
-    })->name('verification');
+    Route::get('/verification', \App\Livewire\CampaignerVerification::class)->middleware('auth')->name('verification');
 });
 
 
