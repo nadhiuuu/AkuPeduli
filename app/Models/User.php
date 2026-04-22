@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Concerns\DeletesStoredFiles;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
+    use DeletesStoredFiles;
     use HasFactory, Notifiable;
 
     /**
@@ -48,6 +50,28 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::updating(function (self $user): void {
+            if (! $user->isDirty('avatar')) {
+                return;
+            }
+
+            $oldAvatar = $user->getOriginal('avatar');
+            $newAvatar = $user->avatar;
+
+            if ($oldAvatar && $oldAvatar !== $newAvatar) {
+                static::deleteStoredFile($oldAvatar);
+            }
+        });
+
+        static::deleting(function (self $user): void {
+            if ($user->avatar) {
+                static::deleteStoredFile($user->avatar);
+            }
+        });
     }
 
     /**

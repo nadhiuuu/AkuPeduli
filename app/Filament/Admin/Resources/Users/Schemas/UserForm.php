@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Users\Schemas;
 
+use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -41,6 +42,9 @@ class UserForm
                     ->image()
                     ->disk('public')
                     ->directory('avatars')
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->deleteUploadedFileUsing(fn (string $file): bool => tap(true, fn () => User::deleteStoredFile($file)))
                     ->maxSize(5120),
                     
                 TextInput::make('password')

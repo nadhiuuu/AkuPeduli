@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\DeletesStoredFiles;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Campaign extends Model
 {
+    use DeletesStoredFiles;
+
     protected $fillable = [
         'user_id', 
         'category_id', 
@@ -20,11 +22,24 @@ class Campaign extends Model
         'status'
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::deleting(function ($campaign) {
+        static::updating(function (self $campaign): void {
+            if (! $campaign->isDirty('image')) {
+                return;
+            }
+
+            $oldImage = $campaign->getOriginal('image');
+            $newImage = $campaign->image;
+
+            if ($oldImage && $oldImage !== $newImage) {
+                static::deleteStoredFile($oldImage);
+            }
+        });
+
+        static::deleting(function (self $campaign): void {
             if ($campaign->image) {
-                Storage::disk('public')->delete($campaign->image);
+                static::deleteStoredFile($campaign->image);
             }
         });
     }

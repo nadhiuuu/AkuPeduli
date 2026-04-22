@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Campaigns\Schemas;
 
+use App\Models\Campaign;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\RichEditor;
@@ -86,7 +87,9 @@ class CampaignForm
                     ->image()
                     ->disk('public')
                     ->directory('campaigns')
-                    ->preserveFilenames()
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->deleteUploadedFileUsing(fn (string $file): bool => tap(true, fn () => Campaign::deleteStoredFile($file)))
                     ->columnSpanFull()
                     ->maxSize(5120),
 
