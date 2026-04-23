@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\DocumentationController;
 
 /*Halaman Utama & Auth*/
 Route::get('/', [LandingController::class, 'index'])->name('home');
@@ -48,14 +49,22 @@ Route::prefix('galang-dana')->name('fundraising.')->group(function () {
 
 
 /*Dokumentasi Penyaluran Dana*/
-Route::prefix('dokumentasi')->name('documentation.')->group(function () {
-    Route::get('/', function () {
-        return view('pages.dokumentasi.index');
-    })->name('index');
+// Route::prefix('dokumentasi')->name('documentation.')->group(function () {
+//     Route::get('/', function () {
+//         return view('pages.dokumentasi.index');
+//     })->name('index');
 
-    Route::get('/detail', function () {
-        return view('pages.dokumentasi.detail-dokumentasi');
-    })->name('detail');
+//     Route::get('/{slug}', [DocumentationController::class, 'show'])
+//     ->name('detail');
+
+//     Route::get('/create', function () {
+//         return view('pages.dokumentasi.form-dokumentasi');
+//     })->name('create');
+// });
+Route::prefix('dokumentasi')->name('documentation.')->group(function () {
+    Route::get('/', [DocumentationController::class, 'index'])->name('index');
+
+    Route::get('/{slug}', [DocumentationController::class, 'show'])->name('detail');
 
     Route::get('/create', function () {
         return view('pages.dokumentasi.form-dokumentasi');
