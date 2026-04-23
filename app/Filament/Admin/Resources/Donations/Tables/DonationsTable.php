@@ -2,7 +2,8 @@
 
 namespace App\Filament\Admin\Resources\Donations\Tables;
 
-use Filament\Actions\BulkActionGroup;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -62,7 +63,13 @@ class DonationsTable
                     ]),
                 SelectFilter::make('campaign_id')
                     ->label('Filter Galang Dana')
-                    ->relationship('campaign', 'title')
+                    ->relationship(
+                        'campaign',
+                        'title',
+                        modifyQueryUsing: fn (Builder $query) => Auth::user()?->role === 'admin'
+                            ? $query
+                            : $query->where('user_id', Auth::id()),
+                    )
                     ->searchable()
                     ->preload(),
             ])

@@ -3,7 +3,6 @@
 namespace App\Filament\Admin\Resources\Donations\Pages;
 
 use App\Filament\Admin\Resources\Donations\DonationResource;
-use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewDonation extends ViewRecord
@@ -12,8 +11,6 @@ class ViewDonation extends ViewRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-            EditAction::make(),
-        ];
+        return [];
     }
 }

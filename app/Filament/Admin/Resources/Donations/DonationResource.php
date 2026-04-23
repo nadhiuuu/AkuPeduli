@@ -9,6 +9,8 @@ use App\Filament\Admin\Resources\Donations\Schemas\DonationInfolist;
 use App\Filament\Admin\Resources\Donations\Tables\DonationsTable;
 use App\Models\Donation;
 use BackedEnum;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
@@ -26,6 +28,33 @@ class DonationResource extends Resource
     public static function canCreate(): bool
     {
         return false;
+    }
+
+    public static function canEdit($record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete($record): bool
+    {
+        return false;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return false;
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery()->with(['campaign', 'user']);
+        $user = Auth::user();
+
+        if (! $user || $user->role === 'admin') {
+            return $query;
+        }
+
+        return $query->whereHas('campaign', fn (Builder $campaignQuery) => $campaignQuery->where('user_id', $user->id));
     }
 
     public static function form(Schema $schema): Schema
