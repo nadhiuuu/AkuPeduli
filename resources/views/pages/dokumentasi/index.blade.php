@@ -49,10 +49,22 @@
                                 </p>
 
                                 <div class="flex items-center gap-2 mt-4">
-                                    <img src="https://i.pravatar.cc/150?u=admin" class="w-6 h-6 rounded-full">
-                                    <span class="text-xs text-slate-400">
-                                        {{ $doc->created_at->diffForHumans() }}
-                                    </span>
+
+                                    <!-- Avatar -->
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($doc->campaign->user->name ?? 'Admin') }}"
+                                        class="w-8 h-8 rounded-full object-cover">
+
+                                    <!-- Nama + waktu -->
+                                    <div class="leading-tight">
+                                        <p class="text-xs font-semibold text-slate-700">
+                                            {{ $doc->campaign->user->name ?? 'Admin' }}
+                                        </p>
+
+                                        <p class="text-[11px] text-slate-400">
+                                            {{ $doc->created_at->diffForHumans() }}
+                                        </p>
+                                    </div>
+
                                 </div>
                             </div>
                         </a>

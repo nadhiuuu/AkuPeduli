@@ -7,7 +7,9 @@
             <nav class="flex mb-8 text-sm text-slate-400">
                 <a href="{{ route('documentation.index') }}" class="hover:text-blue-600 transition">Dokumentasi</a>
                 <span class="mx-2">/</span>
-                <span class="text-slate-600 truncate">Bantuan Sembako Lansia Jember</span>
+                <span class="text-slate-600 truncate">
+                    {{ $documentation->campaign->title }}
+                </span>
             </nav>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
                 <div class="lg:col-span-2">
@@ -15,16 +17,26 @@
                         {{ $documentation->campaign->title }}
                     </h1>
                     <div class="flex items-center gap-4 mb-4 pb-4 border-b border-slate-100">
-                        <img src="https://i.pravatar.cc/150?u=admin" class="w-10 h-10 rounded-full border border-slate-200">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($documentation->campaign->user->name ?? 'Admin') }}"
+                            class="w-10 h-10 rounded-full border border-slate-200">
+
+                        <!-- Nama + tanggal -->
                         <div>
-                            <p class="text-sm font-bold text-slate-800">Admin AkuPeduli</p>
-                            <p class="text-xs text-slate-400">10 April 2026</p>
+                            <p class="text-sm font-bold text-slate-800">
+                                {{ $documentation->campaign->user->name ?? 'Admin' }}
+                            </p>
+
+                            <p class="text-xs text-slate-400">
+                                {{ $documentation->created_at->format('d M Y') }}
+                            </p>
                         </div>
+
                     </div>
                     <div class="mb-4">
                         <img src="{{ asset('storage/' . $documentation->bukti_foto) }}"
                             class="w-full h-[400px] object-cover rounded-3xl shadow-sm">
-                        <p class="text-center text-xs text-slate-400 mt-4 italic">Foto: Tim AkuPeduli saat menyerahkan paket
+                        <p class="text-center text-xs text-slate-400 mt-4 italic">Foto : Tim AkuPeduli saat menyerahkan
+                            paket
                             sembako kepada warga.</p>
                     </div>
                     <article class="prose prose-slate max-w-none text-slate-600 leading-relaxed text-justify">

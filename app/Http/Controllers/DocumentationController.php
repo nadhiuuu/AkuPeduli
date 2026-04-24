@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\Documentation;
 
 class DocumentationController extends Controller
 {
     public function show($slug)
     {
-    $documentation = Documentation::with('campaign')
+    $documentation = Documentation::with('campaign.user')
         ->where('slug', $slug)
         ->firstOrFail();
 
@@ -17,7 +17,10 @@ class DocumentationController extends Controller
 
     public function index()
     {
-    $documentations = Documentation::with('campaign')
+    $documentations = Documentation::with('campaign.user')
+        ->whereHas('campaign', function ($q) {
+            $q->where('user_id', Auth::id());
+        })
         ->latest()
         ->get();
 

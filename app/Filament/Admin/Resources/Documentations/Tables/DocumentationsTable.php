@@ -11,11 +11,18 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Actions\Action;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 class DocumentationsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+            $query->whereHas('campaign', function ($q) {
+                $q->where('user_id', Auth::id());
+            });
+        })
             ->columns([
 
                 TextColumn::make('campaign.title')

@@ -21,6 +21,7 @@ class DocumentationForm
                         name : 'campaign',
                         titleAttribute: 'title',
                         modifyQueryUsing: fn ($query) => $query->where('status', 'aktif')
+                        ->where('user_id', \Illuminate\Support\Facades\Auth::id())
                     )
                     ->required()
                     ->preload()
