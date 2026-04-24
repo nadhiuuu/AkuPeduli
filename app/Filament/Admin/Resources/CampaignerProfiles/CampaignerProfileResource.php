@@ -35,7 +35,7 @@ class CampaignerProfileResource extends Resource
         return false;
     }
 
-    protected static ?string $recordTitleAttribute = 'CampaignerProfile';
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {

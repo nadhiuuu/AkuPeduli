@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Campaign;
 use App\Models\DisasterCategory;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Models\Donation;
-use Midtrans\Snap;
+use App\Notifications\CampaignDonationReceivedNotification;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Midtrans\Config;
+use Midtrans\Notification;
+use Midtrans\Snap;
 
 class DonationController extends Controller
 {
@@ -37,7 +39,7 @@ class DonationController extends Controller
                     'raised' => $campaign->current_amount,
                     'goal' => $campaign->target_amount,
                     'percentage' => min(100, $percentage),
-                    'image' => asset('storage/' . $campaign->image),
+                    'image' => asset('storage/'.$campaign->image),
                     'lat' => $campaign->impact->latitude ?? '-8.1724',
                     'lng' => $campaign->impact->longitude ?? '113.7003',
                     'donors_count' => $campaign->donations_count,
@@ -47,7 +49,7 @@ class DonationController extends Controller
 
         return view('pages.donasi.index', [
             'campaigns' => $campaignData,
-            'catList' => $categories
+            'catList' => $categories,
         ]);
     }
 
@@ -79,15 +81,15 @@ class DonationController extends Controller
         return view('pages.donasi.form-donasi', [
             'campaign' => $campaign,
             'daysLeft' => $daysLeft,
-            'percentage' => $percentage
+            'percentage' => $percentage,
         ]);
     }
 
-public function process(Request $request, Campaign $campaign)
+    public function process(Request $request, Campaign $campaign)
     {
         $request->validate([
             'amount' => 'required|string',
-            'message' => 'nullable|string'
+            'message' => 'nullable|string',
         ]);
 
         $amount = (int) preg_replace('/\D/', '', $request->amount);
@@ -103,7 +105,7 @@ public function process(Request $request, Campaign $campaign)
         $donation = Donation::create([
             'campaign_id' => $campaign->id,
             'user_id' => $user->id,
-            'order_id' => 'DON-' . time() . '-' . mt_rand(100, 999),
+            'order_id' => 'DON-'.time().'-'.mt_rand(100, 999),
             'gross_amount' => $amount,
             'donor_name' => $donorName,
             'is_anonymous' => $isAnonymous,
@@ -133,7 +135,7 @@ public function process(Request $request, Campaign $campaign)
             'campaign' => $campaign,
             'donation' => $donation,
             'user' => $user,
-            'date' => now()->translatedFormat('d M Y'), 
+            'date' => now()->translatedFormat('d M Y'),
             'snapToken' => $snapToken,
         ]);
     }
@@ -149,7 +151,7 @@ public function process(Request $request, Campaign $campaign)
         Config::$isProduction = config('midtrans.isProduction');
 
         try {
-            $notif = new \Midtrans\Notification();
+            $notif = new Notification;
         } catch (\Exception $e) {
             return response()->json(['message' => 'Gagal verifikasi signature Midtrans'], 400);
         }
@@ -157,9 +159,11 @@ public function process(Request $request, Campaign $campaign)
         $transactionStatus = $notif->transaction_status;
         $orderId = $notif->order_id;
 
-        $donation = Donation::where('order_id', $orderId)->first();
+        $donation = Donation::with('campaign.user')
+            ->where('order_id', $orderId)
+            ->first();
 
-        if (!$donation) {
+        if (! $donation) {
             return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
         }
 
@@ -167,14 +171,20 @@ public function process(Request $request, Campaign $campaign)
 
         if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
             $donation->update(['status' => 'success']);
-        } else if ($transactionStatus == 'cancel' || $transactionStatus == 'deny' || $transactionStatus == 'expire') {
+        } elseif ($transactionStatus == 'cancel' || $transactionStatus == 'deny' || $transactionStatus == 'expire') {
             $donation->update(['status' => 'failed']);
-        } else if ($transactionStatus == 'pending') {
+        } elseif ($transactionStatus == 'pending') {
             $donation->update(['status' => 'pending']);
         }
 
         if ($donation->status == 'success' && $oldStatus != 'success') {
             $donation->campaign->increment('current_amount', $donation->gross_amount);
+
+            $campaignOwner = $donation->campaign?->user;
+
+            if ($campaignOwner) {
+                $campaignOwner->notify(new CampaignDonationReceivedNotification($donation));
+            }
         }
 
         return response()->json(['message' => 'Webhook berhasil diproses']);

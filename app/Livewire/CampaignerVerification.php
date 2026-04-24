@@ -2,56 +2,71 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\WithFileUploads;
+use App\Models\BankAccount;
+use App\Models\CampaignerProfile;
+use App\Models\User;
+use App\Notifications\AdminCampaignerVerificationPendingNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-use App\Models\CampaignerProfile;
-use App\Models\BankAccount;
+use Illuminate\Support\Facades\Mail;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class CampaignerVerification extends Component
 {
     use WithFileUploads;
 
     public $step = null;
-    
+
     // Data Profile (from DB if exists)
     public $profile;
-    
+
     // Status
     public $wa_verified = false;
+
     public $email_verified = false;
+
     public $ktp_verified = false;
+
     public $bank_verified = false;
 
     // Form inputs for WA
     public $no_wa;
+
     public $wa_otp;
+
     public $wa_otp_sent = false;
+
     public $expected_wa_otp;
 
     // Form inputs for Email
     public $email_campaigner;
+
     public $email_otp;
+
     public $email_otp_sent = false;
+
     public $expected_email_otp;
 
     // Form inputs for KTP
     public $nik;
+
     public $foto_ktp;
+
     public $foto_selfie_ktp;
 
     // Form inputs for Bank
     public $nama_bank;
+
     public $nomor_rekening;
+
     public $nama_pemilik;
 
     public function mount()
     {
         $user = Auth::user();
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login');
         }
 
@@ -62,10 +77,10 @@ class CampaignerVerification extends Component
         // Intialize values from DB
         $this->no_wa = $this->profile->no_wa;
         $this->email_campaigner = $this->profile->email_campaigner;
-        $this->wa_verified = !is_null($this->profile->wa_verified_at);
-        $this->email_verified = !is_null($this->profile->email_verified_at);
+        $this->wa_verified = ! is_null($this->profile->wa_verified_at);
+        $this->email_verified = ! is_null($this->profile->email_verified_at);
         $this->nik = $this->profile->nik;
-        
+
         $this->ktp_verified = $this->profile->nik && $this->profile->foto_ktp && $this->profile->foto_selfie_ktp;
         $bank = BankAccount::where('user_id', $user->id)->first();
         if ($bank) {
@@ -90,11 +105,11 @@ class CampaignerVerification extends Component
     public function sendWaOtp()
     {
         $this->validate([
-            'no_wa' => 'required|numeric'
+            'no_wa' => 'required|numeric',
         ]);
 
         $this->expected_wa_otp = rand(100000, 999999);
-        
+
         // Setup Fonnte call
         $token = env('FONNTE_TOKEN');
         if ($token) {
@@ -106,7 +121,7 @@ class CampaignerVerification extends Component
                     'message' => "Kode OTP Verifikasi AkuPeduli Anda adalah: *{$this->expected_wa_otp}*.\nJangan berikan kode ini kepada siapapun.",
                 ]);
             } catch (\Exception $e) {
-                Log::error("Fonnte OTP Error: " . $e->getMessage());
+                Log::error('Fonnte OTP Error: '.$e->getMessage());
             }
         } else {
             Log::info("WA OTP for {$this->no_wa} is: {$this->expected_wa_otp} (Fonnte Token missing)");
@@ -131,10 +146,10 @@ class CampaignerVerification extends Component
     }
 
     // --- Email OTP ---
-       public function sendEmailOtp()
+    public function sendEmailOtp()
     {
         $this->validate([
-            'email_campaigner' => 'required|email'
+            'email_campaigner' => 'required|email',
         ]);
 
         // Generate 6 digit OTP acak
@@ -154,21 +169,20 @@ class CampaignerVerification extends Component
                 <p>Salam hangat,<br>Tim AkuPeduli</p>
             ";
 
-            Mail::html($htmlContent, function($msg) {
+            Mail::html($htmlContent, function ($msg) {
                 $msg->to($this->email_campaigner)
                     ->subject('Kode OTP Verifikasi AkuPeduli');
             });
-            
+
             // Tandai bahwa form pengisian OTP boleh dimunculkan
             $this->email_otp_sent = true;
 
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Email OTP Error: " . $e->getMessage());
+            Log::error('Email OTP Error: '.$e->getMessage());
             // Berikan notifikasi flash message error jika gagal agar user tahu
             session()->flash('error', 'Gagal mengirim email. Pastikan email valid atau coba lagi nanti.');
         }
     }
-
 
     public function verifyEmailOtp()
     {
@@ -189,22 +203,22 @@ class CampaignerVerification extends Component
     public function saveKtp()
     {
         $this->validate([
-            'nik' => 'required|string|unique:campaigner_profiles,nik,' . $this->profile->id,
+            'nik' => 'required|string|unique:campaigner_profiles,nik,'.$this->profile->id,
         ]);
 
         if (is_object($this->foto_ktp) && is_object($this->foto_selfie_ktp)) {
-             $ktpPath = $this->foto_ktp->store('campaigner_docs', 'public');
-             $selfiePath = $this->foto_selfie_ktp->store('campaigner_docs', 'public');
+            $ktpPath = $this->foto_ktp->store('campaigner_docs', 'public');
+            $selfiePath = $this->foto_selfie_ktp->store('campaigner_docs', 'public');
 
-             $this->profile->update([
-                 'nik' => $this->nik,
-                 'foto_ktp' => $ktpPath,
-                 'foto_selfie_ktp' => $selfiePath,
-             ]);
-             $this->ktp_verified = true;
-             $this->step = null;
-             
-             $this->checkSubmitStatus();
+            $this->profile->update([
+                'nik' => $this->nik,
+                'foto_ktp' => $ktpPath,
+                'foto_selfie_ktp' => $selfiePath,
+            ]);
+            $this->ktp_verified = true;
+            $this->step = null;
+
+            $this->checkSubmitStatus();
         } else {
             $this->addError('foto_ktp', 'Mohon unggah kedua foto.');
         }
@@ -230,17 +244,26 @@ class CampaignerVerification extends Component
 
         $this->bank_verified = true;
         $this->step = null;
-        
+
         $this->checkSubmitStatus();
     }
 
     public function checkSubmitStatus()
     {
-        // If all 4 are verified, set profile status to menunggu automatically
-        if ($this->wa_verified && $this->email_verified && $this->ktp_verified && $this->bank_verified) {
-             if ($this->profile->status_verifikasi === 'ditolak' || empty($this->profile->status_verifikasi)) {
-                $this->profile->update(['status_verifikasi' => 'menunggu']);
-             }
+        if (! ($this->wa_verified && $this->email_verified && $this->ktp_verified && $this->bank_verified)) {
+            return;
+        }
+
+        $shouldNotifyAdmins = $this->profile->status_verifikasi !== 'menunggu';
+
+        if ($shouldNotifyAdmins) {
+            $this->profile->update([
+                'status_verifikasi' => 'menunggu',
+                'alasan_penolakan' => null,
+            ]);
+
+            $this->profile->refresh();
+            $this->notifyAdminsAboutPendingVerification();
         }
     }
 
@@ -248,15 +271,26 @@ class CampaignerVerification extends Component
     {
         if ($this->profile && $this->profile->status_verifikasi == 'ditolak') {
             $this->profile->update([
-                'status_verifikasi' => 'menunggu',
+                'status_verifikasi' => null,
                 'alasan_penolakan' => null,
                 'foto_ktp' => null,
                 'foto_selfie_ktp' => null,
             ]);
-            
+
             $this->foto_ktp = null;
             $this->foto_selfie_ktp = null;
             $this->ktp_verified = false;
+        }
+    }
+
+    protected function notifyAdminsAboutPendingVerification(): void
+    {
+        $admins = User::query()
+            ->where('role', 'admin')
+            ->get();
+
+        foreach ($admins as $admin) {
+            $admin->notify(new AdminCampaignerVerificationPendingNotification($this->profile));
         }
     }
 
