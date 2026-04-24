@@ -48,8 +48,7 @@
                                     {{ \Illuminate\Support\Str::limit(strip_tags($doc->deskripsi), 80) }}
                                 </p>
 
-                                <div class="flex items-center gap-2 mt-4">
-
+                                <div class="flex items-center gap-2 mt-4 pt-3 border-t border-slate-200">
                                     <!-- Avatar -->
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($doc->campaign->user->name ?? 'Admin') }}"
                                         class="w-8 h-8 rounded-full object-cover">
