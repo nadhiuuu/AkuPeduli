@@ -45,8 +45,7 @@
                         </p>
                         <blockquote
                             class="border-l-4 border-blue-500 pl-4 py-2 my-6 bg-blue-50/50 rounded-r-xl italic font-medium text-blue-900">
-                            "Terima kasih donatur AkuPeduli, bantuan ini sangat berarti untuk makan kami seminggu ke depan."
-                            - Mbah Sumiati (78th).
+                            "Terima kasih donatur AkuPeduli, bantuan ini sangat berarti untuk mereka yang membutuhkan."
                         </blockquote>
                     </article>
 
