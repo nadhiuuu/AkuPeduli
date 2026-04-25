@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="lg:col-span-1">
-                    <x-documentation-sidebar />
+                    <x-documentation-sidebar :documentation="$documentation" />
                 </div>
             </div>
         </div>
