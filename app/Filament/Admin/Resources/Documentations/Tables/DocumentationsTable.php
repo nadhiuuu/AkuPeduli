@@ -44,6 +44,24 @@ class DocumentationsTable
                 ->label('Dibuat Pada')
                 ->dateTime('d M Y H:i')
                 ->sortable(),
+                
+                TextColumn::make('attachment')
+                ->label('Lampiran')
+                ->formatStateUsing(function ($state) {
+                    if (!$state) return '-';
+
+                    $ext = pathinfo($state, PATHINFO_EXTENSION);
+
+                    return match ($ext) {
+                        'pdf' => '📄 PDF',
+                        'xls', 'xlsx' => '📊 Excel',
+                        default => '📁 File',
+                    };
+                })
+                ->url(fn ($record) => $record->attachment 
+                    ? asset('storage/' . $record->attachment) 
+                    : null)
+                ->openUrlInNewTab(),
 
             ])
             ->filters([

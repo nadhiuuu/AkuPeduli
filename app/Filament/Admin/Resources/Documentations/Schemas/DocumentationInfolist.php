@@ -27,7 +27,24 @@ class DocumentationInfolist
                 ->columnSpanFull(),
 
             ImageEntry::make('bukti_foto')
-                ->label('Bukti Foto')   ,
+                ->label('Bukti Foto'),
+
+            TextEntry::make('attachment')
+            ->label('Lampiran')
+            ->formatStateUsing(function ($state) {
+                if (!$state) return '-';
+
+                $ext = pathinfo($state, PATHINFO_EXTENSION);
+
+                $icon = match ($ext) {
+                    'pdf' => '📄 PDF',
+                    'xls', 'xlsx' => '📊 Excel',
+                    default => '📁 File',
+                };
+
+                return '<a href="'.asset('storage/'.$state).'" target="_blank" style="color:#2563eb; text-decoration:underline;">'.$icon.'</a>';
+            })
+            ->html(),
 
             TextEntry::make('created_at')
                 ->label('Dibuat Pada')
@@ -39,6 +56,7 @@ class DocumentationInfolist
             TextEntry::make('updated_at')
                 ->dateTime()
                 ->placeholder('-'),
+
 
         ]);
     }

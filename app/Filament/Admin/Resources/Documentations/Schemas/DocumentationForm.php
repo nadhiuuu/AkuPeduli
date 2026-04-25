@@ -59,9 +59,24 @@ class DocumentationForm
                     ->disk('public')
                     ->directory('documentation')
                     ->visibility('public') 
-                    ->maxSize(2048),
+                    ->maxSize(5120),
 
-                    
+                    FileUpload::make('attachment') 
+                    ->label('Lampiran (PDF / Excel)')
+                    ->disk('public')
+                    ->directory('documentation/files')
+                    ->visibility('public')
+                    ->acceptedFileTypes([
+                        'application/pdf',
+                        'application/vnd.ms-excel',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    ])
+                    ->openable()
+                    ->downloadable()
+                    ->maxSize(10240)
+                    ->dehydrated(),
+
+      
             ]);
     }
 }

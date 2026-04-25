@@ -39,7 +39,8 @@ protected static function booted()
         'tgl_penyerahan', 
         'nama_penerima', 
         'deskripsi',    
-        'bukti_foto'
+        'bukti_foto',
+        'attachment',
     ];
 
     public function campaign() { 
