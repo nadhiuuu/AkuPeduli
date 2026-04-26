@@ -16,14 +16,11 @@ class DocumentationController extends Controller
     }
 
     public function index()
-    {
+{
     $documentations = Documentation::with('campaign.user')
-        ->whereHas('campaign', function ($q) {
-            $q->where('user_id', Auth::id());
-        })
         ->latest()
         ->get();
 
     return view('pages.dokumentasi.index', compact('documentations'));
-    }
+}
 }
