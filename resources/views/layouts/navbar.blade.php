@@ -78,13 +78,27 @@
                         @auth
                             <div class="relative group">
                                 <button class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center overflow-hidden hover:bg-white/40 transition-all">
-                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-width="2" /></svg>
-                                </button>
-                                <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 nav-transition">
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="w-full text-left px-5 py-3 text-slate-700 hover:bg-red-50 hover:text-red-600 rounded-xl font-medium">Logout</button>
-                                    </form>
+                                    <i data-lucide="user" class="w-6 h-6"></i>
+                                </button> 
+                                <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 nav-transition overflow-hidden">
+                                    <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/50">
+                                        <p class="text-sm font-bold text-slate-800 truncate">{{ auth()->user()->name }}</p>
+                                        <p class="text-xs text-slate-500 truncate">{{ auth()->user()->email }}</p>
+                                    </div>
+                                    <div class="p-2">
+                                        <a href="{{ route('profil.index') }}" class="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">
+                                            <i data-lucide="settings" class="w-4 h-4"></i>
+                                            Pengaturan
+                                        </a>
+                                        <hr class="my-1 border-slate-100">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-red-50 hover:text-red-600 rounded-lg font-medium transition-colors">
+                                                <i data-lucide="log-out" class="w-4 h-4"></i>
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         @else
@@ -129,14 +143,32 @@
                     <a href="{{ route('tentang.hubungi-kami') }}" class="block px-4 py-2 text-slate-500 font-medium hover:text-blue-600">Hubungi Kami</a>
                 </div>
 
-                <div class="pt-6 space-y-3">
+                <div class="pt-2 space-y-3">
                     @guest
                         <a href="{{ filament()->getLoginUrl() }}" class="block w-full py-3 text-center font-bold text-slate-700 border border-slate-200 rounded-xl">Masuk</a>
                         <a href="{{ filament()->getRegistrationUrl() }}" class="block w-full py-3 text-center font-bold text-white bg-blue-600 rounded-xl shadow-lg">Daftar Sekarang</a>
                     @else
+                        <div class="flex items-center gap-3 px-4 py-3 bg-slate-50 rounded-xl border border-slate-100 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                <i data-lucide="user" class="h-6 w-6"></i>
+                            </div>
+                            <div class="overflow-hidden text-left">
+                                <p class="text-sm font-bold text-slate-800 truncate">{{ auth()->user()->name }}</p>
+                                <p class="text-xs text-slate-500 truncate">{{ auth()->user()->email }}</p>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('profil.index') }}" class="flex items-center justify-center gap-2 w-full py-3 text-center font-bold text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                            <i data-lucide="settings" class="h-5 w-5"></i>
+                            Pengaturan
+                        </a>
+
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full py-3 text-center font-bold text-red-600 bg-red-50 rounded-xl">Logout</button>
+                            <button type="submit" class="flex items-center justify-center gap-2 w-full py-3 text-center font-bold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition-colors">
+                                <i data-lucide="log-out" class="h-5 w-5"></i>
+                                Logout
+                            </button>
                         </form>
                     @endguest
                 </div>

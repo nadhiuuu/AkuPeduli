@@ -94,3 +94,10 @@ Route::prefix('tentang')->name('tentang.')->group(function () {
         return view('pages.tentang.hubungi-kami');
     })->name('hubungi-kami');
 });
+
+/*Profil Pengguna*/
+Route::prefix('profil')->name('profil.')->group(function () {
+    Route::get('/', function () {
+        return view('pages.profil.index');
+    })->name('index');
+});
