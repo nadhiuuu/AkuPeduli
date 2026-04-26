@@ -107,9 +107,24 @@
 <!-- SCRIPT -->
 <script>
     function toggleShare() {
-        document.getElementById('shareMenu').classList.toggle('hidden');
+        const menu = document.getElementById('shareMenu');
+        if (menu) menu.classList.toggle('hidden');
     }
 
+    // 🔥 KLIK DI LUAR → AUTO CLOSE
+    document.addEventListener('click', function(e) {
+        const menu = document.getElementById('shareMenu');
+        const button = e.target.closest('button');
+
+        // kalau klik bukan tombol Bagikan & bukan menu
+        if (!e.target.closest('#shareMenu') && !button) {
+            if (menu && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+            }
+        }
+    });
+
+    // copy link
     function copyLink() {
         navigator.clipboard.writeText(window.location.href);
         alert("Link berhasil disalin!");
