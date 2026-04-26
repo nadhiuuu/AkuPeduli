@@ -53,10 +53,22 @@
                         <p class="text-sm font-bold text-slate-800 mb-4 text-center md:text-left">Bagikan kabar baik ini:
                         </p>
                         <div class="flex flex-wrap gap-3">
-                            <button
+                            @php
+                                $url = url()->current();
+                                $text =
+                                    "Lihat dokumentasi penyaluran donasi ini:\n" .
+                                    $documentation->campaign->title .
+                                    "\n" .
+                                    $url;
+
+                                $waUrl = 'https://wa.me/?text=' . urlencode($text);
+                            @endphp
+                            <a href="{{ $waUrl }}" target="_blank"
                                 class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-bold text-sm hover:bg-green-700 transition">
+
                                 <i class="fab fa-whatsapp"></i> WhatsApp
-                            </button>
+                            </a>
+
                             <button id="btnShare"
                                 class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 border border-slate-200 text-slate-600 rounded-xl font-bold text-sm hover:bg-slate-100 transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
