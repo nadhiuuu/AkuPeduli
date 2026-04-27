@@ -1,0 +1,38 @@
+services:
+  app:
+    image: project-app:latest
+    build: .
+    container_name: akupeduli_app
+    volumes:
+      - .:/var/www
+    networks:
+      - laravel
+
+
+
+  web:
+    image: nginx:alpine
+    container_name: akupeduli_web
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  db:
+    image: mysql:8
+    container_name: akupeduli_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: akupeduli
+    ports:
+      - "3307:3306"
+    networks:
+      - laravel
+
+networks:
+  laravel:
