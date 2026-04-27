@@ -14,7 +14,10 @@ class DisasterImpact extends Model
         'desa', 
         'jumlah_korban', 
         'jumlah_pengungsi', 
-        'tingkat_keparahan'
+        'luas_wilayah_ha',
+        'kerugian_materil',
+        'bukti_surat_bpbd',
+        'tingkat_keparahan',
     ];
 
     public function campaign() { 
