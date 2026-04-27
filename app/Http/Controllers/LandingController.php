@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Campaign;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use App\Models\Documentation;
 class LandingController extends Controller
 {
     /**
@@ -42,15 +42,22 @@ class LandingController extends Controller
                     'image' => asset('storage/' . $campaign->image), 
                     'lat' => $campaign->impact->latitude ?? '-8.1724',
                     'lng' => $campaign->impact->longitude ?? '113.7003',
+                    'donors_count' => $campaign->donations_count,
+                    'days_left' => max(0, intval($daysLeft)),
                     
                     // --- TAMBAHAN BARU ---
                     'donors_count' => $campaign->donations_count, // Hasil dari withCount di atas
                     'days_left' => max(0, intval($daysLeft)), // Cegah angka minus jika sudah lewat deadline
                 ];
             });
+            $documentations = Documentation::with('campaign.user')
+            ->latest()
+            ->take(3)
+            ->get();
 
         return view('pages.home.landing', [
-            'campaigns' => $campaignData
+            'campaigns' => $campaignData,
+            'documentations' => $documentations
         ]);
     }
 }

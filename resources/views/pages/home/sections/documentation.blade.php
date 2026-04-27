@@ -1,18 +1,3 @@
-@php
-    $docs = [];
-
-    for($i=1; $i<=3; $i++){
-        $docs[] = [
-            'title' => "Dokumentasi Penyaluran #".$i,
-            'description' => "Bukti penyaluran bantuan kepada masyarakat yang membutuhkan.",
-            'image' => "https://picsum.photos/400/300?random=".$i,
-            'author' => "Admin",
-            'time' => rand(1,24)." jam lalu",
-            'avatar' => "https://i.pravatar.cc/150?u=".$i
-        ];
-    }
-@endphp
-
 <main class="bg-gray-50 relative z-10 -mt-20 pt-20 pb-24">
     <section>
         <div class="max-w-7xl mx-auto px-4">
@@ -25,15 +10,39 @@
                 </p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                @foreach($docs as $item)
-                    <x-documentation-card
-                        :title="$item['title']"
-                        :description="$item['description']"
-                        :image="$item['image']"
-                        :author="$item['author']"
-                        :time="$item['time']"
-                        :avatar="$item['avatar']"
-                    />
+                @foreach ($documentations as $doc)
+                    <a href="{{ route('documentation.detail', $doc->slug) }}"
+                        class="block bg-white rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden">
+
+                        <img src="{{ asset('storage/' . $doc->bukti_foto) }}" class="w-full h-48 object-cover">
+
+                        <div class="p-4">
+                            <h3 class="font-bold text-slate-800">
+                                {{ $doc->campaign->title }}
+                            </h3>
+
+                            <p class="text-sm text-slate-500 mt-1">
+                                {{ \Illuminate\Support\Str::limit(strip_tags($doc->deskripsi), 80) }}
+                            </p>
+
+                            <div class="flex items-center gap-2 mt-4 pt-3 border-t border-slate-200">
+
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($doc->campaign->user->name ?? 'Admin') }}"
+                                    class="w-8 h-8 rounded-full">
+
+                                <div class="leading-tight">
+                                    <p class="text-xs font-semibold text-slate-700">
+                                        {{ $doc->campaign->user->name ?? 'Admin' }}
+                                    </p>
+
+                                    <p class="text-[11px] text-slate-400">
+                                        {{ $doc->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
                 @endforeach
             </div>
         </div>

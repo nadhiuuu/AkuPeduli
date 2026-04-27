@@ -22,24 +22,16 @@
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($campaigns as $item)
-                    <x-campaign-card
-                        :slug="$item['slug']"
-                        :category="$item['category']"
-                        :title="$item['title']"
-                        :description="$item['description']"
-                        :raised="$item['raised']"
-                        :goal="$item['goal']"
-                        :percentage="$item['percentage']"
-                        :image="$item['image']"
-                        :donors="$item['donors_count']"
-                        :days_left="$item['days_left']"
-                    />
+                @foreach ($campaigns as $item)
+                    <x-campaign-card :slug="$item['slug']" :category="$item['category']" :title="$item['title']" :description="$item['description']"
+                        :raised="$item['raised']" :goal="$item['goal']" :percentage="$item['percentage']" :image="$item['image']" :donors="$item['donors_count']"
+                        :days_left="$item['days_left']" />
                 @endforeach
             </div>
 
             <div class="pt-6 text-center">
-                <a href="{{ route('donation.index') }}" class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+                <a href="{{ route('donation.index') }}"
+                    class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
                     Lihat Semua Campaign
                 </a>
             </div>

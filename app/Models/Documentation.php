@@ -9,6 +9,16 @@ use App\Models\Campaign;
 class Documentation extends Model
 {
 
+public function index()
+{
+    $documentations = Documentation::with('campaign.user')
+        ->latest()
+        ->take(3) // tampil 3 saja di landing
+        ->get();
+
+    return view('pages.home.index', compact('documentations'));
+}
+
 protected static function booted()
 {
     static::creating(function ($doc) {
