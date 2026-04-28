@@ -79,9 +79,7 @@ class DocumentationsTable
                 Action::make('Lihat Web')
                     ->icon('heroicon-o-globe-alt')
                     ->color('info')
-                ->url(fn ($record): string => url(
-                    '/documentation/' . $record->slug))                    
-                ->openUrlInNewTab(),
+                    ->url(fn ($record): string => route('documentation.detail', $record->slug))                ->openUrlInNewTab(),
                 EditAction::make(),
         ]);
     }
