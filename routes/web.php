@@ -5,7 +5,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DocumentationController;
-
+use App\Http\Controllers\HistoryDonationController;
 /*Halaman Utama & Auth*/
 Route::get('/', [LandingController::class, 'index'])->name('home');
 
@@ -96,8 +96,11 @@ Route::prefix('tentang')->name('tentang.')->group(function () {
 });
 
 /*Profil Pengguna*/
-Route::prefix('profil')->name('profil.')->group(function () {
-    Route::get('/', function () {
-        return view('pages.profil.index');
-    })->name('index');
+Route::prefix('profil')
+    ->middleware('auth')
+    ->name('profil.')
+    ->group(function () {
+
+        Route::get('/', [HistoryDonationController::class, 'index'])->name('index');
+
 });

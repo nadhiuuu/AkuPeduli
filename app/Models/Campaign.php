@@ -12,7 +12,7 @@ class Campaign extends Model
     use DeletesStoredFiles;
 
     public const STATUS_PENDING = 'pending';
-    public const STATUS_ACTIVE = 'active';
+    public const STATUS_ACTIVE = 'aktif';
     public const STATUS_REJECTED = 'rejected';
     public const STATUS_COMPLETED = 'completed';
 

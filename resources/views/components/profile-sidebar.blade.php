@@ -6,45 +6,54 @@
         </div>
 
         <nav class="p-2 space-y-1">
-            <button @click="tab = 'profile'" 
-                :class="tab === 'profile' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'" 
+
+            <a href="?tab=profile"
+                :class="tab === 'profile' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'"
                 class="flex items-center gap-3 w-full px-4 py-3 text-sm font-semibold rounded-xl transition-all group">
-                <i data-lucide="user"
-                    class="w-5 h-5 transition-colors"
+
+                <i data-lucide="user" class="w-5 h-5"
                     :class="tab === 'profile' ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'">
                 </i>
-                Informasi Profil
-            </button>
 
-            <button @click="tab = 'donations'" 
-                :class="tab === 'donations' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'" 
+                Informasi Profil
+            </a>
+
+
+            <a href="?tab=donations"
+                :class="tab === 'donations' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'"
                 class="flex items-center gap-3 w-full px-4 py-3 text-sm font-semibold rounded-xl transition-all group">
-                <i data-lucide="heart"
-                    class="w-5 h-5 transition-colors"
+
+                <i data-lucide="heart" class="w-5 h-5"
                     :class="tab === 'donations' ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'">
                 </i>
-                Donasi Saya
-            </button>
 
-            <button @click="tab = 'password'" 
-                :class="tab === 'password' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'" 
+                Donasi Saya
+            </a>
+
+
+            <a href="?tab=password"
+                :class="tab === 'password' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'"
                 class="flex items-center gap-3 w-full px-4 py-3 text-sm font-semibold rounded-xl transition-all group">
-                <i data-lucide="lock"
-                    class="w-5 h-5 transition-colors"
+
+                <i data-lucide="lock" class="w-5 h-5"
                     :class="tab === 'password' ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'">
                 </i>
-                Kata Sandi
-            </button>
 
-            <button @click="tab = 'sessions'" 
-                :class="tab === 'sessions' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'" 
+                Kata Sandi
+            </a>
+
+
+            <a href="?tab=sessions"
+                :class="tab === 'sessions' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'"
                 class="flex items-center gap-3 w-full px-4 py-3 text-sm font-semibold rounded-xl transition-all group">
-                <i data-lucide="monitor"
-                    class="w-5 h-5 transition-colors"
+
+                <i data-lucide="monitor" class="w-5 h-5"
                     :class="tab === 'sessions' ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'">
                 </i>
+
                 Sesi Browser
-            </button>
+            </a>
+
         </nav>
     </div>
 </aside>

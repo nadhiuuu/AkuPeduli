@@ -5,14 +5,12 @@
         <h3 class="text-xl font-bold text-slate-800">Riwayat Donasi</h3>
         <p class="text-sm text-slate-500">Terima kasih atas kebaikan Anda. Berikut adalah ringkasan kontribusi Anda.</p>
     </div>
-
-    <x-donasi-saya-card />
-
+    <!-- 🔥 INI YANG LO KURANG -->
+    <x-donasi-saya-card :totalDonasi="$totalDonasi" :frekuensi="$frekuensi" />
     <div class="space-y-4">
         <h4 class="font-bold text-slate-800 ml-1">Transaksi Terakhir</h4>
         <div class="bg-white border border-slate-100 rounded-xl overflow-hidden shadow-sm">
-            <x-transaksi-saya-table />
+            <x-transaksi-saya-table :donations="$donations" />
         </div>
-
     </div>
 </div>
