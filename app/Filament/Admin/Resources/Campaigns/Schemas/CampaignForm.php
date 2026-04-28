@@ -12,6 +12,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
@@ -95,12 +96,11 @@ class CampaignForm
 
             Select::make('status')
                 ->label('Status Galang Dana')
-                ->options([
-                    'aktif' => 'Aktif (Berjalan)',
-                    'nonaktif' => 'Nonaktif (Menunggu/Ditutup)',
-                    'selesai' => 'Selesai (Target Tercapai)',
-                ])
-                ->default('aktif')
+                ->options(Campaign::statusOptions())
+                ->default(Campaign::STATUS_PENDING)
+                ->hidden(fn () => ! Auth::user()?->isAdmin())
+                ->disabled(fn (?Model $record) => ! $record)
+                ->dehydrated()
                 ->required(),
 
             FormsFileUpload::make('image')
@@ -215,6 +215,8 @@ class CampaignForm
                     ->disk('public')
                     ->directory('disaster-impacts/bpbd')
                     ->visibility('public')
+                    ->openable()
+                    ->downloadable()
                     ->acceptedFileTypes([
                         'application/pdf',
                         'image/jpeg',

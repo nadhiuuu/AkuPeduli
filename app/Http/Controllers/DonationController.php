@@ -23,7 +23,7 @@ class DonationController extends Controller
             ->withCount(['donations' => function ($query) {
                 $query->where('status', 'success');
             }])
-            ->where('status', 'aktif')
+            ->publiclyVisible()
             ->latest()
             ->get()
             ->map(function ($campaign) {
@@ -55,6 +55,8 @@ class DonationController extends Controller
 
     public function show(Campaign $campaign)
     {
+        abort_unless($campaign->isPubliclyVisible(), 404);
+
         $campaign->load(['impact', 'category', 'user']);
 
         $donorsCount = $campaign->donations()->where('status', 'success')->count();
@@ -74,6 +76,8 @@ class DonationController extends Controller
 
     public function donate(Campaign $campaign)
     {
+        abort_unless($campaign->isPubliclyVisible(), 404);
+
         $daysLeft = max(0, Carbon::now()->startOfDay()->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false));
         $target = $campaign->target_amount > 0 ? $campaign->target_amount : 1;
         $percentage = min(100, ($campaign->current_amount / $target) * 100);
@@ -87,6 +91,8 @@ class DonationController extends Controller
 
     public function process(Request $request, Campaign $campaign)
     {
+        abort_unless($campaign->isPubliclyVisible(), 404);
+
         $request->validate([
             'amount' => 'required|string',
             'message' => 'nullable|string',

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Filament\Admin\Resources\Documentations\Schemas;
+
+use App\Models\Campaign;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
@@ -20,7 +22,7 @@ class DocumentationForm
                     ->relationship(
                         name : 'campaign',
                         titleAttribute: 'title',
-                        modifyQueryUsing: fn ($query) => $query->where('status', 'aktif')
+                        modifyQueryUsing: fn ($query) => $query->where('status', Campaign::STATUS_ACTIVE)
                         ->where('user_id', \Illuminate\Support\Facades\Auth::id())
                     )
                     ->required()

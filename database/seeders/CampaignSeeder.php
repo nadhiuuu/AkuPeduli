@@ -38,7 +38,7 @@ class CampaignSeeder extends Seeder
                 'target_amount' => 150000,
                 'current_amount' => 0,
                 'end_date' => now()->addDays(21)->toDateString(),
-                'status' => 'aktif',
+                'status' => Campaign::STATUS_ACTIVE,
             ],
             [
                 'category_slug' => 'gempa-bumi',
@@ -47,7 +47,7 @@ class CampaignSeeder extends Seeder
                 'target_amount' => 225000,
                 'current_amount' => 0,
                 'end_date' => now()->addDays(30)->toDateString(),
-                'status' => 'aktif',
+                'status' => Campaign::STATUS_ACTIVE,
             ],
             [
                 'category_slug' => 'kebakaran',
@@ -56,7 +56,7 @@ class CampaignSeeder extends Seeder
                 'target_amount' => 100000,
                 'current_amount' => 0,
                 'end_date' => now()->addDays(10)->toDateString(),
-                'status' => 'selesai',
+                'status' => Campaign::STATUS_COMPLETED,
             ],
         ];
 

@@ -9,9 +9,9 @@ use App\Filament\Admin\Resources\Campaigns\Schemas\CampaignForm;
 use App\Filament\Admin\Resources\Campaigns\Tables\CampaignsTable;
 use App\Models\Campaign;
 use BackedEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class CampaignResource extends Resource
@@ -22,7 +22,19 @@ class CampaignResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return true; 
+        return true;
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery()->with(['category', 'impact', 'user']);
+        $user = auth()->user();
+
+        if (! $user || $user->isAdmin()) {
+            return $query;
+        }
+
+        return $query->ownedBy($user->id);
     }
 
     protected static ?string $recordTitleAttribute = 'title';

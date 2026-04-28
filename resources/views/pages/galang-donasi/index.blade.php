@@ -3,6 +3,8 @@
 
 @section('content')
 @php
+    use App\Models\Campaign;
+
     $isLoggedIn = Auth::check();
     $user = $isLoggedIn ? Auth::user() : null;
     $profile = $user ? \App\Models\CampaignerProfile::where('user_id', $user->id)->first() : null;
@@ -59,7 +61,10 @@
                             :description="\Illuminate\Support\Str::limit(strip_tags($item->description), 80)"
                             :raised="$item->current_amount" :goal="$item->target_amount" :percentage="$percentage"
                             :image="asset('storage/' . $item->image)" :donatur="rand(10, 200)" :days="$days_left"
-                            :status="$item->status" />
+                            :status="$item->status"
+                            :rejection-reason="$item->status === Campaign::STATUS_REJECTED ? $item->rejection_reason : null"
+                            :detail-url="$item->status === Campaign::STATUS_ACTIVE ? route('donation.detail', $item->slug) : \App\Filament\Admin\Resources\Campaigns\CampaignResource::getUrl('edit', ['record' => $item])"
+                            :edit-url="$item->status === Campaign::STATUS_REJECTED ? \App\Filament\Admin\Resources\Campaigns\CampaignResource::getUrl('edit', ['record' => $item]) : null" />
                     @endforeach
                 </div>
             @endif

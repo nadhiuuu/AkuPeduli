@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Campaigns\Tables;
 
+use App\Models\Campaign;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -18,7 +19,15 @@ class CampaignsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', Auth::id()))
+            ->modifyQueryUsing(function (Builder $query): Builder {
+                $user = Auth::user();
+
+                if (! $user || $user->isAdmin()) {
+                    return $query;
+                }
+
+                return $query->where('user_id', $user->id);
+            })
             ->columns([
                 ImageColumn::make('image')
                     ->label('Banner')
@@ -58,11 +67,13 @@ class CampaignsTable
                     ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'aktif' => 'success',
-                        'nonaktif' => 'danger',
-                        'selesai' => 'info',
+                        Campaign::STATUS_PENDING => 'warning',
+                        Campaign::STATUS_ACTIVE => 'success',
+                        Campaign::STATUS_REJECTED => 'danger',
+                        Campaign::STATUS_COMPLETED => 'info',
                         default => 'gray',
-                    }),
+                    })
+                    ->formatStateUsing(fn (string $state): string => Campaign::statusOptions()[$state] ?? $state),
             ])
             ->filters([
                 SelectFilter::make('category_id')
@@ -73,18 +84,15 @@ class CampaignsTable
 
                 SelectFilter::make('status')
                     ->label('Filter Status')
-                    ->options([
-                        'aktif' => 'Aktif',
-                        'nonaktif' => 'Nonaktif',
-                        'selesai' => 'Selesai',
-                    ]),
+                    ->options(Campaign::statusOptions()),
             ])
             ->recordActions([
                 Action::make('Lihat Web')
                     ->icon('heroicon-o-globe-alt')
                     ->color('info')
-                    ->url(fn ($record): string => url('/campaign/' . $record->slug))
-                    ->openUrlInNewTab(), // Buka di tab baru
+                    ->url(fn ($record): string => route('donation.detail', $record->slug))
+                    ->visible(fn (Campaign $record): bool => $record->status === Campaign::STATUS_ACTIVE)
+                    ->openUrlInNewTab(),
 
                 EditAction::make(),
             ])

@@ -1,6 +1,6 @@
 <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden flex flex-col h-full border border-slate-200/50">
     <div class="relative block overflow-hidden">
-        <a href="{{ route('donation.detail', $slug ?? '#') }}">
+        <a href="{{ $detailUrl ?? route('donation.detail', $slug ?? '#') }}">
             <img src="{{ $image ?? 'https://via.placeholder.com/400x200' }}" 
                  class="w-full h-48 object-cover hover:scale-105 transition duration-500">
         </a>
@@ -8,15 +8,19 @@
         <div class="absolute top-4 left-4 pointer-events-none">
             @if(($status ?? 'pending') == 'pending')
                 <span class="bg-amber-50 text-amber-600 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-amber-100 shadow-sm">
-                    Belum Terverifikasi
+                    Menunggu Verifikasi
                 </span>
             @elseif($status == 'active')
                 <span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-emerald-100 shadow-sm">
-                    Terverifikasi
+                    Aktif / Tayang
                 </span>
             @elseif($status == 'rejected')
                 <span class="bg-red-50 text-red-600 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-red-100 shadow-sm">
-                    Tidak Terverifikasi
+                    Ditolak
+                </span>
+            @elseif($status == 'completed')
+                <span class="bg-sky-50 text-sky-600 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-sky-100 shadow-sm">
+                    Selesai
                 </span>
             @endif
         </div>
@@ -24,7 +28,7 @@
 
     <div class="p-4 flex flex-col flex-grow space-y-3">
         <h3 class="font-semibold text-base line-clamp-2 leading-snug">
-            <a href="{{ route('donation.detail', $slug ?? '#') }}" class="hover:text-blue-600 transition-colors">
+            <a href="{{ $detailUrl ?? route('donation.detail', $slug ?? '#') }}" class="hover:text-blue-600 transition-colors">
                 {{ $title ?? 'Judul Campaign Donasi' }}
             </a>
         </h3>
@@ -67,5 +71,17 @@
                 {{ rand(1,30) }} hari lagi
             </span>
         </div>
+
+        @if(!empty($rejectionReason))
+            <div class="rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs text-red-700">
+                <span class="font-bold">Alasan penolakan:</span> {{ $rejectionReason }}
+            </div>
+        @endif
+
+        @if(!empty($editUrl))
+            <a href="{{ $editUrl }}" class="inline-flex justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+                Perbaiki Campaign
+            </a>
+        @endif
     </div>
 </div>

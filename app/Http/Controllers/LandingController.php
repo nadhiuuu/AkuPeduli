@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Models\Documentation;
+
 class LandingController extends Controller
 {
     /**
@@ -20,7 +21,7 @@ class LandingController extends Controller
             ->withCount(['donations' => function ($query) {
                 $query->where('status', 'success'); // Hanya hitung uang yang benar-benar masuk
             }])
-            ->where('status', 'aktif')
+            ->publiclyVisible()
             ->latest()
             ->take(3)
             ->get()
