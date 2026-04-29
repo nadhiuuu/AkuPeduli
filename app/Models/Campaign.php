@@ -11,10 +11,10 @@ class Campaign extends Model
 {
     use DeletesStoredFiles;
 
-    public const STATUS_PENDING = 'pending';
-    public const STATUS_ACTIVE = 'aktif';
-    public const STATUS_REJECTED = 'rejected';
-    public const STATUS_COMPLETED = 'completed';
+    public const STATUS_PENDING = 'Menunggu Verifikasi Admin';
+    public const STATUS_ACTIVE = 'Aktif / Tayang';
+    public const STATUS_REJECTED = 'Ditolak';
+    public const STATUS_COMPLETED = 'Selesai';
 
     protected $fillable = [
         'user_id',
