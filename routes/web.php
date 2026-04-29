@@ -6,6 +6,7 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\HistoryDonationController;
+use App\Http\Controllers\ProfileController;
 /*Halaman Utama & Auth*/
 Route::get('/', [LandingController::class, 'index'])->name('home');
 
@@ -104,3 +105,6 @@ Route::prefix('profil')
         Route::get('/', [HistoryDonationController::class, 'index'])->name('index');
 
 });
+
+Route::put('/profil/password', [ProfileController::class, 'updatePassword'])
+    ->name('profile.password.update');

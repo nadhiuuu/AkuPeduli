@@ -5,7 +5,7 @@
     <main class="pt-20 pb-20">
         <div class="min-h-screen bg-slate-50/50 py-12 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto" x-data="{
-                tab: new URLSearchParams(window.location.search).get('tab') || 'profile'
+                tab: '{{ session('tab') ?? (request('tab') ?? 'profile') }}'
             }">
                 <div class="md:hidden mb-6 text-center">
                     <h1 class="text-2xl font-bold text-slate-800">Pengaturan Profil</h1>
