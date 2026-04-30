@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
 use App\Models\Campaign;
+use App\Models\Donation;
 use Illuminate\Support\Str;
+
 use Carbon\Carbon;
 use App\Models\Documentation;
 
@@ -30,7 +32,8 @@ class LandingController extends Controller
                 $percentage = ($campaign->current_amount / $target) * 100;
 
                 // Hitung sisa hari dari hari ini ke end_date
-                $daysLeft = Carbon::now()->startOfDay()->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false);
+                $daysLeft = Carbon::now()->startOfDay()
+                ->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false);
 
                 return [
                     'slug' => $campaign->slug,
@@ -56,9 +59,18 @@ class LandingController extends Controller
             ->take(3)
             ->get();
 
+        $totalDonations = Donation::where('status', 'success')->sum('gross_amount');
+        $totalTransactions = Donation::where('status', 'success')->count();
+        $totalUsers = User::where('role', 'user')->count();        
+        $totalCampaigns = Campaign::count();
+
         return view('pages.home.landing', [
             'campaigns' => $campaignData,
-            'documentations' => $documentations
+            'documentations' => $documentations,
+            'totalDonations' => $totalDonations,
+            'totalTransactions' => $totalTransactions,
+            'totalUsers' => $totalUsers,
+            'totalCampaigns' => $totalCampaigns,
         ]);
     }
 }
