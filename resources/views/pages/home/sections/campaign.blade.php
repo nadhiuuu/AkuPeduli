@@ -7,7 +7,7 @@
             <p class="text-center text-gray-500 mb-6">
                 Pilih lokasi untuk melihat campaign yang membutuhkan bantuan
             </p>
-            <x-campaign-map :campaigns="$campaigns" />
+            <x-campaign-map :campaigns="$mapCampaigns" :regions="$mapRegions" />
         </div>
     </section>
     <section class="pb-16 bg-slate-50">

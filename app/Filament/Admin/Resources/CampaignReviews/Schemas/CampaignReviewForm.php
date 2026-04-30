@@ -3,6 +3,9 @@
 namespace App\Filament\Admin\Resources\CampaignReviews\Schemas;
 
 use App\Models\Campaign;
+use App\Support\DisasterSeverityResolver;
+use App\Support\JemberRegion;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
@@ -58,14 +61,24 @@ class CampaignReviewForm
 
             Section::make('Review Disaster Impact')
                 ->relationship('impact')
+                ->mutateRelationshipDataBeforeFillUsing(fn (array $data): array => static::mutateImpactData($data))
+                ->mutateRelationshipDataBeforeSaveUsing(fn (array $data): array => static::mutateImpactData($data))
                 ->schema([
                     Grid::make(2)
                         ->schema([
-                            TextInput::make('kecamatan')
+                            Select::make('kecamatan')
                                 ->label('Kecamatan')
+                                ->options(JemberRegion::districtOptions())
+                                ->searchable()
+                                ->preload()
+                                ->live()
+                                ->afterStateUpdated(fn ($set) => $set('desa', null))
                                 ->required(),
-                            TextInput::make('desa')
+                            Select::make('desa')
                                 ->label('Desa / Kelurahan')
+                                ->options(fn ($get): array => JemberRegion::villagesForDistrict($get('kecamatan')))
+                                ->searchable()
+                                ->disabled(fn ($get): bool => blank($get('kecamatan')))
                                 ->required(),
                             TextInput::make('latitude')
                                 ->label('Latitude')
@@ -76,20 +89,22 @@ class CampaignReviewForm
                                 ->numeric()
                                 ->required(),
                             TextInput::make('jumlah_korban')
-                                ->label('Jumlah Korban Jiwa')
+                                ->label('Jumlah Meninggal')
                                 ->numeric()
                                 ->minValue(0)
                                 ->required(),
-                            TextInput::make('jumlah_pengungsi')
-                                ->label('Jumlah Pengungsi')
+                            TextInput::make('jumlah_terdampak')
+                                ->label('Jumlah Terdampak')
                                 ->numeric()
                                 ->minValue(0)
                                 ->required(),
-                            TextInput::make('luas_wilayah_ha')
-                                ->label('Luas Wilayah Terdampak (Ha)')
+                            TextInput::make('rumah_rusak')
+                                ->label('Rumah Rusak')
                                 ->numeric()
                                 ->minValue(0)
                                 ->required(),
+                            Checkbox::make('fasilitas_vital_lumpuh')
+                                ->label('Fasilitas Vital Lumpuh'),
                             TextInput::make('kerugian_materil')
                                 ->label('Kerugian Materil / Infrastruktur')
                                 ->numeric()
@@ -97,17 +112,11 @@ class CampaignReviewForm
                                 ->minValue(0)
                                 ->required(),
                             Select::make('tingkat_keparahan')
-                                ->label('Tingkat Keparahan AI')
-                                ->options([
-                                    'pending_ai' => 'Menunggu Hasil AI',
-                                    '1 - sangat ringan' => '1 - Sangat Ringan',
-                                    '2 - ringan' => '2 - Ringan',
-                                    '3 - sedang' => '3 - Sedang',
-                                    '4 - parah' => '4 - Parah',
-                                    '5 - sangat parah' => '5 - Sangat Parah',
-                                ])
+                                ->label('Status Bencana Otomatis')
+                                ->options(DisasterSeverityResolver::options())
                                 ->disabled()
-                                ->dehydrated(false),
+                                ->dehydrated()
+                                ->helperText('Nilai ini dihitung otomatis dari data review admin.'),
                             FileUpload::make('bukti_surat_bpbd')
                                 ->label('Surat Bukti BPBD')
                                 ->disk('public')
@@ -118,6 +127,10 @@ class CampaignReviewForm
                                 ->disabled()
                                 ->dehydrated(false)
                                 ->helperText('Buka file ini untuk mencocokkan angka input user dengan surat asli.'),
+                            Placeholder::make('severity_summary')
+                                ->label('Ringkasan Status')
+                                ->content(fn ($get): string => static::severitySummary($get))
+                                ->columnSpanFull(),
                         ]),
                 ]),
 
@@ -136,5 +149,31 @@ class CampaignReviewForm
                 ])
                 ->columns(2),
         ]);
+    }
+
+    private static function mutateImpactData(array $data): array
+    {
+        $severity = DisasterSeverityResolver::resolve($data);
+
+        return [
+            ...$data,
+            'tingkat_keparahan' => $severity['tingkat_keparahan'],
+        ];
+    }
+
+    private static function severitySummary($get): string
+    {
+        $severity = DisasterSeverityResolver::resolve([
+            'jumlah_korban' => $get('jumlah_korban'),
+            'jumlah_terdampak' => $get('jumlah_terdampak'),
+            'rumah_rusak' => $get('rumah_rusak'),
+            'fasilitas_vital_lumpuh' => $get('fasilitas_vital_lumpuh'),
+        ]);
+
+        $visibility = $severity['eligible_for_campaign']
+            ? 'Memenuhi ambang kampanye donasi.'
+            : 'Tersimpan sebagai Insiden Lokal.';
+
+        return $severity['severity_label'].' - '.$visibility;
     }
 }

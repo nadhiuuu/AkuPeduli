@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\Campaigns\Tables;
 
 use App\Models\Campaign;
+use App\Support\DisasterSeverityResolver;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -62,6 +63,17 @@ class CampaignsTable
                     ->money('IDR', locale: 'id')
                     ->color('success')
                     ->sortable(),
+
+                TextColumn::make('impact.tingkat_keparahan')
+                    ->label('Status Bencana')
+                    ->badge()
+                    ->formatStateUsing(fn (?string $state): string => DisasterSeverityResolver::labelFor($state))
+                    ->color(fn (?string $state): string => match ($state) {
+                        DisasterSeverityResolver::SIAGA => 'warning',
+                        DisasterSeverityResolver::MENENGAH => 'info',
+                        DisasterSeverityResolver::KRITIS => 'danger',
+                        default => 'gray',
+                    }),
 
                 TextColumn::make('status')
                     ->label('Status')

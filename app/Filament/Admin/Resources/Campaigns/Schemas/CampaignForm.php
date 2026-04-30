@@ -3,7 +3,11 @@
 namespace App\Filament\Admin\Resources\Campaigns\Schemas;
 
 use App\Models\Campaign;
+use App\Support\DisasterSeverityResolver;
+use App\Support\JemberRegion;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload as FormsFileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -13,8 +17,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CampaignForm
 {
@@ -31,7 +35,7 @@ class CampaignForm
                 ->description('Lengkapi data utama campaign terlebih dahulu.')
                 ->schema(static::getCampaignFields()),
             Step::make('Disaster Impact')
-                ->description('Masukkan dampak bencana dan lokasi untuk kebutuhan AI heatmap.')
+                ->description('Masukkan dampak bencana dan lokasi sesuai verifikasi lapangan.')
                 ->schema([
                     static::getImpactSection(),
                 ]),
@@ -125,30 +129,27 @@ class CampaignForm
     {
         return Section::make('Data Disaster Impact')
             ->relationship('impact')
-            ->mutateRelationshipDataBeforeFillUsing(fn (array $data): array => [
-                ...$data,
-                'tingkat_keparahan' => $data['tingkat_keparahan'] ?? 'pending_ai',
-            ])
-            ->mutateRelationshipDataBeforeCreateUsing(fn (array $data): array => [
-                ...$data,
-                'tingkat_keparahan' => $data['tingkat_keparahan'] ?? 'pending_ai',
-            ])
-            ->mutateRelationshipDataBeforeSaveUsing(fn (array $data): array => [
-                ...$data,
-                'tingkat_keparahan' => $data['tingkat_keparahan'] ?? 'pending_ai',
-            ])
+            ->mutateRelationshipDataBeforeFillUsing(fn (array $data): array => static::mutateImpactData($data))
+            ->mutateRelationshipDataBeforeCreateUsing(fn (array $data): array => static::mutateImpactData($data))
+            ->mutateRelationshipDataBeforeSaveUsing(fn (array $data): array => static::mutateImpactData($data))
             ->schema([
                 Grid::make(2)
                     ->schema([
-                        TextInput::make('kecamatan')
+                        Select::make('kecamatan')
                             ->label('Kecamatan')
-                            ->required()
-                            ->maxLength(255),
+                            ->options(JemberRegion::districtOptions())
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(fn ($set) => $set('desa', null))
+                            ->required(),
 
-                        TextInput::make('desa')
+                        Select::make('desa')
                             ->label('Desa / Kelurahan')
-                            ->required()
-                            ->maxLength(255),
+                            ->options(fn ($get): array => JemberRegion::villagesForDistrict($get('kecamatan')))
+                            ->searchable()
+                            ->disabled(fn ($get): bool => blank($get('kecamatan')))
+                            ->required(),
 
                         TextInput::make('latitude')
                             ->label('Latitude')
@@ -165,25 +166,29 @@ class CampaignForm
                             ->required(),
 
                         TextInput::make('jumlah_korban')
-                            ->label('Jumlah Korban Jiwa')
+                            ->label('Jumlah Meninggal')
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
                             ->required(),
 
-                        TextInput::make('jumlah_pengungsi')
-                            ->label('Jumlah Pengungsi')
+                        TextInput::make('jumlah_terdampak')
+                            ->label('Jumlah Terdampak')
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
                             ->required(),
 
-                        TextInput::make('luas_wilayah_ha')
-                            ->label('Luas Wilayah Terdampak (Ha)')
+                        TextInput::make('rumah_rusak')
+                            ->label('Rumah Rusak')
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
                             ->required(),
+
+                        Checkbox::make('fasilitas_vital_lumpuh')
+                            ->label('Fasilitas Vital Lumpuh')
+                            ->default(false),
 
                         TextInput::make('kerugian_materil')
                             ->label('Kerugian Materil / Infrastruktur')
@@ -194,20 +199,25 @@ class CampaignForm
                             ->required(),
 
                         Select::make('tingkat_keparahan')
-                            ->label('Tingkat Keparahan (Hasil AI)')
-                            ->options([
-                                'pending_ai' => 'Menunggu Hasil AI',
-                                '1 - sangat ringan' => '1 - Sangat Ringan',
-                                '2 - ringan' => '2 - Ringan',
-                                '3 - sedang' => '3 - Sedang',
-                                '4 - parah' => '4 - Parah',
-                                '5 - sangat parah' => '5 - Sangat Parah',
-                            ])
-                            ->default('pending_ai')
+                            ->label('Status Bencana Otomatis')
+                            ->options(DisasterSeverityResolver::options())
+                            ->default(DisasterSeverityResolver::LOCAL)
                             ->disabled()
                             ->dehydrated()
-                            ->required()
-                            ->helperText('Diisi otomatis oleh AI setelah analisis.'),
+                            ->visible(fn () => Auth::user()?->isAdmin())
+                            ->helperText('Dihitung otomatis dari data dampak final dan tidak bisa diubah manual.'),
+
+                        Placeholder::make('severity_preview')
+                            ->label('Ringkasan Status')
+                            ->content(fn ($get): string => static::severitySummary($get))
+                            ->visible(fn () => Auth::user()?->isAdmin())
+                            ->columnSpanFull(),
+
+                        Placeholder::make('review_privacy_notice')
+                            ->label('Status Bencana')
+                            ->content('Status bencana disembunyikan dari campaigner dan baru ditampilkan pada proses review admin.')
+                            ->visible(fn () => ! Auth::user()?->isAdmin())
+                            ->columnSpanFull(),
                     ]),
 
                 FormsFileUpload::make('bukti_surat_bpbd')
@@ -226,5 +236,31 @@ class CampaignForm
                     ->helperText('Opsional. Unggah PDF atau gambar bukti dari BPBD.')
                     ->maxSize(5120),
             ]);
+    }
+
+    private static function mutateImpactData(array $data): array
+    {
+        $severity = DisasterSeverityResolver::resolve($data);
+
+        return [
+            ...$data,
+            'tingkat_keparahan' => $severity['tingkat_keparahan'],
+        ];
+    }
+
+    private static function severitySummary($get): string
+    {
+        $severity = DisasterSeverityResolver::resolve([
+            'jumlah_korban' => $get('jumlah_korban'),
+            'jumlah_terdampak' => $get('jumlah_terdampak'),
+            'rumah_rusak' => $get('rumah_rusak'),
+            'fasilitas_vital_lumpuh' => $get('fasilitas_vital_lumpuh'),
+        ]);
+
+        $visibility = $severity['eligible_for_campaign']
+            ? 'Memenuhi ambang kampanye donasi.'
+            : 'Tersimpan sebagai Insiden Lokal.';
+
+        return $severity['severity_label'].' - '.$visibility;
     }
 }

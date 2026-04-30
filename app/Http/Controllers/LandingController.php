@@ -1,76 +1,39 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
-use App\Models\Campaign;
-use App\Models\Donation;
-use Illuminate\Support\Str;
 
-use Carbon\Carbon;
+use App\Models\Campaign;
 use App\Models\Documentation;
+use App\Models\Donation;
+use App\Models\User;
+use App\Support\CampaignMapData;
 
 class LandingController extends Controller
 {
-    /**
-     * Display the landing page.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
     public function index()
     {
-        // Tambahkan withCount untuk menghitung donasi yang 'success'
-        $campaignData = Campaign::with('impact')
+        $publicCampaigns = Campaign::with(['impact', 'category'])
             ->withCount(['donations' => function ($query) {
-                $query->where('status', 'success'); // Hanya hitung uang yang benar-benar masuk
+                $query->where('status', 'success');
             }])
             ->publiclyVisible()
             ->latest()
-            ->take(3)
-            ->get()
-            ->map(function ($campaign) {
-                $target = $campaign->target_amount > 0 ? $campaign->target_amount : 1;
-                $percentage = ($campaign->current_amount / $target) * 100;
+            ->get();
 
-                // Hitung sisa hari dari hari ini ke end_date
-                $daysLeft = Carbon::now()->startOfDay()
-                ->diffInDays(Carbon::parse($campaign->end_date)->startOfDay(), false);
-
-                return [
-                    'slug' => $campaign->slug,
-                    'category' => $campaign->category->name ?? 'Umum',
-                    'title' => $campaign->title,
-                    'description' => Str::limit(strip_tags($campaign->description), 100), 
-                    'raised' => $campaign->current_amount,
-                    'goal' => $campaign->target_amount,
-                    'percentage' => min(100, $percentage),
-                    'image' => asset('storage/' . $campaign->image), 
-                    'lat' => $campaign->impact->latitude ?? '-8.1724',
-                    'lng' => $campaign->impact->longitude ?? '113.7003',
-                    'donors_count' => $campaign->donations_count,
-                    'days_left' => max(0, intval($daysLeft)),
-                    
-                    // --- TAMBAHAN BARU ---
-                    'donors_count' => $campaign->donations_count, // Hasil dari withCount di atas
-                    'days_left' => max(0, intval($daysLeft)), // Cegah angka minus jika sudah lewat deadline
-                ];
-            });
-            $documentations = Documentation::with('campaign.user')
+        $documentations = Documentation::with('campaign.user')
             ->latest()
             ->take(3)
             ->get();
 
-        $totalDonations = Donation::where('status', 'success')->sum('gross_amount');
-        $totalTransactions = Donation::where('status', 'success')->count();
-        $totalUsers = User::where('role', 'user')->count();        
-        $totalCampaigns = Campaign::count();
-
         return view('pages.home.landing', [
-            'campaigns' => $campaignData,
+            'campaigns' => CampaignMapData::cards($publicCampaigns, 3),
+            'mapCampaigns' => CampaignMapData::mapCampaigns($publicCampaigns),
+            'mapRegions' => CampaignMapData::regionSummaries($publicCampaigns),
             'documentations' => $documentations,
-            'totalDonations' => $totalDonations,
-            'totalTransactions' => $totalTransactions,
-            'totalUsers' => $totalUsers,
-            'totalCampaigns' => $totalCampaigns,
+            'totalDonations' => Donation::where('status', 'success')->sum('gross_amount'),
+            'totalTransactions' => Donation::where('status', 'success')->count(),
+            'totalUsers' => User::where('role', 'user')->count(),
+            'totalCampaigns' => Campaign::count(),
         ]);
     }
 }

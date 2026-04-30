@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\CampaignReviews\Tables;
 
 use App\Models\Campaign;
+use App\Support\DisasterSeverityResolver;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -29,14 +30,24 @@ class CampaignReviewsTable
                     ->badge()
                     ->color('info'),
                 TextColumn::make('impact.jumlah_korban')
-                    ->label('Korban')
+                    ->label('Meninggal')
                     ->numeric(),
-                TextColumn::make('impact.jumlah_pengungsi')
-                    ->label('Pengungsi')
+                TextColumn::make('impact.jumlah_terdampak')
+                    ->label('Terdampak')
                     ->numeric(),
-                TextColumn::make('impact.kerugian_materil')
-                    ->label('Kerugian')
-                    ->money('IDR', locale: 'id'),
+                TextColumn::make('impact.rumah_rusak')
+                    ->label('Rumah Rusak')
+                    ->numeric(),
+                TextColumn::make('impact.tingkat_keparahan')
+                    ->label('Status Bencana')
+                    ->badge()
+                    ->formatStateUsing(fn (?string $state): string => DisasterSeverityResolver::labelFor($state))
+                    ->color(fn (?string $state): string => match ($state) {
+                        DisasterSeverityResolver::SIAGA => 'warning',
+                        DisasterSeverityResolver::MENENGAH => 'info',
+                        DisasterSeverityResolver::KRITIS => 'danger',
+                        default => 'gray',
+                    }),
                 TextColumn::make('impact.bukti_surat_bpbd')
                     ->label('Surat Bukti')
                     ->formatStateUsing(fn (?string $state): string => $state ? 'Tersedia' : 'Belum Ada')
