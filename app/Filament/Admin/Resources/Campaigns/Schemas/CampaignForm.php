@@ -170,6 +170,8 @@ class CampaignForm
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
+                            ->live()
+                            ->afterStateUpdated(fn ($get, $set) => static::syncSeverityState($get, $set))
                             ->required(),
 
                         TextInput::make('jumlah_terdampak')
@@ -177,6 +179,8 @@ class CampaignForm
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
+                            ->live()
+                            ->afterStateUpdated(fn ($get, $set) => static::syncSeverityState($get, $set))
                             ->required(),
 
                         TextInput::make('rumah_rusak')
@@ -184,10 +188,14 @@ class CampaignForm
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
+                            ->live()
+                            ->afterStateUpdated(fn ($get, $set) => static::syncSeverityState($get, $set))
                             ->required(),
 
                         Checkbox::make('fasilitas_vital_lumpuh')
                             ->label('Fasilitas Vital Lumpuh')
+                            ->live()
+                            ->afterStateUpdated(fn ($get, $set) => static::syncSeverityState($get, $set))
                             ->default(false),
 
                         TextInput::make('kerugian_materil')
@@ -204,6 +212,7 @@ class CampaignForm
                             ->default(DisasterSeverityResolver::LOCAL)
                             ->disabled()
                             ->dehydrated()
+                            ->live()
                             ->visible(fn () => Auth::user()?->isAdmin())
                             ->helperText('Dihitung otomatis dari data dampak final dan tidak bisa diubah manual.'),
 
@@ -246,6 +255,22 @@ class CampaignForm
             ...$data,
             'tingkat_keparahan' => $severity['tingkat_keparahan'],
         ];
+    }
+
+    private static function syncSeverityState($get, $set): void
+    {
+        if (! Auth::user()?->isAdmin()) {
+            return;
+        }
+
+        $severity = DisasterSeverityResolver::resolve([
+            'jumlah_korban' => $get('jumlah_korban'),
+            'jumlah_terdampak' => $get('jumlah_terdampak'),
+            'rumah_rusak' => $get('rumah_rusak'),
+            'fasilitas_vital_lumpuh' => $get('fasilitas_vital_lumpuh'),
+        ]);
+
+        $set('tingkat_keparahan', $severity['tingkat_keparahan']);
     }
 
     private static function severitySummary($get): string

@@ -23,6 +23,16 @@ class CreateCampaign extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        if (Auth::user()?->isAdmin()) {
+            $data['status'] = Campaign::STATUS_ACTIVE;
+            $data['submitted_for_review_at'] = null;
+            $data['reviewed_by'] = Auth::id();
+            $data['reviewed_at'] = now();
+            $data['rejection_reason'] = null;
+
+            return $data;
+        }
+
         $data['status'] = Campaign::STATUS_PENDING;
         $data['submitted_for_review_at'] = now();
         $data['reviewed_by'] = null;

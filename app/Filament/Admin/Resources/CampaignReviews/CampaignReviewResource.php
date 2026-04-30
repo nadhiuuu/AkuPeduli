@@ -61,6 +61,7 @@ class CampaignReviewResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
+            ->where('status', Campaign::STATUS_PENDING)
             ->with(['category', 'impact', 'user', 'reviewer']);
     }
 
