@@ -1,37 +1,48 @@
 services:
   app:
     build: .
-    container_name: akupeduli_app
-    volumes:
-      - .:/var/www
+    image: akupeduli-app:latest  # Pastikan image sudah di-build
+    deploy:
+      replicas: 2                # Menjalankan 2 container sekaligus untuk load balancing
+      restart_policy:
+        condition: on-failure
     networks:
       - laravel
 
   web:
     image: nginx:alpine
-    container_name: akupeduli_web
     ports:
-      - "8000:80"
+      - "8081:80"
     volumes:
-      - .:/var/www
       - ./nginx:/etc/nginx/conf.d
-    depends_on:
-      - app
+      # Catatan: Swarm agak sensitif dengan bind mount (folder lokal). 
+      # Pastikan path ini benar di semua node jika nanti pakai banyak mesin.
+    deploy:
+      replicas: 1
     networks:
       - laravel
+    depends_on:
+      - app
+
 
   db:
     image: mysql:8
     container_name: akupeduli_db
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: AkuPeduli
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE:-akupeduli}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3307:3306"
     volumes:
       - dbdata:/var/lib/mysql   # 👈 WAJIB
     networks:
     - laravel
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager # Memastikan DB tidak pindah-pindah mesin
 
 networks:
   laravel:
