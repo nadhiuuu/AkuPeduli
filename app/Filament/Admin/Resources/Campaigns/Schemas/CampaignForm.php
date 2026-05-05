@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Campaigns\Schemas;
 use App\Models\Campaign;
 use App\Support\DisasterSeverityResolver;
 use App\Support\JemberRegion;
+use Dotswan\MapPicker\Fields\Map; // <-- Import Map Picker
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload as FormsFileUpload;
 use Filament\Forms\Components\Placeholder;
@@ -151,11 +152,29 @@ class CampaignForm
                             ->disabled(fn ($get): bool => blank($get('kecamatan')))
                             ->required(),
 
+                        Map::make('lokasi_map')
+                            ->label('Pilih Titik Lokasi Peta')
+                            ->columnSpanFull()
+                            ->defaultLocation(-8.1724, 113.7000)
+                            ->zoom(11)
+                            ->clickable(true)
+                            ->draggable(true)
+                            ->live()
+                            ->dehydrated(false)
+                            ->afterStateUpdated(function ($set, ?array $state): void {
+                                if ($state) {
+                                    $set('latitude', $state['lat']);
+                                    $set('longitude', $state['lng']);
+                                }
+                            }),
+
                         TextInput::make('latitude')
                             ->label('Latitude')
                             ->numeric()
                             ->minValue(-90)
                             ->maxValue(90)
+                            ->readOnly() // Mengunci input agar tidak bisa diedit manual
+                            ->extraInputAttributes(['class' => 'bg-gray-100 cursor-not-allowed']) // Efek warna terkunci
                             ->required(),
 
                         TextInput::make('longitude')
@@ -163,7 +182,10 @@ class CampaignForm
                             ->numeric()
                             ->minValue(-180)
                             ->maxValue(180)
+                            ->readOnly() // Mengunci input agar tidak bisa diedit manual
+                            ->extraInputAttributes(['class' => 'bg-gray-100 cursor-not-allowed']) // Efek warna terkunci
                             ->required(),
+                        // --- AKHIR TAMBAHAN KODE MAP ---
 
                         TextInput::make('jumlah_korban')
                             ->label('Jumlah Meninggal')
