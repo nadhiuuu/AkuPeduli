@@ -24,7 +24,7 @@
                 </svg>
             </div>
             <span class="text-sm text-slate-600 leading-tight">
-                Saya telah membaca dan menyetujui <a href="#" class="text-blue-600 underline font-semibold">Syarat dan
+                Saya telah membaca dan menyetujui <a href="{{ route('tentang.syarat-ketentuan') }}" class="text-blue-600 underline font-semibold">Syarat dan
                     Ketentuan</a> yang berlaku untuk melakukan penggalangan dana.
             </span>
         </label>

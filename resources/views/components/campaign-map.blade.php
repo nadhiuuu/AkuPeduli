@@ -3,8 +3,36 @@
     'regions' => [],
 ])
 
-<div>
-    <div id="map" class="w-full h-[350px] md:h-[450px] rounded-2xl shadow relative z-0"></div>
+<div class="flex flex-col gap-4 w-full">
+    <div id="map" class="w-full h-[350px] md:h-[500px] rounded-xl shadow-md relative z-0 border border-gray-200"></div>
+
+    <div class="p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+        <h4 class="text-sm font-bold text-gray-800 mb-2">Keterangan Status :</h4>
+        
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
+            
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-5 bg-[#9ca3af] border border-black/40 shadow-sm flex-shrink-0"></div>
+                <span class="text-xs sm:text-sm font-medium text-gray-700">Insiden Lokal</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-5 bg-[#b4ff8a] border border-black/40 shadow-sm flex-shrink-0"></div>
+                <span class="text-xs sm:text-sm font-medium text-gray-700">Siaga</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-5 bg-[#ffa500] border border-black/40 shadow-sm flex-shrink-0"></div>
+                <span class="text-xs sm:text-sm font-medium text-gray-700">Menengah</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-5 bg-[#ef4444] border border-black/40 shadow-sm flex-shrink-0"></div>
+                <span class="text-xs sm:text-sm font-medium text-gray-700">Kritis</span>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
