@@ -33,7 +33,8 @@
                     </p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    @foreach ($documentations as $doc)
+
+                    @forelse ($documentations as $doc)
                         <a href="{{ route('documentation.detail', $doc->slug) }}"
                             class="block bg-white rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden">
 
@@ -49,11 +50,9 @@
                                 </p>
 
                                 <div class="flex items-center gap-2 mt-4 pt-3 border-t border-slate-200">
-                                    <!-- Avatar -->
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($doc->campaign->user->name ?? 'Admin') }}"
                                         class="w-8 h-8 rounded-full object-cover">
 
-                                    <!-- Nama + waktu -->
                                     <div class="leading-tight">
                                         <p class="text-xs font-semibold text-slate-700">
                                             {{ $doc->campaign->user->name ?? 'Admin' }}
@@ -63,11 +62,18 @@
                                             {{ $doc->created_at->diffForHumans() }}
                                         </p>
                                     </div>
-
                                 </div>
                             </div>
                         </a>
-                    @endforeach
+
+                    @empty
+                        <!-- 🔥 EMPTY STATE -->
+                        <div class="col-span-full text-center py-20">
+                            <h3 class="text-xl font-bold text-slate-600 mb-2">
+                                Belum Ada Dokumentasi saat ini.
+                            </h3>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </section>
