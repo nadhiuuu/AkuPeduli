@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Campaigns\Schemas;
 use App\Models\Campaign;
 use App\Support\DisasterSeverityResolver;
 use App\Support\JemberRegion;
+use App\Support\RupiahInput;
 use Dotswan\MapPicker\Fields\Map; // <-- Import Map Picker
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload as FormsFileUpload;
@@ -79,8 +80,15 @@ class CampaignForm
 
             TextInput::make('target_amount')
                 ->label('Target Donasi')
-                ->numeric()
                 ->prefix('Rp')
+                ->type('text')
+                ->inputMode('numeric')
+                ->live()
+                ->afterStateHydrated(fn (TextInput $component, $state) => $component->rawState(RupiahInput::format($state)))
+                ->afterStateUpdated(fn (TextInput $component, $state) => $component->rawState(RupiahInput::format($state)))
+                ->mutateStateForValidationUsing(fn ($state) => RupiahInput::normalize($state))
+                ->dehydrateStateUsing(fn ($state) => RupiahInput::normalize($state))
+                ->rule('integer')
                 ->minValue(100000)
                 ->helperText('Minimal target donasi adalah Rp 100.000')
                 ->required(),
@@ -222,8 +230,15 @@ class CampaignForm
 
                         TextInput::make('kerugian_materil')
                             ->label('Kerugian Materil / Infrastruktur')
-                            ->numeric()
                             ->prefix('Rp')
+                            ->type('text')
+                            ->inputMode('numeric')
+                            ->live()
+                            ->afterStateHydrated(fn (TextInput $component, $state) => $component->rawState(RupiahInput::format($state)))
+                            ->afterStateUpdated(fn (TextInput $component, $state) => $component->rawState(RupiahInput::format($state)))
+                            ->mutateStateForValidationUsing(fn ($state) => RupiahInput::normalize($state))
+                            ->dehydrateStateUsing(fn ($state) => RupiahInput::normalize($state))
+                            ->rule('integer')
                             ->default(0)
                             ->minValue(0)
                             ->required(),

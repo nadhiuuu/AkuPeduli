@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\CampaignReviews\Schemas;
 use App\Models\Campaign;
 use App\Support\DisasterSeverityResolver;
 use App\Support\JemberRegion;
+use App\Support\RupiahInput;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -42,8 +43,10 @@ class CampaignReviewForm
                                 ->dehydrated(false),
                             TextInput::make('target_amount')
                                 ->label('Target Donasi')
-                                ->numeric()
                                 ->prefix('Rp')
+                                ->type('text')
+                                ->inputMode('numeric')
+                                ->afterStateHydrated(fn (TextInput $component, $state) => $component->rawState(RupiahInput::format($state)))
                                 ->disabled(),
                             Select::make('status')
                                 ->label('Status Review')
@@ -107,8 +110,15 @@ class CampaignReviewForm
                                 ->label('Fasilitas Vital Lumpuh'),
                             TextInput::make('kerugian_materil')
                                 ->label('Kerugian Materil / Infrastruktur')
-                                ->numeric()
                                 ->prefix('Rp')
+                                ->type('text')
+                                ->inputMode('numeric')
+                                ->live()
+                                ->afterStateHydrated(fn (TextInput $component, $state) => $component->rawState(RupiahInput::format($state)))
+                                ->afterStateUpdated(fn (TextInput $component, $state) => $component->rawState(RupiahInput::format($state)))
+                                ->mutateStateForValidationUsing(fn ($state) => RupiahInput::normalize($state))
+                                ->dehydrateStateUsing(fn ($state) => RupiahInput::normalize($state))
+                                ->rule('integer')
                                 ->minValue(0)
                                 ->required(),
                             Select::make('tingkat_keparahan')
