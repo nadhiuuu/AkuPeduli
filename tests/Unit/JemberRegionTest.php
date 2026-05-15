@@ -27,4 +27,33 @@ class JemberRegionTest extends TestCase
         $this->assertSame('Sumbersari', JemberRegion::canonicalDistrictName('sumbersari'));
         $this->assertSame('Tanggul', JemberRegion::canonicalDistrictName(' TANGGUL '));
     }
+
+    public function test_it_can_resolve_district_coordinates_from_local_geojson(): void
+    {
+        $coordinates = JemberRegion::districtCoordinates('Sumbersari');
+
+        $this->assertIsArray($coordinates);
+        $this->assertArrayHasKey('lat', $coordinates);
+        $this->assertArrayHasKey('lng', $coordinates);
+        $this->assertGreaterThan(-9, $coordinates['lat']);
+        $this->assertLessThan(-7, $coordinates['lat']);
+        $this->assertGreaterThan(113, $coordinates['lng']);
+        $this->assertLessThan(114, $coordinates['lng']);
+    }
+
+    public function test_it_can_resolve_selection_coordinates_for_a_valid_village(): void
+    {
+        $selectionCoordinates = JemberRegion::coordinatesForSelection('Sumbersari', 'Kranjingan');
+
+        $this->assertSame(
+            JemberRegion::districtCoordinates('Sumbersari'),
+            $selectionCoordinates,
+        );
+    }
+
+    public function test_it_returns_null_selection_coordinates_for_invalid_or_incomplete_input(): void
+    {
+        $this->assertNull(JemberRegion::coordinatesForSelection('Sumbersari', null));
+        $this->assertNull(JemberRegion::coordinatesForSelection('Sumbersari', 'Ajung'));
+    }
 }

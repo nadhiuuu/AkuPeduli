@@ -24,6 +24,8 @@ use Illuminate\Support\Str;
 
 class CampaignForm
 {
+    private const REGION_SELECTION_ZOOM = 14;
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -158,6 +160,9 @@ class CampaignForm
                             ->options(fn ($get): array => JemberRegion::villagesForDistrict($get('kecamatan')))
                             ->searchable()
                             ->disabled(fn ($get): bool => blank($get('kecamatan')))
+                            ->live()
+                            ->afterStateHydrated(fn ($get, $set) => static::syncLocationFromRegionSelection($get, $set))
+                            ->afterStateUpdated(fn (Select $component, $get, $set) => static::syncLocationFromRegionSelection($get, $set, $component))
                             ->required(),
 
                         Map::make('lokasi_map')
@@ -169,6 +174,7 @@ class CampaignForm
                             ->draggable(true)
                             ->live()
                             ->dehydrated(false)
+                            ->afterStateHydrated(fn (Map $component, $get) => static::hydrateMapFromCoordinates($component, $get))
                             ->afterStateUpdated(function ($set, ?array $state): void {
                                 if ($state) {
                                     $set('latitude', $state['lat']);
@@ -308,6 +314,36 @@ class CampaignForm
         ]);
 
         $set('tingkat_keparahan', $severity['tingkat_keparahan']);
+    }
+
+    private static function syncLocationFromRegionSelection($get, $set, ?Select $component = null): void
+    {
+        $coordinates = JemberRegion::coordinatesForSelection($get('kecamatan'), $get('desa'));
+
+        if (! $coordinates) {
+            return;
+        }
+
+        $set('lokasi_map', $coordinates);
+        $set('latitude', $coordinates['lat']);
+        $set('longitude', $coordinates['lng']);
+
+        $component?->getLivewire()->dispatch('refreshMap', zoom: static::REGION_SELECTION_ZOOM);
+    }
+
+    private static function hydrateMapFromCoordinates(Map $component, $get): void
+    {
+        $latitude = $get('latitude');
+        $longitude = $get('longitude');
+
+        if (blank($latitude) || blank($longitude)) {
+            return;
+        }
+
+        $component->rawState([
+            'lat' => (float) $latitude,
+            'lng' => (float) $longitude,
+        ]);
     }
 
     private static function severitySummary($get): string

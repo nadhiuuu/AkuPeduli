@@ -76,6 +76,58 @@ class AppServiceProvider extends ServiceProvider
             ')
         );
 
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::SCRIPTS_AFTER,
+            fn (): string => Blade::render(<<<'BLADE'
+                <script>
+                    (() => {
+                        const patchMapPickerRefresh = () => {
+                            if (! window.mapPicker || window.mapPicker.__akuPeduliZoomPatched) {
+                                return;
+                            }
+
+                            const originalFactory = window.mapPicker;
+
+                            const extractPayload = (payload) => {
+                                if (payload && typeof payload === 'object' && 'detail' in payload) {
+                                    return payload.detail ?? {};
+                                }
+
+                                return payload ?? {};
+                            };
+
+                            const patchedFactory = ($wire, config) => {
+                                const instance = originalFactory($wire, config);
+                                const originalRefreshMap = instance.refreshMap?.bind(instance);
+
+                                instance.refreshMap = function (payload = {}) {
+                                    const detail = extractPayload(payload);
+                                    const zoom = Number(detail?.zoom);
+
+                                    if (this.map && Number.isFinite(zoom)) {
+                                        this.map.flyTo(this.getCoordinates(), zoom);
+                                        this.updateMarker();
+
+                                        return;
+                                    }
+
+                                    return originalRefreshMap?.(detail);
+                                };
+
+                                return instance;
+                            };
+
+                            patchedFactory.__akuPeduliZoomPatched = true;
+                            window.mapPicker = patchedFactory;
+                        };
+
+                        patchMapPickerRefresh();
+                        window.addEventListener('map-script-loaded', patchMapPickerRefresh);
+                    })();
+                </script>
+            BLADE)
+        );
+
         VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
             return (new MailMessage)
                 ->subject('Verifikasi Email Anda - AkuPeduli!')

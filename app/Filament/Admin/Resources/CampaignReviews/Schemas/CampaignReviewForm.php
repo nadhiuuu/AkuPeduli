@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use App\Support\DisasterSeverityResolver;
 use App\Support\JemberRegion;
 use App\Support\RupiahInput;
+use Dotswan\MapPicker\Fields\Map;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -19,6 +20,8 @@ use Filament\Schemas\Schema;
 
 class CampaignReviewForm
 {
+    private const REGION_SELECTION_ZOOM = 14;
+
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
@@ -82,7 +85,26 @@ class CampaignReviewForm
                                 ->options(fn ($get): array => JemberRegion::villagesForDistrict($get('kecamatan')))
                                 ->searchable()
                                 ->disabled(fn ($get): bool => blank($get('kecamatan')))
+                                ->live()
+                                ->afterStateHydrated(fn ($get, $set) => static::syncLocationFromRegionSelection($get, $set))
+                                ->afterStateUpdated(fn (Select $component, $get, $set) => static::syncLocationFromRegionSelection($get, $set, $component))
                                 ->required(),
+                            Map::make('lokasi_map')
+                                ->label('Pilih Titik Lokasi Peta')
+                                ->columnSpanFull()
+                                ->defaultLocation(-8.1724, 113.7000)
+                                ->zoom(11)
+                                ->clickable(true)
+                                ->draggable(true)
+                                ->live()
+                                ->dehydrated(false)
+                                ->afterStateHydrated(fn (Map $component, $get) => static::hydrateMapFromCoordinates($component, $get))
+                                ->afterStateUpdated(function ($set, ?array $state): void {
+                                    if ($state) {
+                                        $set('latitude', $state['lat']);
+                                        $set('longitude', $state['lng']);
+                                    }
+                                }),
                             TextInput::make('latitude')
                                 ->label('Latitude')
                                 ->numeric()
@@ -169,6 +191,36 @@ class CampaignReviewForm
             ...$data,
             'tingkat_keparahan' => $severity['tingkat_keparahan'],
         ];
+    }
+
+    private static function syncLocationFromRegionSelection($get, $set, ?Select $component = null): void
+    {
+        $coordinates = JemberRegion::coordinatesForSelection($get('kecamatan'), $get('desa'));
+
+        if (! $coordinates) {
+            return;
+        }
+
+        $set('lokasi_map', $coordinates);
+        $set('latitude', $coordinates['lat']);
+        $set('longitude', $coordinates['lng']);
+
+        $component?->getLivewire()->dispatch('refreshMap', zoom: static::REGION_SELECTION_ZOOM);
+    }
+
+    private static function hydrateMapFromCoordinates(Map $component, $get): void
+    {
+        $latitude = $get('latitude');
+        $longitude = $get('longitude');
+
+        if (blank($latitude) || blank($longitude)) {
+            return;
+        }
+
+        $component->rawState([
+            'lat' => (float) $latitude,
+            'lng' => (float) $longitude,
+        ]);
     }
 
     private static function severitySummary($get): string
