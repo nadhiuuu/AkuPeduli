@@ -1,0 +1,54 @@
+name: CI AkuPeduli
+
+# Kapan robot ini harus berjalan?
+# Setiap kali ada 'push' atau 'pull request' ke branch 'main'
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Mengambil kode terbarumu dari repositori
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 2. Menyiapkan PHP lingkungan PHP
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4' # Sesuaikan dengan versi PHP di laptopmu
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, libxml, mbstring, openssl, pcre, phar, posix, session, soap, sockets, sqlite3, tokenizer, xmlwriter, zip
+
+    # 3. Menggandakan file .env.example menjadi .env
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    # 4. Menginstal library PHP (Composer)
+    - name: Install Composer Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    # 5. Menginstal library NPM (untuk Vite/Filament)
+    - name: Install NPM Dependencies
+      run: npm install && npm run build
+
+    # 6. Menghasilkan Application Key Laravel
+    - name: Generate App Key
+      run: php artisan key:generate
+
+    # 7. Membuat database SQLite di memori khusus untuk testing
+    - name: Create Database
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
+
+    # 8. Menjalankan PHPUnit / Pest Testing
+    - name: Execute Tests via PHPUnit
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: php artisan test
