@@ -124,6 +124,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->hasMany(Donation::class); 
     }
 
+    public function withdrawals(): HasMany
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
     /**
      * Helper: Mengecek apakah user adalah admin.
      */

@@ -113,6 +113,11 @@ class Campaign extends Model
         return $this->hasMany(Documentation::class);
     }
 
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewed_by');
