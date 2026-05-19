@@ -12,6 +12,8 @@ spec:
       labels:
         app: akupeduli
     spec:
+      imagePullSecrets:
+      - name: ghcr-secret
       # InitContainer bertugas meng-copy file publik (CSS/JS/Images) ke folder yang bisa dibaca Nginx
       initContainers:
       - name: copy-static
