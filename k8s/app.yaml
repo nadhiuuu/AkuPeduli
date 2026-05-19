@@ -29,6 +29,17 @@ spec:
         image: ghcr.io/nadhiuuu/akupeduli-app:latest
         imagePullPolicy: Always
         env:
+        - name: APP_NAME
+          value: "AkuPeduli"
+        - name: APP_ENV
+          value: "production"
+        - name: APP_DEBUG
+          value: "false"
+        - name: APP_URL
+          value: "http://103.157.27.234"
+        # Gunakan APP_KEY yang sama dengan file .env lokal Anda
+        - name: APP_KEY
+          value: "base64:4lkTB8BELht3qnZ09uHYvgep+vmIph3nioeswTcxOJA="
         - name: DB_HOST
           value: "db"
         - name: DB_DATABASE

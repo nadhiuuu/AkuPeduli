@@ -5,13 +5,13 @@ metadata:
 data:
   default.conf: |
     server {
-        listen 80;
-        index index.php index.html;
+        listen 80 default_server;
         server_name _;
         root /var/www/public;
+        index index.php;
 
         location / {
-            try_files $uri $uri/ /index.php?$query_string;
+            try_files $uri /index.php?$query_string;
         }
 
         location ~ \.php$ {
