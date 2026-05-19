@@ -342,11 +342,12 @@ class WithdrawalServiceTest extends TestCase
 
         CampaignerProfile::create([
             'user_id' => $campaigner->id,
-            'no_wa' => '081234567890',
+            // 👇 Gunakan fake() agar selalu unik setiap kali fungsi ini dipanggil
+            'no_wa' => fake()->unique()->numerify('08##########'),
             'wa_verified_at' => now(),
-            'email_campaigner' => 'campaigner@example.com',
+            'email_campaigner' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'nik' => '1234567890123456',
+            'nik' => fake()->unique()->numerify('################'), // 👈 Ini kunci utamanya (16 digit acak)
             'foto_ktp' => 'campaigner_docs/ktp.jpg',
             'foto_selfie_ktp' => 'campaigner_docs/selfie.jpg',
             'status_verifikasi' => 'disetujui',
@@ -355,8 +356,8 @@ class WithdrawalServiceTest extends TestCase
         BankAccount::create([
             'user_id' => $campaigner->id,
             'nama_bank' => 'BCA',
-            'nomor_rekening' => '1234567890',
-            'nama_pemilik' => 'Campaigner Satu',
+            'nomor_rekening' => fake()->numerify('##########'), // Acak juga nomor rekeningnya
+            'nama_pemilik' => 'Campaigner ' . $campaigner->id, // Tambahkan ID agar unik
         ]);
 
         $categoryId = DB::table('disaster_categories')->insertGetId([
