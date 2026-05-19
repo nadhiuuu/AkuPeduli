@@ -73,9 +73,10 @@ class WithdrawalServiceTest extends TestCase
             'amount' => 150000,
         ]);
 
+        $bankAccount = $campaigner->bankAccounts()->first();
         $this->assertSame('BCA', $withdrawal->bank_name_snapshot);
-        $this->assertSame('1234567890', $withdrawal->account_number_snapshot);
-        $this->assertSame('Campaigner Satu', $withdrawal->account_holder_snapshot);
+        $this->assertSame($bankAccount->nomor_rekening, $withdrawal->account_number_snapshot);
+        $this->assertSame($bankAccount->nama_pemilik, $withdrawal->account_holder_snapshot);
 
         $foreignCampaign = Campaign::create([
             'user_id' => $otherCampaigner->id,
@@ -148,7 +149,7 @@ class WithdrawalServiceTest extends TestCase
         $withdrawalTwo = $service->create($campaignerTwo, $campaignTwo);
 
         $this->actingAs($admin);
-        $this->assertSameCanonicalizing(
+        $this->assertEqualsCanonicalizing(
             [$withdrawalOne->id, $withdrawalTwo->id],
             WithdrawalResource::getEloquentQuery()->pluck('id')->all(),
         );
@@ -294,6 +295,8 @@ class WithdrawalServiceTest extends TestCase
         $service->reject($firstWithdrawal, User::factory()->create(['role' => 'admin']), 'Ganti rekening dulu.');
 
         $bankAccount = $campaigner->bankAccounts()->firstOrFail();
+        $oldAccountNumber = $bankAccount->nomor_rekening;
+        $oldAccountHolder = $bankAccount->nama_pemilik;
         $bankAccount->update([
             'nama_bank' => 'BNI',
             'nomor_rekening' => '555666777',
@@ -324,8 +327,8 @@ class WithdrawalServiceTest extends TestCase
         $secondWithdrawal = $service->create($campaigner, $campaignTwo);
 
         $this->assertSame('BCA', $firstWithdrawal->fresh()->bank_name_snapshot);
-        $this->assertSame('1234567890', $firstWithdrawal->fresh()->account_number_snapshot);
-        $this->assertSame('Campaigner Satu', $firstWithdrawal->fresh()->account_holder_snapshot);
+        $this->assertSame($oldAccountNumber, $firstWithdrawal->fresh()->account_number_snapshot);
+        $this->assertSame($oldAccountHolder, $firstWithdrawal->fresh()->account_holder_snapshot);
 
         $this->assertSame('BNI', $secondWithdrawal->bank_name_snapshot);
         $this->assertSame('555666777', $secondWithdrawal->account_number_snapshot);
