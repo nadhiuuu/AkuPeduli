@@ -39,7 +39,7 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan migrate --force
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -58,8 +58,10 @@ jobs:
   build-and-push:
     needs: build-and-test
     runs-on: ubuntu-latest
-    # Hanya jalankan job ini jika push ke branch main (bukan dari pull request)
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -69,7 +71,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GH_PAT }}
+          password: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Build and Push Docker image
         uses: docker/build-push-action@v5
