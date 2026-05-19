@@ -18,7 +18,7 @@ spec:
       initContainers:
       - name: copy-static
         image: ghcr.io/nadhiuuu/akupeduli-app:latest
-        command: ['sh', '-c', 'cp -r /var/www/public /shared/']
+        command: ['sh', '-c', 'cp -a /var/www/public/. /shared/']
         volumeMounts:
         - name: shared-public
           mountPath: /shared
