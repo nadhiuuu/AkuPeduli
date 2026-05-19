@@ -1,7 +1,5 @@
 name: CI AkuPeduli
 
-# Kapan robot ini harus berjalan?
-# Setiap kali ada 'push' atau 'pull request' ke branch 'main'
 on:
   push:
     branches: [ "main" ]
