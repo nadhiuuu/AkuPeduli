@@ -28,6 +28,10 @@ spec:
       - name: php-app
         image: ghcr.io/nadhiuuu/akupeduli-app:latest
         imagePullPolicy: Always
+        volumeMounts:
+        # 👇 TAMBAHKAN MOUNT INI
+        - name: uploaded-media
+          mountPath: /var/www/storage/app/public
         env:
         - name: APP_NAME
           value: "AkuPeduli"
@@ -70,6 +74,7 @@ spec:
           value: "sabiteam23@gmail.com"
         - name: MAIL_FROM_NAME
           value: "AkuPeduli!! - Akshara Crew"
+         
           
 # --- KONFIGURASI GOOGLE OAUTH ---
         - name: GOOGLE_CLIENT_ID
@@ -92,6 +97,7 @@ spec:
           value: "F4pk9ys25ZVFy2JSZond"
         ports:
         - containerPort: 9000
+        
 
       # Container 2: Nginx Web Server
       - name: nginx
@@ -104,6 +110,8 @@ spec:
         - name: nginx-config-volume
           mountPath: /etc/nginx/conf.d/default.conf
           subPath: default.conf
+        - name: uploaded-media
+          mountPath: /var/www/public/storage
 
       volumes:
       - name: shared-public
@@ -111,6 +119,8 @@ spec:
       - name: nginx-config-volume
         configMap:
           name: nginx-config
+      - name: uploaded-media
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
