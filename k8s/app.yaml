@@ -71,11 +71,11 @@ spec:
         - name: MAIL_FROM_NAME
           value: "AkuPeduli!! - Akshara Crew"
           
-        # --- KONFIGURASI GOOGLE OAUTH ---
+# --- KONFIGURASI GOOGLE OAUTH ---
         - name: GOOGLE_CLIENT_ID
-          value: "638081033935-ad4o7qch9vislnr4nt8d9jqur17ouhl8.apps.googleusercontent.com"
+          value: "366861675512-m9f5hpmpck94ujg4jt2vospttb2edokb.apps.googleusercontent.com"
         - name: GOOGLE_CLIENT_SECRET
-          value: "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"
+          value: "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"
         - name: GOOGLE_REDIRECT_URI
           value: "http://103.157.27.234/auth/google/callback"
           
