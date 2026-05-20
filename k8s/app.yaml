@@ -77,7 +77,7 @@ spec:
         - name: GOOGLE_CLIENT_SECRET
           value: "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"
         - name: GOOGLE_REDIRECT_URI
-          value: "http://103.157.27.234/auth/google/callback"
+          value: "http://103.157.27.234.nip.io/auth/google/callback"
           
         # --- KONFIGURASI API LAINNYA ---
         - name: MIDTRANS_MERCHANT_ID
