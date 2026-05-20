@@ -37,7 +37,6 @@ spec:
           value: "false"
         - name: APP_URL
           value: "http://103.157.27.234"
-        # Gunakan APP_KEY yang sama dengan file .env lokal Anda
         - name: APP_KEY
           value: "base64:4lkTB8BELht3qnZ09uHYvgep+vmIph3nioeswTcxOJA="
         - name: DB_CONNECTION
@@ -53,6 +52,44 @@ spec:
             secretKeyRef:
               name: db-secret
               key: password
+              
+        # --- KONFIGURASI EMAIL SMTP ---
+        - name: QUEUE_CONNECTION
+          value: "sync"
+        - name: MAIL_MAILER
+          value: "smtp"
+        - name: MAIL_HOST
+          value: "smtp.gmail.com"
+        - name: MAIL_PORT
+          value: "465"
+        - name: MAIL_USERNAME
+          value: "sabiteam23@gmail.com"
+        - name: MAIL_PASSWORD
+          value: "rrryyitumhplkrui"
+        - name: MAIL_FROM_ADDRESS
+          value: "sabiteam23@gmail.com"
+        - name: MAIL_FROM_NAME
+          value: "AkuPeduli!! - Akshara Crew"
+          
+        # --- KONFIGURASI GOOGLE OAUTH ---
+        - name: GOOGLE_CLIENT_ID
+          value: "638081033935-ad4o7qch9vislnr4nt8d9jqur17ouhl8.apps.googleusercontent.com"
+        - name: GOOGLE_CLIENT_SECRET
+          value: "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"
+        - name: GOOGLE_REDIRECT_URI
+          value: "http://103.157.27.234/auth/google/callback"
+          
+        # --- KONFIGURASI API LAINNYA ---
+        - name: MIDTRANS_MERCHANT_ID
+          value: "G031679385"
+        - name: MIDTRANS_CLIENT_KEY
+          value: "SB-Mid-client-MLuYAEYGBy0qPr8V"
+        - name: MIDTRANS_SERVER_KEY
+          value: "SB-Mid-server-a1RtO4KeFlHv9baiYjX5ihmV"
+        - name: MIDTRANS_IS_PRODUCTION
+          value: "false"
+        - name: FONNTE_TOKEN
+          value: "F4pk9ys25ZVFy2JSZond"
         ports:
         - containerPort: 9000
 
