@@ -40,7 +40,7 @@ spec:
         - name: APP_DEBUG
           value: "false"
         - name: APP_URL
-          value: "http://103.157.27.234"
+          value: "http://akupeduli.my.id"
         - name: APP_KEY
           value: "base64:4lkTB8BELht3qnZ09uHYvgep+vmIph3nioeswTcxOJA="
         - name: DB_CONNECTION
@@ -82,7 +82,7 @@ spec:
         - name: GOOGLE_CLIENT_SECRET
           value: "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"
         - name: GOOGLE_REDIRECT_URI
-          value: "http://103.157.27.234.nip.io/auth/google/callback"
+          value: "http://akupeduli.my.id/auth/google/callback"
           
         # --- KONFIGURASI API LAINNYA ---
         - name: MIDTRANS_MERCHANT_ID

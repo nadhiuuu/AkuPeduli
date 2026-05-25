@@ -6,7 +6,20 @@ metadata:
     kubernetes.io/ingress.class: traefik
 spec:
   rules:
-  - http:
+  # Aturan untuk akupeduli.my.id
+  - host: akupeduli.my.id
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: akupeduli-service
+            port:
+              number: 80
+  # Aturan untuk www.akupeduli.my.id
+  - host: www.akupeduli.my.id
+    http:
       paths:
       - path: /
         pathType: Prefix
