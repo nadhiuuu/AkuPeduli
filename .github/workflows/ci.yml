@@ -17,7 +17,7 @@ jobs:
         with:
           host: 103.157.27.234
           username: Kelompok25 # Sesuaikan jika username VPS Anda berbeda
-          key: ${{ secrets.SSH_PRIVATE_KEY }} # Pastikan Anda sudah setup SSH Key di GitHub Secrets
+          password: ${{ secrets.VPS_PASSWORD }} # <--- GANTI JADI INI
           script: |
             # 1. Masuk ke folder project di VPS (Sesuaikan path-nya)
             cd /home/Kelompok25/akupeduli || git clone https://github.com/USERNAME/REPO.git /home/Kelompok25/akupeduli
