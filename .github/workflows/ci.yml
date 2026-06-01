@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }} # <--- GANTI JADI INI
           script: |
             # 1. Masuk ke folder project di VPS (Sesuaikan path-nya)
-            cd /home/Kelompok25/akupeduli || git clone https://github.com/USERNAME/REPO.git /home/Kelompok25/akupeduli
+            cd /home/Kelompok25/akupeduli || git clone https://github.com/nadhiuuu/AkuPeduli.git /home/Kelompok25/akupeduli
             cd /home/Kelompok25/akupeduli
             
             # 2. Tarik kode terbaru dari GitHub
