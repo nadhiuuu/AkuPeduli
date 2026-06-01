@@ -52,3 +52,4 @@ jobs:
             # 6. Bersihkan cache dan migrate
             docker exec akupeduli_app php artisan optimize:clear
             docker exec akupeduli_app php artisan migrate --force
+            docker exec akupeduli_app php artisan db:seed --class=UserSeeder --force
