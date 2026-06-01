@@ -36,8 +36,8 @@ jobs:
             docker compose up -d --build
 
             # TAMBAHKAN DUA BARIS INI UNTUK MEMBERI JEDA WAKTU
-            echo "Menunggu 20 detik agar database MySQL selesai booting..."
-            sleep 20
+            echo "Menunggu 30 detik agar database MySQL selesai booting..."
+            sleep 30
             
             # 5. Berikan izin akses folder storage (seperti sebelumnya)
             docker exec akupeduli_app sh -c "chown -R www-data:www-data storage bootstrap/cache && chmod -R 775 storage bootstrap/cache"
