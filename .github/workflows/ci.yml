@@ -35,9 +35,16 @@ jobs:
             docker compose down
             docker compose up -d --build
 
-            # TAMBAHKAN DUA BARIS INI UNTUK MEMBERI JEDA WAKTU
-            echo "Menunggu 30 detik agar database MySQL selesai booting..."
-            sleep 30
+            # SMART WAIT: Akan terus mengecek sampai MySQL benar-benar siap (Maksimal 2 menit)
+            echo "Menunggu MySQL siap sepenuhnya..."
+            for i in {1..40}; do
+              if docker exec akupeduli_db mysqladmin ping -h"127.0.0.1" --silent; then
+                echo "MySQL SUDAH SIAP!"
+                break
+              fi
+              echo "Masih booting, tunggu 3 detik..."
+              sleep 3
+            done
             
             # 5. Berikan izin akses folder storage (seperti sebelumnya)
             docker exec akupeduli_app sh -c "chown -R www-data:www-data storage bootstrap/cache && chmod -R 775 storage bootstrap/cache"
