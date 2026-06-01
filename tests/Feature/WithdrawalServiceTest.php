@@ -73,9 +73,10 @@ class WithdrawalServiceTest extends TestCase
             'amount' => 150000,
         ]);
 
+        $bankAccount = $campaigner->bankAccounts()->first();
         $this->assertSame('BCA', $withdrawal->bank_name_snapshot);
-        $this->assertSame('1234567890', $withdrawal->account_number_snapshot);
-        $this->assertSame('Campaigner Satu', $withdrawal->account_holder_snapshot);
+        $this->assertSame($bankAccount->nomor_rekening, $withdrawal->account_number_snapshot);
+        $this->assertSame($bankAccount->nama_pemilik, $withdrawal->account_holder_snapshot);
 
         $foreignCampaign = Campaign::create([
             'user_id' => $otherCampaigner->id,
@@ -148,7 +149,7 @@ class WithdrawalServiceTest extends TestCase
         $withdrawalTwo = $service->create($campaignerTwo, $campaignTwo);
 
         $this->actingAs($admin);
-        $this->assertSameCanonicalizing(
+        $this->assertEqualsCanonicalizing(
             [$withdrawalOne->id, $withdrawalTwo->id],
             WithdrawalResource::getEloquentQuery()->pluck('id')->all(),
         );
@@ -294,6 +295,8 @@ class WithdrawalServiceTest extends TestCase
         $service->reject($firstWithdrawal, User::factory()->create(['role' => 'admin']), 'Ganti rekening dulu.');
 
         $bankAccount = $campaigner->bankAccounts()->firstOrFail();
+        $oldAccountNumber = $bankAccount->nomor_rekening;
+        $oldAccountHolder = $bankAccount->nama_pemilik;
         $bankAccount->update([
             'nama_bank' => 'BNI',
             'nomor_rekening' => '555666777',
@@ -324,8 +327,8 @@ class WithdrawalServiceTest extends TestCase
         $secondWithdrawal = $service->create($campaigner, $campaignTwo);
 
         $this->assertSame('BCA', $firstWithdrawal->fresh()->bank_name_snapshot);
-        $this->assertSame('1234567890', $firstWithdrawal->fresh()->account_number_snapshot);
-        $this->assertSame('Campaigner Satu', $firstWithdrawal->fresh()->account_holder_snapshot);
+        $this->assertSame($oldAccountNumber, $firstWithdrawal->fresh()->account_number_snapshot);
+        $this->assertSame($oldAccountHolder, $firstWithdrawal->fresh()->account_holder_snapshot);
 
         $this->assertSame('BNI', $secondWithdrawal->bank_name_snapshot);
         $this->assertSame('555666777', $secondWithdrawal->account_number_snapshot);
@@ -342,11 +345,12 @@ class WithdrawalServiceTest extends TestCase
 
         CampaignerProfile::create([
             'user_id' => $campaigner->id,
-            'no_wa' => '081234567890',
+            // 👇 Gunakan fake() agar selalu unik setiap kali fungsi ini dipanggil
+            'no_wa' => fake()->unique()->numerify('08##########'),
             'wa_verified_at' => now(),
-            'email_campaigner' => 'campaigner@example.com',
+            'email_campaigner' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'nik' => '1234567890123456',
+            'nik' => fake()->unique()->numerify('################'), // 👈 Ini kunci utamanya (16 digit acak)
             'foto_ktp' => 'campaigner_docs/ktp.jpg',
             'foto_selfie_ktp' => 'campaigner_docs/selfie.jpg',
             'status_verifikasi' => 'disetujui',
@@ -355,8 +359,8 @@ class WithdrawalServiceTest extends TestCase
         BankAccount::create([
             'user_id' => $campaigner->id,
             'nama_bank' => 'BCA',
-            'nomor_rekening' => '1234567890',
-            'nama_pemilik' => 'Campaigner Satu',
+            'nomor_rekening' => fake()->numerify('##########'), // Acak juga nomor rekeningnya
+            'nama_pemilik' => 'Campaigner ' . $campaigner->id, // Tambahkan ID agar unik
         ]);
 
         $categoryId = DB::table('disaster_categories')->insertGetId([

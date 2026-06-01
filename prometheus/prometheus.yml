@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s # Prometheus akan mengambil data setiap 15 detik
+
+scrape_configs:
+  - job_name: 'vps_hardware'
+    static_configs:
+      - targets: ['node_exporter:9100']

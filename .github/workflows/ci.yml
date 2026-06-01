@@ -1,58 +1,55 @@
-name: CI AkuPeduli
+name: Deploy to VPS via Docker Compose
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    # 1. Mengambil kode terbarumu dari repositori
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    # 2. Menyiapkan PHP lingkungan PHP
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.4' # Sesuaikan dengan versi PHP di laptopmu
-        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, libxml, mbstring, openssl, pcre, phar, posix, session, soap, sockets, sqlite3, tokenizer, xmlwriter, zip
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 103.157.27.234
+          username: Kelompok25 # Sesuaikan jika username VPS Anda berbeda
+          password: ${{ secrets.VPS_PASSWORD }} # <--- GANTI JADI INI
+          script: |
+            # 1. Masuk ke folder project di VPS (Sesuaikan path-nya)
+            cd /home/Kelompok25/akupeduli || git clone https://github.com/nadhiuuu/AkuPeduli.git /home/Kelompok25/akupeduli
+            cd /home/Kelompok25/akupeduli
+            
+            # 2. Tarik kode terbaru dari GitHub
+            git pull origin main
+            
+            # 3. Suntikkan Secret menjadi file .env (Sangat Aman)
+            cat << 'EOF' > .env
+            ${{ secrets.ENV_PRODUCTION }}
+            EOF
+            
+            # 4. Bangun dan nyalakan kontainer baru
+            docker compose down
+            docker compose up -d --build
 
-    # 3. Menggandakan file .env.example menjadi .env
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-
-    # 4. Menginstal library PHP (Composer)
-    - name: Install Composer Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
-    # 5. Menginstal library NPM (untuk Vite/Filament)
-    - name: Install NPM Dependencies
-      run: npm install && npm run build
-
-    # 6. Menghasilkan Application Key Laravel
-    - name: Generate App Key
-      run: php artisan key:generate
-
-    # 7. Membuat database SQLite di memori khusus untuk testing
-    - name: Create Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
-
-    - name: Run Database Migrations
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: php artisan migrate --force
-
-    # 8. Menjalankan PHPUnit / Pest Testing
-    - name: Execute Tests via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: php artisan test
+            # SMART WAIT: Akan terus mengecek sampai MySQL benar-benar siap (Maksimal 2 menit)
+            echo "Menunggu MySQL siap sepenuhnya..."
+            for i in {1..40}; do
+              if docker exec akupeduli_db mysqladmin ping -h"127.0.0.1" --silent; then
+                echo "MySQL SUDAH SIAP!"
+                break
+              fi
+              echo "Masih booting, tunggu 3 detik..."
+              sleep 3
+            done
+            
+            # 5. Berikan izin akses folder storage (seperti sebelumnya)
+            docker exec akupeduli_app sh -c "chown -R www-data:www-data storage bootstrap/cache && chmod -R 775 storage bootstrap/cache"
+            
+            # 6. Bersihkan cache dan migrate
+            docker exec akupeduli_app php artisan optimize:clear
+            docker exec akupeduli_app php artisan migrate --force
+            docker exec akupeduli_app php artisan db:seed --class=UserSeeder --force

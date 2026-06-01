@@ -14,7 +14,7 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
-
+use Illuminate\Support\Facades\URL; // 👈 TAMBAHAN 1: Import Facade URL
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // 👇 TAMBAHAN 2: Memaksa skema HTTPS jika di production (Solusi Mixed Content)
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
 
         Event::listen(function (Login $event) {
             // Beri tanda rahasia di session bahwa dia baru saja login
