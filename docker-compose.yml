@@ -1,51 +1,54 @@
 services:
   app:
     build: .
-    image: akupeduli-app:latest  # Pastikan image sudah di-build
-    deploy:
-      replicas: 2                # Menjalankan 2 container sekaligus untuk load balancing
-      restart_policy:
-        condition: on-failure
+    image: akupeduli-app:latest
+    container_name: akupeduli_app
+    restart: always
+    # Menarik semua kredensial rahasia dari file .env yang akan dibuat oleh CI/CD
+    env_file:
+      - .env
+    volumes:
+      - shared-public:/var/www/public
+      - uploaded-media:/var/www/storage/app/public
     networks:
       - laravel
 
   web:
     image: nginx:alpine
+    container_name: akupeduli_web
+    restart: always
     ports:
-      - "8081:80"
+      - "80:80"
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-      # Catatan: Swarm agak sensitif dengan bind mount (folder lokal). 
-      # Pastikan path ini benar di semua node jika nanti pakai banyak mesin.
-    deploy:
-      replicas: 1
-    networks:
-      - laravel
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - shared-public:/var/www/public
+      - uploaded-media:/var/www/public/storage
     depends_on:
       - app
-
+    networks:
+      - laravel
 
   db:
     image: mysql:8
     container_name: akupeduli_db
+    restart: always
+    # Variabel ini akan otomatis terisi dari file .env
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE:-akupeduli}
+      MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
-      - dbdata:/var/lib/mysql   # 👈 WAJIB
+      - dbdata:/var/lib/mysql
     networks:
-    - laravel
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager # Memastikan DB tidak pindah-pindah mesin
+      - laravel
 
 networks:
   laravel:
 
 volumes:
+  shared-public:
+  uploaded-media:
   dbdata:
