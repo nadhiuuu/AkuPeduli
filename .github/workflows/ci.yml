@@ -27,7 +27,9 @@ jobs:
             git pull origin main
             
             # 3. Suntikkan Secret menjadi file .env (Sangat Aman)
-            echo "${{ secrets.ENV_PRODUCTION }}" > .env
+            cat << 'EOF' > .env
+            ${{ secrets.ENV_PRODUCTION }}
+            EOF
             
             # 4. Bangun dan nyalakan kontainer baru
             docker compose down
