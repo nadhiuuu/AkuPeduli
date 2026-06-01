@@ -4,7 +4,6 @@ services:
     image: akupeduli-app:latest
     container_name: akupeduli_app
     restart: always
-    # Menarik semua kredensial rahasia dari file .env yang akan dibuat oleh CI/CD
     env_file:
       - .env
     volumes:
@@ -12,6 +11,9 @@ services:
       - uploaded-media:/var/www/storage/app/public
     networks:
       - laravel
+    # Memastikan aplikasi menunggu DB menyala dulu
+    depends_on:
+      - db
 
   web:
     image: nginx:alpine
@@ -32,12 +34,10 @@ services:
     image: mysql:8
     container_name: akupeduli_db
     restart: always
-    # Variabel ini akan otomatis terisi dari file .env
     environment:
+      # Hanya mengatur password ROOT dan nama database saja
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
