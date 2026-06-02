@@ -7,6 +7,7 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\HistoryDonationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AboutController;
 /*Halaman Utama & Auth*/
 Route::get('/', [LandingController::class, 'index'])->name('home');
 
@@ -75,25 +76,15 @@ Route::prefix('dokumentasi')->name('documentation.')->group(function () {
 
 /*Tentang Kami (About)*/
 Route::prefix('tentang')->name('tentang.')->group(function () {
-    Route::get('/', function () {
-        return view('pages.tentang.tentang-kami');
-    })->name('index');
+    Route::get('/', [AboutController::class, 'index'])->name('index');
 
-    Route::get('/faq', function () {
-        return view('pages.tentang.faq');
-    })->name('faq');
+    Route::get('/faq', [AboutController::class, 'faq'])->name('faq');
 
-    Route::get('/syarat-ketentuan', function () {
-        return view('pages.tentang.syarat-ketentuan');
-    })->name('syarat-ketentuan');
+    Route::get('/syarat-ketentuan', [AboutController::class, 'terms'])->name('syarat-ketentuan');
 
-    Route::get('/kebijakan-privasi', function () {
-        return view('pages.tentang.kebijakan-privasi');
-    })->name('kebijakan-privasi');
+    Route::get('/kebijakan-privasi', [AboutController::class, 'privacy'])->name('kebijakan-privasi');
 
-    Route::get('/hubungi-kami', function () {
-        return view('pages.tentang.hubungi-kami');
-    })->name('hubungi-kami');
+    Route::get('/hubungi-kami', [AboutController::class, 'contact'])->name('hubungi-kami');
 });
 
 /*Profil Pengguna*/
