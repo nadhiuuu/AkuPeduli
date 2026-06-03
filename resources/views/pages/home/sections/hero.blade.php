@@ -7,7 +7,7 @@
     <div class="relative w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-32 pb-10 md:py-0">   
         <div class="max-w-2xl"> 
             <h1 class="text-5xl sm:text-5xl md:text-6xl font-bold leading-tight mb-2">
-                Wujudkan kepedulian bersama <span class="text-yellow-400">AkuENGGAKPeduli</span>
+                Wujudkan kepedulian bersama <span class="text-yellow-400">AkuPeduli</span>
             </h1>
             <p class="text-start text-xl text-blue-100 mb-6">
                 Satu langkah kecil untuk kebaikan sedulur Jember. Pilih campaign yang dekat dengan kita dan salurkan bantuanmu dengan rasa aman dan transparan.
